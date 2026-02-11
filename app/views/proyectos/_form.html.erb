@@ -1,0 +1,36 @@
+<%= form_with(model: proyecto, local: true) do |form| %>
+  <% if proyecto.errors.any? %>
+    <div id="error_explanation">
+      <h2><%= pluralize(proyecto.errors.count, "error") %> prohibited this proyecto from being saved:</h2>
+
+      <ul>
+      <% proyecto.errors.full_messages.each do |message| %>
+        <li><%= message %></li>
+      <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+<div class="row">
+  <div class="col-md-6 col-lg-6 col-sm-6 col-xs-6">
+    <div class="field">
+      <%= form.label :nombre %>
+      <%= form.text_field :nombre, id: :proyecto_nombre , class: 'form-control'%>
+    </div>
+
+    <div class="field">
+      <%= form.label :estado %>
+      <%= form.check_box :estado, id: :proyecto_estado , checked: true %>
+    </div>
+  </div>
+  <div class="col-md-6 col-lg-6 col-sm-6 col-xs-6">
+    <div class="panel panel-info">
+      <div class="panel-heading">Acciones:</div>
+      <div class="panel-body">
+        <button type="submit" name="button" class="btn btn-primary"><i class="fontawesome-save"></i> Guardar</button>
+        <%= link_to 'Regresar', proyectos_path, class: 'btn btn-default' %>
+      </div>
+    </div>
+  </div>
+</div>
+<% end %>

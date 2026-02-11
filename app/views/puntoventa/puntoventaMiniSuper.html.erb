@@ -1,0 +1,765 @@
+<h1>Registro de Ventas</h1>
+  <% if Empresa.find(1).domain=="minisuperelsol.com"
+    defaultNit = 'CF'
+    display    = 'none'
+   else
+    defaultNit = ''
+    display = 'block'
+   end %>
+  <div style="display:<%= display %>">
+    <div class="panel panel-default">
+      <div class="panel-heading">Datos de Facturacion:</div>
+      <div class="panel-body">
+        <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+          <input name="documento" class="form-control" type="hidden" id="documento" value="0"/>
+          <div class="col-xs-12 col-sm-12 col-md-3 col-lg-3">
+            <label for="fecha">Fecha</label>
+            <input name="fecha" class="form-control" type="date" id="fecha"  value="<%= Time.now.strftime("%Y-%m-%d") %>" disabled/>
+          </div>
+          <div class="col-xs-12 col-sm-12 col-md-3 col-lg-3">
+            <label for="serie">Serie</label>
+            <input name="serie" class="form-control" type="text" id="serie" disabled/>
+          </div>
+          <div class="col-xs-12 col-sm-12 col-md-3 col-lg-3">
+            <label for="factura">Factura</label>
+            <input name="factura" class="form-control" type="text" id="factura" disabled/>
+          </div>
+
+          <% if session[:version].include? "2.0" %>
+            <div class="col-xs-12 col-sm-12 col-md-3 col-lg-3">
+              <label for="ruta">Rutas</label>
+              <select class="form-control" name="" id="ruta">
+                <option value="">Seleccione ruta</option>
+                <% @rutas.each do |r| %>
+                  <option data-tipo="<%= r.tipo %>" value="<%= r.id %>"><%= r.nombre %></option>
+                <% end %>
+              </select>
+            </div>
+          <% end %>
+          <div style="display:none;" lass="col-xs-12 col-sm-12 col-md-3 col-lg-3">
+            <label for="cotizacion">Cotizacion ?</label>
+            <input name="cotizacion" type="checkbox" id="cotizacion" onclick="cTrig(this.id);"/>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="panel panel-info">
+      <div class="panel-heading">Datos del cliente:</div>
+        <div class="panel-body">
+          <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+            <div class="col-xs-12 col-sm-12 col-md-3 col-lg-3">
+              <label for="tipo_pago">Tipo Pago</label>
+              <select class="form-control" id="tipo_pago" name="tipo_pago">
+              </select>
+            </div>
+            <div class="col-xs-12 col-sm-12 col-md-3 col-lg-3">
+              <label for="nit">Nit</label>
+              <% if session[:desplegableNit] %>
+                <select class="form-control" name="nit" id="nit">
+                  <% @clientes.each do |c| %>
+                   <option value="<%= c.nit %>"><%= c.nit %></option>
+                  <% end %>
+                </select>
+              <% else %>
+                <input name="nit" class="form-control" type="text" id="nit" value="<%= defaultNit %><%= params[:nit].to_s %>"/>
+              <% end %>
+            </div>
+            <div class="col-xs-12 col-sm-12 col-md-3 col-lg-3">
+              <label for="nombre">Nombre</label>
+              <% if session[:desplegableNit] %>
+                <select class="form-control" name="clienteNombre" id="clienteNombre">
+                  <% @clientes.each do |c| %>
+                   <option value="<%= c.nit %>"><%= c.Nombre %></option>
+                  <% end %>
+                </select>
+              <% else %>
+                <input disabled="true" name="nombre" class="form-control" type="text" id="nombre" value="<%= params[:nit].to_s %>"/>
+              <% end %>
+            </div>
+            <div class="col-xs-12 col-sm-12 col-md-3 col-lg-3">
+              <label for="direccion">Direccion</label>
+              <% if session[:desplegableNit] %>
+                <select class="form-control" name="clienteDireccion" id="clienteDireccion">
+                  <% @clientes.each do |c| %>
+                   <option value="<%= c.nit %>"><%= c.direccion %></option>
+                  <% end %>
+                </select>
+              <% else %>
+                <input disabled="true" name="direccion" class="form-control" type="text" id="direccion" value="<%= params[:nit].to_s %>"/>
+              <% end %>
+
+            </div>
+            <div id="datosEntrega" style="display:none;">
+              <div class="col-xs-12 col-sm-12 col-md-3 col-lg-3">
+                <label for="fecha">Nit:</label>
+                <input class="form-control" type="number" id="nitEntrega"  value="" />
+              </div>
+              <div class="col-xs-12 col-sm-12 col-md-3 col-lg-3">
+                <label for="fecha">Nombre de Entrega</label>
+                <input class="form-control" type="text" id="nombreEntrega"  value="" />
+              </div>
+              <div class="col-xs-12 col-sm-12 col-md-3 col-lg-3">
+                <label for="serie">Direccion de Entrega</label>
+                <input class="form-control" type="text" id="direccionEntrega" />
+              </div>
+              <div class="col-xs-12 col-sm-12 col-md-3 col-lg-3">
+                <label for="serie">Numero Telefonico</label>
+                <input class="form-control" type="text" id="numeroEntrega" />
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+  </div>
+  <div class="panel panel-success ">
+    <div class="panel-heading">Productos: <span id="unidades"></span></div>
+      <div class="panel-body">
+        <div class="row">
+          <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 info">
+            <div class="col-xs-12 col-sm-12 col-md-2 col-lg-2">
+              <label for="codigoproducto">Producto</label>
+              <input name="idproducto" class="form-control" type="hidden" id="idproducto"/>
+              <!--<# !if session[:desplegableProducto] %>-->
+                <input name="codigoproducto" class="form-control codigoproducto" type="text" id="codigoproductoBarcode"/>
+              <!--<# else %>-->
+                <select id="" name="codigoproducto" class="form-control codigoproducto">
+                </select>
+              <!--<# end %>-->
+            </div>
+            <div class="col-xs-12 col-sm-12 col-md-1 col-lg-1">
+              <label for="unidad">Unidad</label>
+              <input name="unidadRequerida" class="form-control no-padding" type="hidden" id="unidadRequerida" value=""/>
+              <input name="unidad" class="form-control no-padding" type="number" id="unidad" value="1"/>
+            </div>
+            <div class="col-xs-12 col-sm-12 col-md-3 col-lg-3">
+              <label for="unidadmedida">Medida</label>
+              <select name="unidadmedida :selected option" class="form-control" id="unidadmedida"></select>
+            </div>
+            <div class="col-xs-12 col-sm-12 col-md-2 col-lg-2">
+              <label for="precio">Precio Q </label>
+              <input name="precio" class="form-control no-padding" type="number" id="precio" disabled="true"/>
+            </div>
+            <div class="col-xs-12 col-sm-12 col-md-2 col-lg-2">
+              <label for="descuento">Descuento</label>
+              <input name="descuento" class="form-control no-padding" type="number" id="descuento"  placeholder="Max. %<%= session[:descuento]%>"/>
+            </div>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 info">
+            <div class="col-xs-12 col-sm-12 col-md-3 col-lg-3">
+              <label for="descripcion">Descripcion</label>
+              <input name="descripcion" class="form-control no-padding" type="text" id="descripcion" disabled="true"/>
+            </div>
+            <div class="col-xs-12 col-sm-12 col-md-3 col-lg-3">
+              <label for="">Fila</label>
+              <input name="" class="form-control no-padding" type="text" id="fila" disabled="true"/>
+            </div>
+            <div class="col-xs-12 col-sm-12 col-md-3 col-lg-3">
+              <label for="">Columna</label>
+              <input name="" class="form-control no-padding" type="text" id="columna" disabled="true"/>
+            </div>
+            <div class="col-xs-12 col-sm-12 col-md-6 col-lg-6">
+            </div>
+            <div class="col-xs-12 col-sm-12 col-md-3 col-lg-3 alert alert-primary">
+              <button type="button" name="button" id="agregar" class="btn btn-success">Agregar</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+<fieldset id="form" >
+  <div class="panel panel-primary">
+    <div class="panel-heading">Productos Adquiridos:</div>
+      <div class="panel-body">
+        <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 info">
+          <table class="table">
+            <thead>
+              <th>Cantidad</th>
+              <th>Codigo</th>
+              <th>Descripcion</th>
+              <th>Medida</th>
+              <th>Val Unitaria</th>
+              <th>Descuento</th>
+              <th>Sub total</th>
+              <th></th>
+            </thead>
+            <tbody id="detalle_venta">
+
+            </tbody>
+          </table>
+      </div>
+    </div>
+    <div class="panel-footer">
+      <table class="table">
+        <tr>
+          <td></td>
+          <td class="pull-right"><p id="subTotal" >Total Q00.00</p> <input type="hidden" id="totalInput" value=""></td>
+        </tr>
+        <tr>
+          <td></td>
+          <td class="pull-right"><button type="button" name="button" id="pagar" class="btn btn-primary">Congelar y Pagar</button></td>
+        </tr>
+      </table>
+    </div>
+  </div>
+</fieldset>
+
+    <div class="panel panel-info ">
+      <div class="panel-heading">Impresion</div>
+        <div class="panel-body">
+          <div class="row">
+            <div class="col-md-6 col-xs-6 col-sm-6 col-xl-6 pago"  style="display:none;">
+              <p><button type="button" class="btn btn-primary" name="button"  id="pago_efectivo"><i class="fontawesome-money" aria-hidden="true"></i> Pago con Efectivo</button></p>
+              <p><button type="button" class="btn btn-warning" name="button"  id="pago_tarjeta"><i class="fontawesome-credit-card" aria-hidden="true"></i> Pago con Tarjeta</button></p>
+              <p><button type="button" class="btn btn-success" name="button"  id="mixto">Mixto</button></p>
+              <p><button type="button" class="btn btn-danger" name="button"  id="descongelar">Descongelar</button></p>
+            </div>
+            <div class="col-md-6 col-xs-6 col-sm-6 col-xl-6 "  >
+              <div class="col-lg-3 col-md-3 col-sm-12 col-xs-12">
+                <label for="pago_inicial" class="efectivo">Cantidad en efectivo:</label>
+                <input class="form-control efectivo" type="number" name="pago_inicial" id="pago_inicial" />
+                <label for="pago_inicial_tarjeta" class="tarjeta">Cantidad en tarjeta:</label>
+                <input class="form-control tarjeta" type="number" name="pago_inicial_tarjeta" id="pago_inicial_tarjeta" />
+                <!--<label for="tarjeta">Tarjeta:</label>
+                <select name="tarjeta" id="tarjeta">
+                  <option value="1">VISA</option>
+                  <option value="2">MASTERCARD</option>
+                </select>
+                <label for="numero_tarjeta">Numero de tarjeta:</label>
+                <input class="form-control" type="text" name="numero_tarjeta" id="numero_tarjeta"/>
+                <label for="nombre_tarjeta">Nombre de tarjeta:</label>
+                <input class="form-control" type="text" name="nombre_tarjeta" id="nombre_tarjeta"/>-->
+                <label for="pago_inicial" class="efectivo">Cambio:</label>
+                <input class="form-control efectivo" type="number" name="cambio"   id="cambio" readonly />
+                <label for="pago_inicial_tarjeta" class=""> <strong id="pendiente"></strong> Pendiente:</label>
+                <input class="form-control " type="number" name="total" value="total" id="total" readonly />
+              </div>
+            </div>
+        </div>
+      </div>
+      <div class="panel-footer">
+        <div class="centrarCaja" style="display:none;" >
+          <button type="button" name="imprimirGuardar" onclick="guardarOrden('imprimirGuardar')" id="guardar" class="btn btn-info" ><i class="fontawesome-print"aria-hidden="true"></i>Imprimir y Guardar</button>
+          <button type="button" name="guardarYNuevo"  onclick="guardarOrden('guardarYNuevo')" id="guardar" class="btn btn-info" ><i class="fontawesome-print"aria-hidden="true"></i>Guardar y Nuevo</button>
+        </div>
+      </div>
+    </div>
+
+  <script>
+  var existe         = false;
+  var precioProducto = 0;
+  var allowLeave     = false;
+  var subTotalOrden  = 0;
+  var unitsAvailable = 0;
+
+  /* SHORTCUTS */
+
+  function borrar(e,movProdId,detalleDocumentoId,total){
+    $(e).hide();
+    $.ajax({
+      url: "/unloadMovProd",
+      method: 'POST',
+      dataType: 'json',
+      data: {
+        movProdId: movProdId,
+        detalleDocumentoId: detalleDocumentoId
+      },
+      success: function( results ) {
+        subTotalOrden -= total
+        setTotal(subTotalOrden);
+        $(e.parentNode.parentNode).remove();
+      }
+
+    });
+    $(e).show();
+  }
+
+  function setTotal(subTotalOrden){
+    $("#subTotal").html('Total: '+subTotalOrden)
+    $("#total").val(subTotalOrden)
+    $("#pendiente").html(subTotalOrden);
+    $("#totalInput").val(subTotalOrden);
+  }
+
+  $(window).unload(function(evento){
+
+    if($("#documento").val()>0) {
+    	$.ajax({
+    		type:"POST",
+    		url:"/unloadOrder",
+    		dataType:"json",
+        data: {
+          documento: $("#documento").val()
+        },
+        async:false
+    		});
+      }
+  });
+
+  $( window ).load(function() {
+    $("#codigoproductoBarcode").focus();
+    document.onkeyup = function(e) {
+      if (e.ctrlKey  && e.altKey && e.which == 80) {
+        congelarYPagar();
+      } else if (e.ctrlKey && e.altKey && e.which == 68) {
+        descongelar()
+      } else if (e.ctrlKey && e.altKey && e.which == 69) {
+        pagoEnEfectivo()
+      } else if (e.ctrlKey && e.altKey && e.which == 84) {
+        pagoEnTarjeta()
+      } else if (e.ctrlKey && e.altKey && e.which == 77) {
+        pagoMixto ()
+      } else if (e.ctrlKey && e.altKey && e.which == 103) {
+        guardarOrden('imprimirGuardar')
+      } else if (e.ctrlKey && e.altKey && e.which == 71) {
+        guardarOrden('imprimirGuardar')
+      } else if (e.which == 13) {
+        agregarProducto()
+      }
+    };
+
+
+    nit = $("#nit").val()
+    if(nit.length > 0){
+      buscarCliente()
+    }
+    $("#ruta").on('change', function(){
+      if(this.value != ""){
+        $("#nit").val(0)
+        $("#datosEntrega").show()
+        buscarCliente()
+      }else {
+        $("#datosEntrega").hide()
+      }
+    });
+
+    $("#pago_efectivo").on('click',function(){
+        pagoEnEfectivo()
+    });
+
+    $("#pago_tarjeta").on('click',function(){
+        pagoEnTarjeta()
+    });
+
+    $("#mixto").on('click',function(){
+        pagoMixto()
+    });
+
+    function pagoEnEfectivo(){
+      $(".tmpj").addClass("tarjeta");
+      $(".tmpj").removeClass("tmpj");
+      $(".efectivo").addClass("tmpe");
+      $(".efectivo").removeClass("efectivo");
+      $("#pago_inicial").val(0);
+      $("#pago_inicial_tarjeta").val(0);
+    }
+
+    function pagoEnTarjeta(){
+      $(".tmpe").addClass("efectivo");
+      $(".tmpe").removeClass("tmpe");
+      $(".tarjeta").addClass("tmpj");
+      $(".tarjeta").removeClass("tarjeta");
+      $("#pago_inicial").val(0);
+      $("#pago_inicial_tarjeta").val(0);
+    }
+
+    function pagoMixto(){
+      $(".tarjeta").addClass("tmpj");
+      $(".efectivo").addClass("tmpe");
+      $(".tarjeta").removeClass("tarjeta");
+      $(".efectivo").removeClass("efectivo");
+      $("#pago_inicial").val(0);
+      $("#pago_inicial_tarjeta").val(0);
+    }
+
+    $(".efectivo , .tarjeta").on('keyup',function(e){
+      valorEfectivo = $("#pago_inicial").val();
+      valorTarjeta  = $("#pago_inicial_tarjeta").val();
+      var total = calcularTotal();
+      valorEfectivo = isNaN(valorEfectivo) ? 0: valorEfectivo;
+      valorTarjeta = isNaN(valorTarjeta) ? 0: valorTarjeta;
+      var residuo = (total  - (valorEfectivo)) - (valorTarjeta)
+      if(residuo < 0 ){
+        $("#cambio").val(Math.round((residuo*-1 + Number.EPSILON) * 100) / 100 );
+        $("#total").val(0);
+      }else{
+        $("#cambio").val(0);
+        $("#total").val(Math.round((residuo+ Number.EPSILON) * 100) / 100);
+      }
+    });
+    getTipoPago();
+    getFactura();
+    getProducts();
+  });
+
+  $("#pagar").on('click', function(){
+    congelarYPagar()
+  });
+  $("#descongelar").on('click', function(){
+    descongelar()
+  });
+
+  function congelarYPagar(){
+    if(calcularTotal()>0){
+      $(".pago").show();
+      $(".centrarCaja").show();
+      $('select').prop('disabled', true);
+      $('#form').prop('disabled', true);
+    }else{
+      alert("Adquiere almenos un producto.")
+    }
+  }
+
+  function descongelar(){
+    $(".pago").hide();
+    $('#form').prop('disabled', false);
+    $('#form select').prop('disabled', false);
+    $(".centrarCaja").hide();
+    $("#pago_inicial").val(0);
+    $("#pago_inicial_tarjeta").val(0);
+    $("#cambio").val(0);
+  }
+
+  function getProducts(){
+    $.ajax({
+      url: "/findProductosByProvider",
+      method: 'POST',
+      dataType: 'json',
+      data: {
+        proveedor: 'all'
+      },
+      success: function( result ) {
+        html = '<option value="">Seleccione...</option>'
+        for(i=0; i < result.length; i++){
+          html += "<option value='"+result[i].Codigo+"' >"+result[i].Codigo+" "+result[i].Nombre+"</option>";
+        }
+        $(".codigoproducto").html(html);
+      }
+    });
+  }
+  function guardarOrden(accionParameter){
+    $.ajax({
+      url: "/saveOrder",
+      method: 'POST',
+      dataType: 'json',
+      data: {
+        documento            : $("#documento").val(),
+        pago_efectivo        : $("#pago_efectivo").prop("checked"),
+        pago_tarjeta         : $("#pago_tarjeta").prop("checked"),
+        pago_efectivo_tarjeta: $("#pago_efectivo_tarjeta").prop("checked"),
+        tarjeta              : $("#tarjeta").val(),
+        pago_inicial         : $("#pago_inicial").val(),
+        pago_inicial_tarjeta : $("#pago_inicial_tarjeta").val(),
+        numero_tarjeta       : $("#numero_tarjeta").val(),
+        nombre_tarjeta       : $("#nombre_tarjeta").val(),
+        cambio               : $("#cambio").val(),
+        ruta                 : $("#ruta").val(),
+        nombreNit            : $("#nombre").val(),
+        nitEntrega           : $("#nitEntrega").val(),
+        nombreEntrega        : $("#nombreEntrega").val(),
+        direccionEntrega     : $("#direccionEntrega").val(),
+        numeroEntrega        : $("#numeroEntrega").val(),
+        accion               : accionParameter
+      },
+      success: function( results ) {
+        allowLeave = true
+        if(results[0]){
+         if (accionParameter == "guardarYNuevo"){
+           window.location.href = "/puntoventaMiniSuper";
+         }else {
+           window.location.href = "print?documentoId="+$("#documento").val();
+         }
+        }else{
+         alert(results[1])
+        }
+      }
+    });
+  }
+  $(".codigoproducto").on('change', function(c){
+    findProduct(this.value)
+  });
+
+  function findProduct(productCode){
+    $("#agregar").attr('disabled',true);
+    getMedidas("0");
+    $.ajax({
+      url: "/findProduct",
+      method: 'POST',
+      dataType: 'json',
+      data: {
+        product: productCode
+      },
+      success: function( results ) {
+        $("#agregar").attr('disabled',false);
+        result = results[0][0];
+        if(result){
+          $("#descripcion").val(result.Nombre);
+          $(".codigoproducto").val(result.Codigo);
+          $("#fila").val(result.Fila);
+          $("#columna").val(result.Columna);
+          $("#idproducto").val(result.id);
+          precioProducto = result.Valor_Venta;
+          $("#precio").val(result.Valor_Venta)
+          $("#unidades").html("<h4>Disponibles: <font color='red'>"+results[1].unidades+"</font></h3>")
+          $("#agregar").focus();
+
+          //if(results[1].unidades > 0){
+            <% if session[:factNegativ] %>
+              unitsAvailable  = 1000
+            <% else %>
+              unitsAvailable  = results[1].unidades
+            <% end %>
+          //}
+          if(results[1].esServicio){
+            $("#descripcion").attr('disabled',false)
+            $("#precio").attr('disabled',false)
+            $("#descripcion").attr('Servicio '+result.Nombre )
+          }
+          if(result.Medida_id>0){
+            getMedidas(result.Medida_id)
+          }
+        }else{
+          $("#agregar").attr('disabled',true);
+          $("#descripcion").val("");
+          $(".codigoproducto").val("");
+          $("#idproducto").val("");
+          $("#precio").val("")
+          $("#unidades").html("<h4>No encontrado</h3>")
+          getMedidas("0");
+        }
+
+      }
+    });
+  }
+  /*$("#agregar").on('click',function(c){
+    agregarProducto()
+  });*/
+
+  function agregarProducto(){
+    var unidad  = $("#unidad").val();
+    var unidadRequerida  = $("#unidadRequerida").val();
+    var codigo      = $(".codigoproducto").val();
+    if($("#nit").val().length > 0 ){
+      if(unidad > 0 && existe && codigo != "" && unidadRequerida <= unitsAvailable && $("#unidadmedida").val() != "" && $("#unidadmedida").val()!=""&& $("#unidadmedida").val() != null ){
+        $("#agregar").attr('disabled',true);
+        var precio      = $("#precio").val();
+        var descripcion = $("#descripcion").val();
+        var medida      = $("#unidadmedida option:selected").text();
+        var descuento   = $("#descuento").val();
+        var total       = (Math.round((precio*-1 + Number.EPSILON) * 100) / 100) * (Math.round((unidad*-1 + Number.EPSILON) * 100) / 100);
+        var descuento_total = 0;
+        if(descuento > 0  && descuento <= <%= session[:descuento]%>){
+          descuento_total = total * (descuento/100);
+          total           = total - descuento_total;
+        }
+        html  = "<tr><td>"+unidad+"</td>"
+        html += "<td>"+codigo+"</td>"
+        html += "<td>"+descripcion+"</td>"
+        html += "<td>"+medida+"</td>"
+        html += "<td>"+precio+"</td>"
+        html += "<td>"+descuento_total+"</td>"
+        html += "<td>"+total+"</td>"
+        subTotalOrden += total;
+        tipo = 2
+        if($("#cotizacion").prop('checked')){
+          tipo = 4
+        }
+        $.ajax({
+          url: "/saveMovProduct",
+          method: 'POST',
+          dataType: 'json',
+          data: {
+            unidad                : unidad,
+            unidadRequerida       : unidadRequerida,
+            descripcion           : descripcion,
+            unidad_medida         : $("#unidadmedida").val(),
+            tipo_pago             : $("#tipo_pago").val(),
+            detalle_unidad_medida : $("#unidadmedida").val(),
+            producto              : $("#idproducto").val(),
+            descuento             : descuento,
+            descuento_total       : descuento_total,
+            total                 : total,
+            proporcion            : $("#unidadmedida option:selected").attr('proporcion'),
+            ganancia              : $("#unidadmedida option:selected").attr('ganancia'),
+            tipo                  : tipo,
+            nit                   : $("#nit").val(),
+            documento             : $("#documento").val()
+          },
+          success: function( results ) {
+            if(results){
+              if($("#documento").val()<1){
+                $("#documento").val(results[0].Documento);
+              }
+              html += "<td><button onclick='borrar(this,"+results[1].id+","+results[2].id+","+results[2].total+");' class='btn btn-danger' type='button'>X</button></td></tr>"
+              $("#tipo_pago").prop('disabled', true);
+              $("#nit").prop('disabled', true);
+              $("#detalle_venta").append(html);
+              $("#codigoproductoBarcode").focus();
+              limpiar();
+              setTotal(subTotalOrden);
+              calcularTotal();
+              $("#agregar").attr('disabled',false);
+            }else{
+              alert("Error")
+              $("#agregar").attr('disabled',false);
+            }
+          }
+        })
+        existe = true;
+      }else{
+        alert("Validar campos: Unidades, Cliente, Producto")
+      }
+    }else{
+      alert("Validar campos: Cliente");
+      $("#unidad").val(1);
+    }
+  }
+  $("#descuento").on('keyup', function (c) {
+    if(this.value > <%= session[:descuento]%>){
+      alert('Usted no pueder dar mas de un % <%= session[:descuento]%> de descuento')
+      $("#descuento").val(<%= session[:descuento]%>);
+    }
+  });
+  $("#unidadmedida").on('change', function(c){
+    var precioVenta  = $("#unidadmedida").find(":selected").attr('ganancia');
+    var proporcion   = $("#unidadmedida").find(":selected").attr('proporcion');
+    $("#unidadRequerida").val(($("#unidad").val()*proporcion)/100)
+    precioVenta      = precioProducto * (precioVenta/100);
+    precioVenta      =  (Math.round((precioVenta + Number.EPSILON) * 100) / 100)
+    $("#precio").val(precioVenta);
+  });
+  $("#nit , #clienteNombre, #clienteDireccion").on('change',function(c){
+      buscarCliente($(this).val(), c.target.id)
+  });
+
+  setInterval(function() {
+    //getFactura();// method to be executed;
+  }, 5000);
+  function buscarCliente(nit=$('#nit').val(), target){
+    if(nit.toUpperCase().includes("CF")){
+      nit = nit.toUpperCase()
+      $("#nombre").attr('disabled', false)
+    }else{
+      nit = nit
+      $("#nombre").attr('disabled', true)
+    }
+    $.ajax({
+      url: "/findCliente",
+      method: 'POST',
+      dataType: 'json',
+      data: {
+        nit: nit
+      },
+      success: function( result ) {
+        if(result.length > 0 ){
+          $("#nombre").val(result[0].Nombre)
+          $("#direccion").val(result[0].direccion)
+          $('#clienteNombre').select2('data', {id: result[0].nit, a_key: result[0].Nombre});
+          $('#clienteDireccion').select2('data', {id: result[0].nit, text: result[0].direccion});
+          $('#nit').select2('data', {id: result[0].nit, text: result[0].nit});
+          $('#clienteNombre, #clienteDireccion, #nit').val(result[0].nit).trigger('change.select2')
+
+        }else{
+          $("#nombre").val("NO ENCONTRADO")
+          $("#direccion").val("NO ENCONTRADO")
+          $('.modal-body').load('/newCliente.1');
+          $("#exampleModal").modal('show')
+        }
+      }
+    });
+  }
+  function calcularTotal(){
+    total = $("#totalInput").val();
+    $("#total").val(total);
+    return total;
+  }
+  function limpiar(){
+    $("#precio").val("");
+    $(".codigoproducto").val("");
+    $("#descripcion").val("");
+    $("#unidadmedida").html("");
+    $("#descuento").val("");
+    $("#unidad").val(1);
+  }
+  function getTipoPago(){
+    $.ajax({
+      url: "/findTipoPago",
+      method: 'POST',
+      dataType: 'json',
+      success: function( result ) {
+        html = ""
+        for(i=0; i < result.length; i++){
+          html += "<option value='"+result[i].id+"'>"+result[i].Nombre+"</option>";
+        }
+        $("#tipo_pago").html(html);
+      }
+    });
+  }
+  function getFactura(){
+    $.ajax({
+      url: "/findFactura",
+      method: 'POST',
+      dataType: 'json',
+      success: function( results ) {
+        var factura = results[0].Actual+1;
+        $("#serie").val(results[0].Serie);
+        $("#factura").val(factura);
+      }
+    });
+  }
+  function getMedidas(medida, detalle= false){
+    if (medida !="0") {
+      var url        = "/findMedida";
+      var proporcion = 100;
+      var ganancia   = 100;
+      if(detalle)
+        url = "/findDetalleMedida";
+      $.ajax({
+        url: url,
+        method: 'POST',
+        dataType: 'json',
+        data: {
+          medida: medida
+        },
+        success: function( result ) {
+          htmlMedida = ""
+          selectAlert = "" //"<option value=''>Seleccione..</option>"
+          for(i=0; i < result.length; i++){
+            if(result[i].Proporcion){
+              proporcion = result[i].Proporcion;
+              ganancia   = result[i].Porcentaje_Ganancia;
+            }
+            htmlMedida += "<option value='"+result[i].id+"' proporcion='"+proporcion+"' ganancia='"+ganancia+"'>"+result[i].Nombre+"</option>";
+          }
+          if(detalle){
+            $("#unidadmedida").append(htmlMedida);
+          }else{
+            $("#unidadmedida").html(selectAlert+htmlMedida);
+            getMedidas(medida, true);
+          }
+          existe = true
+        }
+      });
+    }else{
+        $("#unidadmedida").html("");
+    }
+  }
+  function cTrig(clickedid) {
+    if (document.getElementsByName(clickedid)[0].checked == false) {
+      return false;
+    } else {
+     var box= confirm("El modo cotizacion no verifica si hay existencias en tiempo real. Estas seguro?");
+      if (box==true)
+          return true;
+      else
+         document.getElementsByName(clickedid)[0].checked = false;
+
+    }
+  }
+
+  function crearCliente(){
+      $(this).find('.modal-body').load('cliente_proveedor_tipo/1');
+  }
+  </script>

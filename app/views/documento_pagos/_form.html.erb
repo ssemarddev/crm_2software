@@ -1,0 +1,62 @@
+<%= form_for(documento_pago) do |f| %>
+  <% if documento_pago.errors.any? %>
+    <div id="error_explanation">
+      <h2><%= pluralize(documento_pago.errors.count, "error") %> prohibited this documento_pago from being saved:</h2>
+
+      <ul>
+      <% documento_pago.errors.full_messages.each do |message| %>
+        <li><%= message %></li>
+      <% end %>
+      </ul>
+    </div>
+  <% end %>
+<div class="row">
+  <div class="col-md-6 col-lg-6 col-sm-6 col-xs-6">
+    <div class="field">
+      <%= f.label :Referencia %>
+      <%= f.text_field :referencia, class: 'form-control' %>
+    </div>
+
+    <div class="field">
+      <%= f.label :Cliente %>
+      <%
+       if params[:tipo].to_s == "1"
+        tipo = 2
+       else
+        tipo = 1
+       end
+      %>
+
+        <%= collection_select(:documento_pago, :ClienteProveedor_id, ClienteProveedor.where(:Estado => true,Tipo:tipo), :id, :Nombre, {:prompt => true}, class: "form-control" )%>
+    </div>
+
+    <div class="field">
+      <%= f.label :Deuda_Total %>
+      <%= f.text_field :Deuda, class: 'form-control' %>
+    </div>
+
+    <div class="field">
+      <%= f.label :Fecha_Limite %>
+      <%= f.date_field :fechaLimite, class: 'form-control' %>
+    </div>
+    <% if !@edit %>
+    <div class="field">
+      <%= f.hidden_field :Tipo_Documento, class: 'form-control', value: params[:tipo] %>
+    </div>
+    <% end %>
+    <div class="field">
+      <%= f.label :Cuotas %>
+      <%= f.number_field :cuotas, class: 'form-control' %>
+    </div>
+  </div>
+  <div class="col-md-6 col-lg-6 col-sm-6 col-xs-6">
+    <div class="panel panel-info">
+      <div class="panel-heading">Acciones:</div>
+      <div class="panel-body">
+        <button type="submit" name="button" class="btn btn-primary"><i class="fontawesome-save"></i> Guardar</button>
+        <%= link_to 'Regresar',  documento_pagos_path(id: params[:id]).to_s, class: 'btn btn-default' %>
+      </div>
+    </div>
+  </div>
+</div>
+<% end %>

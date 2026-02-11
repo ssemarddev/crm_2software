@@ -1,0 +1,37 @@
+<!-- Footer -->
+  <footer class="cartshop-footer">
+    <div class="container">
+        <div class="row text-center">
+             <div class="col-md-6 col-sm-6 col-xs-12">
+              <ul class="list-inline">
+                   <li>
+                        <a href="https://www.facebook.com/MarcosCelPremiumStore" target="_blank"><i class="fa fa-facebook fa-2x"></i></a>
+                   </li>
+                   <li>
+                        <a href="<%= "https://wa.me/502#{@empresa.wtpNumber}"%> " target="_blank"><i class="fa fa-whatsapp fa-2x" ></i></a>
+                   </li>
+                </ul>
+            </div>
+       
+            <div class="col-md-6 col-sm-6 col-xs-12">
+                <ul class="menu list-inline">
+                    <li>
+                        <%= link_to 'Tracking',trackingView_path %>
+                    </li> 
+                    <li>
+                         <%= link_to 'Regresar',login_path %>
+                    </li>
+                </ul>
+            </div>
+       </div> 
+    </div>
+  </footer>
+
+  <div class="copyright">
+  <div class="container">
+      <div class="row text-center">
+        <p>Copyright © 2026 All rights reserved <a href="www.2-software.com"> MarcoCel</a></p>
+      </div>
+      </div>
+  </div>
+  <!-- Footer -->

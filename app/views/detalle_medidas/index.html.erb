@@ -1,0 +1,34 @@
+<p id="notice"><%= notice %></p>
+
+<h1>Detalle Medidas <%= link_to 'Nuevo Detalle Medida', new_detalle_medida_path, class: 'btn btn-primary' %>
+  <% if params[:deleted] %>
+    <%= link_to 'Regresar'.html_safe , detalle_medidas_path, class: 'btn btn-default' %>
+  <% else %>
+    <%= link_to 'Ver Papelera <i class="fa fa-trash"></i>'.html_safe , detalle_medidas_path(deleted: true), class: 'btn btn-danger' %>
+  <% end %>
+</h1>
+
+<table class="table dataTable">
+  <thead>
+    <tr>
+      <th>Nombre</th>
+      <th>Medida</th>
+      <th>Proporcion</th>
+      <th>Porcentaje ganancia</th>
+      <th></th>
+      <th></th>
+    </tr>
+  </thead>
+  <tbody>
+    <% @detalle_medidas.each do |detalle_medida| %>
+      <tr>
+        <td><%= detalle_medida.Nombre %></td>
+        <td><%= detalle_medida.Medida.Nombre %></td>
+        <td><%= detalle_medida.Proporcion %></td>
+        <td><%= detalle_medida.Porcentaje_Ganancia %></td>
+        <td><%= link_to 'Editar', edit_detalle_medida_path(detalle_medida), class: 'btn btn-warning' %></td>
+        <td><%= link_to 'Eliminar', detalle_medida, method: :delete, data: { confirm: 'Are you sure?' }, class: 'btn btn-danger' %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>

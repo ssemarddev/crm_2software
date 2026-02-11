@@ -1,0 +1,69 @@
+
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+  <head>
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta charset="utf-8">
+    <title><%= @empresa.nombre %></title>
+    <%= stylesheet_link_tag    'application', media: 'all', 'data-turbolinks-track': 'reload' %>
+    <%= stylesheet_link_tag    'out_of_session_views', media: 'all', 'data-turbolinks-track': 'reload' %>
+    <%= stylesheet_link_tag    'productos', media: 'all', 'data-turbolinks-track': 'reload' %>
+    <%= javascript_include_tag 'jquery', 'data-turbolinks-track': 'reload' %>
+    <%= javascript_include_tag 'bootstrap', 'data-turbolinks-track': 'reload' %>
+    <%= javascript_include_tag 'helpers', 'data-turbolinks-track': 'reload' %>
+
+    <style media="screen">
+      .backgroudColor1{
+        background-color:  <%= @empresa.color1 %>;
+       }
+      .footerbk{
+        color: <%= @empresa.color2 %>
+       }
+      .navigation-bar {
+        background-color:  <%= @empresa.color1 %>;
+        padding-bottom: 10px;
+      }
+      .btn-primary  {
+        background-color: <%= @empresa.color2 %>;
+      }
+
+    </style>
+  </head>
+  <body>
+    
+    <%= render 'nav' %>
+    <%= yield %>
+    
+
+    <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalLabel">Modal title</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          ...
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+          <button type="button" class="btn btn-primary">Save changes</button>
+        </div>
+      </div>
+    </div>
+  </div>
+  <%= render 'footer' %>
+  
+  </body>
+  <script type="text/javascript">
+    function showNitMovileVersion(){
+      console.log("Helloo");
+      $(".nit").toggle();
+    }
+    $("#showField").on('click',function(){
+      $(".nit").toggle();
+    });
+  </script>
+</html>

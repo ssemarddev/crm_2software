@@ -1,0 +1,54 @@
+<%= form_with(model: pago, local: true) do |form| %>
+  <% if pago.errors.any? %>
+    <div id="error_explanation">
+      <h2><%= pluralize(pago.errors.count, "error") %> prohibited this pago from being saved:</h2>
+
+      <ul>
+      <% pago.errors.full_messages.each do |message| %>
+        <li><%= message %></li>
+      <% end %>
+      </ul>
+    </div>
+  <% end %>
+<div class="row">
+  <div class="col-md-6 col-lg-6 col-sm-6 col-xs-6">
+    <div class="field">
+      <%= form.label :cantidad %>
+      <%= form.text_field :cantidad, id: :pago_cantidad, class:'form-control' %>
+    </div>
+
+    <div class="field">
+      <%= form.hidden_field :documento_pago_id, id: :pago_documento_pago_id, class:'form-control', value: params[:id] %>
+    </div>
+
+    <div class="field">
+      <%= form.label :referencia %>
+      <%= form.text_field :referencia, id: :pago_referencia, class:'form-control' %>
+    </div>
+
+    <div class="field">
+      <%= form.label :interes %>
+      <%= form.text_field :interes, id: :pago_interes, class:'form-control',value:0 %>
+    </div>
+
+    <div class="field">
+      <%= form.label :mora %>
+      <%= form.text_field :mora, id: :pago_mora, class:'form-control',value:0 %>
+    </div>
+
+    <div class="field">
+      <%= form.label :observacion %>
+      <%= form.text_field :observacion, id: :pago_observacion, class:'form-control' %>
+    </div>
+  </div>
+  <div class="col-md-6 col-lg-6 col-sm-6 col-xs-6">
+    <div class="panel panel-info">
+      <div class="panel-heading">Acciones:</div>
+      <div class="panel-body">
+        <button type="submit" name="button" class="btn btn-primary"><i class="fontawesome-save"></i> Guardar</button>
+        <%= link_to 'Regresar', '/cuotas/'+params[:id].to_s, class: 'btn btn-default' %>
+      </div>
+    </div>
+  </div>
+</div>
+<% end %>

@@ -1,0 +1,37 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  Documento: one
+  Producto: one
+  Medida: one
+  DetalleMedida: one
+  cantidad: 9.99
+  descripcion: MyString
+  valor_compra: 9.99
+  valor_venta: 9.99
+  descuento: 9.99
+  descuento_porcentaje: 9.99
+  total: 9.99
+  estado: false
+  creado_por: 1
+  actualizado_por: 1
+  creado: 2017-06-27
+  actualizado: 2017-06-27
+
+two:
+  Documento: two
+  Producto: two
+  Medida: two
+  DetalleMedida: two
+  cantidad: 9.99
+  descripcion: MyString
+  valor_compra: 9.99
+  valor_venta: 9.99
+  descuento: 9.99
+  descuento_porcentaje: 9.99
+  total: 9.99
+  estado: false
+  creado_por: 1
+  actualizado_por: 1
+  creado: 2017-06-27
+  actualizado: 2017-06-27

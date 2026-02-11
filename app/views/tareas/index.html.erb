@@ -1,0 +1,58 @@
+<p id="notice"><%= notice %></p>
+
+<h1>Tareas</h1>
+<form class="" action="" method="get">
+  <button type="submit" name="bandeja" class="btn btn-default" value="<%= session[:user_id] %>">Mi bandeja</button>
+  <button type="submit" name="bandejaAtrasados" class="btn btn-default" value="<%= session[:user_id] %>">Mis atrasos</button>
+  <button type="submit" name="bandejaProximos" class="btn btn-default" value="<%= session[:user_id] %>">Proximas Entregas</button>
+</form>
+<table class="table table-condensed dataTable">
+  <thead>
+    <tr>
+      <th>Nombre</th>
+      <th>Proyecto</th>
+      <th>Subproyecto</th>
+      <th>Usuario</th>
+      <th>Estado</th>
+      <th></th>
+    </tr>
+  </thead>
+  <tbody>
+    <% @tareas.each do |tarea| %>
+      <tr>
+        <td><%= tarea.nombre %></td>
+        <td><%= tarea.proyecto.nombre %></td>
+        <td>
+            <%
+            if tarea.subproyecto
+              tarea.subproyecto.nombre
+            else
+              ""
+            end
+            %>
+        </td>
+        <td><%= tarea.usuario.User_Name %></td>
+        <td>
+          <% if tarea.fecha_finalizado %>
+            <% if tarea.fecha_finalizado > tarea.fechafin    %>
+              <span class="btn-warning">Finalizado</span>
+            <% elsif tarea.fecha_finalizado < tarea.fechafin %>
+              <span class="btn-success">Finalizado a tiempo</span>
+            <% else %>
+              <% if Date.parse(Time.now.strftime("%Y-%m-%d")) < Time.now %>
+                <span class="btn-info">OK</span>
+              <% end %>
+            <% end %>
+          <% else %>
+            <% if Date.parse(Time.now.strftime("%Y-%m-%d")) > tarea.fechafin  %>
+              <span class="btn-danger">Atrasado</span>
+            <% else %>
+              <span class="btn-info">OK</span>
+            <% end %>
+          <% end %>
+        </td>
+        <td><%= link_to 'Ver', tarea, class:'btn btn-info' %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>

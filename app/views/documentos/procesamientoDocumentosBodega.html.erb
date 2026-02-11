@@ -1,0 +1,71 @@
+<p id="notice"><%= notice %></p>
+
+<h1>Despacho de Carga</h1>
+<form class="" action="/procesamientoDocumentosBodega" method="get">
+  <div class="row">
+    <div class="col-xs-12 col-sm-12 col-md-6 col-lg-6">
+      <label for="ruta">Rutas</label>
+      <select class="form-control" name="ruta_id" id="ruta">
+        <option value="">Seleccione ruta</option>
+        <% @rutas.each do |r| %>
+          <option value="<%= r.id %>"><%= r.nombre %></option>
+        <% end %>
+      </select>
+      <button type="submit" name="button" class="btn btn-primary pull-right">Buscar</button>
+    </div>
+  </div>
+</form>
+
+<div class="row">
+  <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+    <% if params[:ruta_id] && params[:ruta_id] != ""  %>
+      <%= link_to 'Debitar de Bodega', despacharPorRuta_path(ruta_id: params[:ruta_id]), class: 'btn btn-info pull-right' %>
+    <% end %>
+  </div>
+</div>
+<br/>
+<div class="table-responsive">
+  <table class="table dataTable">
+    <thead>
+      <tr>
+        <th>Codigo</th>
+        <th>Producto</th>
+        <th>Cantidad</th>
+        <th>Medida</th>
+        <th>Costo Unitario</th>
+        <th>Costo Total</th>
+      </tr>
+    </thead>
+
+    <tbody>
+      <%
+      totalValorCompra = 0
+      totalCompra      = 0
+      if @documentos
+       @documentos.each do |documento|
+        totalValorCompra += documento.valor_venta
+        totalCompra      += (documento.valor_venta * documento.cantidad)
+      %>
+        <tr>
+          <td><%= documento.Producto.Codigo %></td>
+          <td><%= documento.Producto.Nombre %></td>
+          <td><%= documento.cantidad %></td>
+          <td><%= documento.medida %></td>
+          <td><%= documento.valor_venta %></td>
+          <td><%= documento.valor_venta * documento.cantidad%></td>
+        </tr>
+      <%
+        end
+      end
+      %>
+      <tr>
+        <td><b>Total</b></td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td><%= totalValorCompra.round(2) %></td>
+        <td><%= totalCompra.round(2) %></td>
+      </tr>
+    </tbody>
+  </table>
+</div>

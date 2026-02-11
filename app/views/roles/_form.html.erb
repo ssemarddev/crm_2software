@@ -1,0 +1,55 @@
+<%= form_for(role) do |f| %>
+  <% if role.errors.any? %>
+    <div id="error_explanation">
+      <h2><%= pluralize(role.errors.count, "error") %> prohibited this role from being saved:</h2>
+
+      <ul>
+      <% role.errors.full_messages.each do |message| %>
+        <li><%= message %></li>
+      <% end %>
+      </ul>
+    </div>
+  <% end %>
+<div class="row">
+  <div class="col-md-6 col-lg-6 col-sm-6 col-xs-6">
+      <div class="field">
+        <%= f.label :Nombre %>
+        <%= f.text_field :Nombre , class: 'form-control'%>
+      </div>
+
+      <div class="field">
+        <%= f.label :Estado %>
+        <%= f.check_box :Estado, checked: true %>
+      </div>
+  </div>
+  <div class="col-md-6 col-lg-6 col-sm-6 col-xs-6">
+    <div class="panel panel-info">
+      <div class="panel-heading">Acciones:</div>
+      <div class="panel-body">
+        <button type="submit" name="button" class="btn btn-primary"><i class="fontawesome-save"></i> Guardar</button>
+        <%= link_to 'Regresar', roles_path, class: 'btn btn-default' %>
+      </div>
+    </div>
+  </div>
+</div>
+<!--  <div class="field">
+     f.label :creado_por %>
+     f.number_field :creado_por %>
+  </div>
+
+  <div class="field">
+     f.label :actualizado_por %>
+     f.number_field :actualizado_por %>
+  </div>
+
+  <div class="field">
+     f.label :creado %>
+     f.date_select :creado %>
+  </div>
+
+  <div class="field">
+     f.label :actualizado %>
+     f.datetime_select :actualizado %>
+  </div>-->
+
+<% end %>

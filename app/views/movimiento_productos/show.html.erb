@@ -1,0 +1,74 @@
+<p id="notice"><%= notice %></p>
+
+<p>
+  <strong>Producto:</strong>
+  <%= @movimiento_producto.Producto %>
+</p>
+
+<p>
+  <strong>Saliente bodega:</strong>
+  <%= @movimiento_producto.Saliente_Bodega %>
+</p>
+
+<p>
+  <strong>Entrante bodega:</strong>
+  <%= @movimiento_producto.Entrante_Bodega %>
+</p>
+
+<p>
+  <strong>Cantidad:</strong>
+  <%= @movimiento_producto.cantidad %>
+</p>
+
+<p>
+  <strong>Porcentaje proporcion:</strong>
+  <%= @movimiento_producto.porcentaje_proporcion %>
+</p>
+
+<p>
+  <strong>Porcentaje ganancia:</strong>
+  <%= @movimiento_producto.porcentaje_ganancia %>
+</p>
+
+<p>
+  <strong>Movimiento tipo:</strong>
+  <%= @movimiento_producto.movimiento_tipo %>
+</p>
+
+<p>
+  <strong>Signo:</strong>
+  <%= @movimiento_producto.signo %>
+</p>
+
+<p>
+  <strong>Documento:</strong>
+  <%= @movimiento_producto.Documento %>
+</p>
+
+<p>
+  <strong>Estado:</strong>
+  <%= @movimiento_producto.Estado %>
+</p>
+
+<p>
+  <strong>Creado por:</strong>
+  <%= @movimiento_producto.creado_por %>
+</p>
+
+<p>
+  <strong>Actualizado por:</strong>
+  <%= @movimiento_producto.actualizado_por %>
+</p>
+
+<p>
+  <strong>Creado:</strong>
+  <%= @movimiento_producto.creado %>
+</p>
+
+<p>
+  <strong>Actualizado:</strong>
+  <%= @movimiento_producto.actualizado %>
+</p>
+
+<%= link_to 'Edit', edit_movimiento_producto_path(@movimiento_producto) %> |
+<%= link_to 'Back', movimiento_productos_path %>

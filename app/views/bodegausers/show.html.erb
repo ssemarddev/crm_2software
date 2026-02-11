@@ -1,0 +1,39 @@
+<p id="notice"><%= notice %></p>
+
+<p>
+  <strong>Bodega:</strong>
+  <%= @bodegauser.bodega %>
+</p>
+
+<p>
+  <strong>Usuario:</strong>
+  <%= @bodegauser.usuario %>
+</p>
+
+<p>
+  <strong>Status:</strong>
+  <%= @bodegauser.status %>
+</p>
+
+<p>
+  <strong>Creado por:</strong>
+  <%= @bodegauser.creado_por %>
+</p>
+
+<p>
+  <strong>Actualizado por:</strong>
+  <%= @bodegauser.actualizado_por %>
+</p>
+
+<p>
+  <strong>Creado:</strong>
+  <%= @bodegauser.creado %>
+</p>
+
+<p>
+  <strong>Actualizado:</strong>
+  <%= @bodegauser.actualizado %>
+</p>
+
+<%= link_to 'Edit', edit_bodegauser_path(@bodegauser) %> |
+<%= link_to 'Back', bodegausers_path %>

@@ -1,0 +1,84 @@
+<p id="notice"><%= notice %></p>
+
+<p>
+  <strong>Documento:</strong>
+  <%= @detalle_documento.Documento %>
+</p>
+
+<p>
+  <strong>Producto:</strong>
+  <%= @detalle_documento.Producto %>
+</p>
+
+<p>
+  <strong>Medida:</strong>
+  <%= @detalle_documento.Medida %>
+</p>
+
+<p>
+  <strong>Detallemedida:</strong>
+  <%= @detalle_documento.DetalleMedida %>
+</p>
+
+<p>
+  <strong>Cantidad:</strong>
+  <%= @detalle_documento.cantidad %>
+</p>
+
+<p>
+  <strong>Descripcion:</strong>
+  <%= @detalle_documento.descripcion %>
+</p>
+
+<p>
+  <strong>Valor compra:</strong>
+  <%= @detalle_documento.valor_compra %>
+</p>
+
+<p>
+  <strong>Valor venta:</strong>
+  <%= @detalle_documento.valor_venta %>
+</p>
+
+<p>
+  <strong>Descuento:</strong>
+  <%= @detalle_documento.descuento %>
+</p>
+
+<p>
+  <strong>Descuento porcentaje:</strong>
+  <%= @detalle_documento.descuento_porcentaje %>
+</p>
+
+<p>
+  <strong>Total:</strong>
+  <%= @detalle_documento.total %>
+</p>
+
+<p>
+  <strong>Estado:</strong>
+  <%= @detalle_documento.Estado %>
+</p>
+
+<p>
+  <strong>Creado por:</strong>
+  <%= @detalle_documento.creado_por %>
+</p>
+
+<p>
+  <strong>Actualizado por:</strong>
+  <%= @detalle_documento.actualizado_por %>
+</p>
+
+<p>
+  <strong>Creado:</strong>
+  <%= @detalle_documento.creado %>
+</p>
+
+<p>
+  <strong>Actualizado:</strong>
+  <%= @detalle_documento.actualizado %>
+</p>
+
+<%= link_to 'Edit', edit_detalle_documento_path(@detalle_documento) %> |
+<%= link_to 'Back', detalle_documentos_path %>

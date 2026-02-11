@@ -1,0 +1,33 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  serie: MyString
+  cov: MyString
+  bodega: one
+  serie_remplazo: MyString
+  cov_remplazo: MyString
+  proveedor: 1
+  cliente: 1
+  estado: one
+  comentario: MyString
+  status: false
+  creado_por: 1
+  actualizado_por: 1
+  creado: 2020-06-28
+  actualizado: 2020-06-28 22:09:04
+
+two:
+  serie: MyString
+  cov: MyString
+  bodega: two
+  serie_remplazo: MyString
+  cov_remplazo: MyString
+  proveedor: 1
+  cliente: 1
+  estado: two
+  comentario: MyString
+  status: false
+  creado_por: 1
+  actualizado_por: 1
+  creado: 2020-06-28
+  actualizado: 2020-06-28 22:09:04

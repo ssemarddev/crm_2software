@@ -1,0 +1,52 @@
+<p id="notice"><%= notice %></p>
+<div class="row">
+  <div class="col-md-6 col-lg-6 col-sm-6 col-xs-6">
+    <table class="table">
+      <tr>
+        <td><strong>Nombre:</strong></td>
+        <td><%= @bodega.Nombre %></td>
+      </tr>
+      <tr>
+        <td><strong>Direccion:</strong></td>
+        <td><%= @bodega.Direccion %></td>
+      </tr>
+      <tr>
+        <td><strong>Usuario:</strong></td>
+        <td><%= @bodega.Usuario.User_Name %></td>
+      </tr>
+      <tr>
+        <td><strong>Telefono:</strong></td>
+        <td><%= @bodega.Telefono %></td>
+      </tr>
+      <tr>
+        <td><strong>Estado:</strong></td>
+        <td><%= @bodega.Estado %></td>
+      </tr>
+      <tr>
+        <td><strong>Creado por:</strong></td>
+        <td><%= Usuario.find_by(id: @bodega.actualizado_por).Nombres  %></td>
+      </tr>
+      <tr>
+        <td><strong>Actualizado por:</strong></td>
+        <td><%= Usuario.find_by(id: @bodega.actualizado_por).Nombres  %></td>
+      </tr>
+      <tr>
+        <td><strong>Creado:</strong></td>
+        <td><%= @bodega.creado %></td>
+      </tr>
+      <tr>
+        <td><strong>Actualizado:</strong></td>
+        <td><%= @bodega.actualizado %></td>
+      </tr>
+    </table>
+  </div>
+  <div class="col-md-6 col-lg-6 col-sm-6 col-xs-6">
+    <div class="panel panel-info">
+      <div class="panel-heading">Acciones:</div>
+      <div class="panel-body">
+        <%= link_to 'Editar', edit_bodega_path(@bodega), class: 'btn btn-warning'  %>
+        <%= link_to 'Regresar', bodegas_path, class: 'btn btn-default' %>
+      </div>
+    </div>
+  </div>
+</div>

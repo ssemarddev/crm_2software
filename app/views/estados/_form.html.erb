@@ -1,0 +1,42 @@
+<%= form_with(model: estado, local: true) do |form| %>
+  <% if estado.errors.any? %>
+    <div id="error_explanation">
+      <h2><%= pluralize(estado.errors.count, "error") %> prohibited this estado from being saved:</h2>
+
+      <ul>
+      <% estado.errors.full_messages.each do |message| %>
+        <li><%= message %></li>
+      <% end %>
+      </ul>
+    </div>
+  <% end %>
+<div class="row">
+  <div class="col-md-6 col-lg-6 col-sm-6 col-xs-6">
+    <div class="field">
+      <%= form.label :Nombre %>
+      <%= form.text_field :Nombre, id: :estado_Nombre, class: 'form-control' %>
+    </div>
+    <div class="field">
+      <%= form.label :Tipo %>
+      <select class="form-control" name="estado[tipo]">
+        <option value="1">TALLER</option>
+        <option value="2">ENVIOS</option>
+      </select>
+    </div>
+    <div class="field">
+      <%= form.label :Estado %>
+      <%= form.check_box :Estado, id: :estado_Estado, checked: true %>
+    </div>
+  </div>
+  <div class="col-md-6 col-lg-6 col-sm-6 col-xs-6">
+    <div class="panel panel-info">
+      <div class="panel-heading">Acciones:</div>
+      <div class="panel-body">
+        <button type="submit" name="button" class="btn btn-primary"><i class="fontawesome-save"></i> Guardar</button>
+        <%= link_to 'Regresar', estados_path, class: 'btn btn-default' %>
+      </div>
+    </div>
+  </div>
+</div>
+
+<% end %>

@@ -1,0 +1,32 @@
+<p id="notice"><%= notice %></p>
+
+<h1>Calidad
+  <%= link_to 'Nuevo Seguimiento <i class="fa fa-plus"></i>'.html_safe , new_calidad_path, class: 'btn btn-primary' %>
+  <% if params[:deleted] %>
+    <%= link_to 'Regresar'.html_safe ,  calidads_path, class: 'btn btn-default' %>
+  <% else %>
+    <%= link_to 'Ver Papelera <i class="fa fa-trash"></i>'.html_safe , calidads_path(deleted: true), class: 'btn btn-danger' %>
+  <% end %>
+</h1>
+
+<table class="table dataTable">
+  <thead>
+    <tr>
+      <th>Nombre</th>
+      <th>Status</th>
+      <th></th>
+      <th></th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <% @calidads.each do |calidad| %>
+      <tr>
+        <td><%= calidad.nombre %></td>
+        <td><%= calidad.status %></td>
+        <td><%= link_to 'Edit', edit_calidad_path(calidad), class:'btn btn-warning' %></td>
+        <td><%= link_to 'Eliminar', calidad, method: :delete, data: { confirm: 'Are you sure?' }, class:'btn btn-danger' %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>

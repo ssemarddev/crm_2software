@@ -1,0 +1,19 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  Nombre: MyString
+  Es_Servicio: false
+  Estado: false
+  creado_por: 1
+  actualizado_por: 1
+  creado: 2017-06-06
+  actualizado: 2017-06-06 11:25:04
+
+two:
+  Nombre: MyString
+  Es_Servicio: false
+  Estado: false
+  creado_por: 1
+  actualizado_por: 1
+  creado: 2017-06-06
+  actualizado: 2017-06-06 11:25:04

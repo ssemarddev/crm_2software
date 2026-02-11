@@ -1,0 +1,120 @@
+<%= stylesheet_link_tag    'application', media: 'all', 'data-turbolinks-track': 'reload' %>
+<%= stylesheet_link_tag    'out_of_session_views', media: 'all', 'data-turbolinks-track': 'reload' %>
+<%= stylesheet_link_tag    'productos', media: 'all', 'data-turbolinks-track': 'reload' %>
+<%= javascript_include_tag 'application', 'data-turbolinks-track': 'reload' %>
+
+
+<!DOCTYPE html>
+<html lang="en" dir="ltr" class="html">
+  <head>
+    <meta charset="utf-8">
+    <title>MarcoCel Tracking</title>
+  </head>
+  <body>
+    <div class="navigation-bar">
+    <br/>
+    <br/>
+    <div class="content">
+      <%
+        @empresa = Empresa.find(1)
+        if @tracking != nil %>
+        <div id="DivIdToPrint">
+        <h1>Tracking No. <%= @tracking.numero.to_s %></h1>
+        <div class="" style="display:inline;">
+        <%= image_tag("logo.png", :alt => "Logo MarcoCel", :style => "display:inline; height:200px;") %>
+        <table class="qr" style="border-width: 0; border-style: none; border-color: #0000ff; border-collapse: collapse; width: 150px; display:inline; float:right">
+          <% @qr.modules.each_index do |x| %>
+              <tr>
+                <% @qr.modules.each_index do |y| %>
+                    <% if @qr.qrcode.checked?(x,y) %>
+                        <td class="black" style="background-color: #000;  border-width: 0; border-style: none; border-color: #0000ff; border-collapse: collapse; padding: 0; margin: 0; width: 10px; height: 5px;"/>
+                    <% else %>
+                        <td class="black" style="background-color: #fff;  border-width: 0; border-style: none; border-color: #0000ff; border-collapse: collapse; padding: 0; margin: 0; width: 10px; height: 5px;"/>
+                    <% end %>
+                <% end %>
+              </tr>
+          <% end %>
+        </table>
+        <table class="table " style="display:inline" >
+            <thead>
+            <tr>
+              <td><strong>Tracking:</strong> No. <%= @tracking.numero.to_s %></td>
+              <th></th>
+            </tr>
+            <tr>
+              <td><strong>Serie: </strong><%= @tracking.serie.to_s %></td>
+              <td></td>
+            </tr>
+            <tr>
+              <td><strong>Observacion: </strong><%= @tracking.observacion.to_s %></td>
+              <td></td>
+            </tr>
+            <tr>
+              <td><strong>Falla: </strong><%= @tracking.falla.to_s %></td>
+              <td></td>
+            </tr>
+            <tr>
+              <td><strong>Cliente: </strong><%= @tracking.nombre_cliente %></td>
+              <td></td>
+            </tr>
+          <!--tr>
+            <td><strong>Creado Por: </strong><# Usuario.find(@tracking.creado_por).Nombres %> <%= @tracking.created_at %></td>
+            <td></td>
+          </tr-->
+          </thead>
+        </table>
+        </div>
+        <hr style="width:80%;">
+        <br>
+        <br>
+        <br>
+        <table class="table table-stripped table-bordered" style=" border: 1px solid black; width: 100%;">
+          <thead>
+            <tr style="text-align:center;">
+              <th>Estado</th>
+              <th colspan="2">Reparado Por:</th>
+            </tr>
+          </thead>
+          <tbody>
+            <% if @estados != nil
+            @estados.each do |e|%>
+              <tr>
+                <td colspan="3"><%= e.comentario%></td>
+              <tr>
+              <tr>
+                <td><%= e.estado.Nombre %></td>
+                <td><%= Usuario.find(e.creado_por).Nombres %></td>
+                <td><%= @tracking.created_at.strftime("%Y.%m.%d %H:%M") %></td>
+              </tr>
+              <% end %>
+            <% end %>
+          </tbody>
+          <tfoot>
+            <tr>
+              <td colspan="3"><%= @empresa .politicatracking %></td>
+            </tr>
+            <tr>
+              <td colspan="3"><%= @empresa.addressInfo.html_safe %></td>
+            </tr>
+          </tfoot>
+        </table>
+        </div>
+        <script type="text/javascript">
+        function printDiv()
+        {
+          var divToPrint=document.getElementById('DivIdToPrint');
+          var newWin=window.open('','Print-Window');
+          newWin.document.open();
+          newWin.document.write('<html><body onload="window.print()">'+divToPrint.innerHTML+'</body></html>');
+          newWin.document.close();
+          setTimeout(function(){newWin.close();},10);
+        }
+        </script>
+      <% else %>
+      <form action="trackingView" method="get" class="form">
+        <input type="search" placeholder="<%= @notice %>" name="busqueda">
+      </form>
+      <% end %>
+    </div>
+  </body>
+  </html>

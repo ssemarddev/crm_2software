@@ -1,0 +1,117 @@
+<p id="notice"><%= notice %></p>
+<div class="row">
+  <div class="col-md-6 col-lg col-sm-6">
+    <table class="table">
+      <tr>
+        <td><strong>Nombre:</strong></td>
+        <td><%= @tarea.nombre %></td>
+      </tr>
+      <tr>
+        <td><strong>Responsable:</strong></td>
+        <td><%= @tarea.usuario.Nombres %></td>
+      </tr>
+      <tr>
+        <td><strong>Proyecto:</strong></td>
+        <td><%= @tarea.proyecto.nombre %></td>
+      </tr>
+      <tr>
+        <td><strong>Subproyecto:</strong></td>
+        <td><% if @tarea.subproyecto %>
+            <%= @tarea.subproyecto.nombre%>
+            <% else %>
+              Tarea directa
+            <% end %>
+        </td>
+      </tr>
+      <tr>
+        <td><strong>Descripcion:</strong></td>
+        <td><%= @tarea.descripcion.html_safe %></td>
+      </tr>
+      <tr>
+        <td><strong>Estado:</strong></td>
+        <td><%= @tarea.estado %></td>
+      </tr>
+      <tr>
+        <td><strong>Fecha fin:</strong></td>
+        <td><%= @tarea.fechafin %></td>
+      </tr>
+      <tr>
+        <td><strong>Fecha finalizado:</strong></td>
+        <td><%= @tarea.fecha_finalizado %></td>
+      </tr>
+      <tr>
+        <td><strong>Creado por:</strong></td>
+        <td><%= @tarea.creado_por %></td>
+      </tr>
+      <tr>
+        <td><strong>Actualizado por:</strong></td>
+        <td><%= @tarea.actualizado_por %></td>
+      </tr>
+      <tr>
+        <td><strong>Creado:</strong></td>
+        <td><%= @tarea.creado %></td>
+      </tr>
+      <tr>
+        <td><strong>Actualizado:</strong></td>
+        <td><%= @tarea.actualizado %></td>
+      </tr>
+    </table>
+  </div>
+  <div class="col-md-6 col-lg-6 col-sm-6">
+    <div class="panel panel-info">
+      <div class="panel-heading">Acciones:</div>
+      <div class="panel-body">
+        <% if  !@tarea.fecha_finalizado && @tarea.usuario_id== session[:user_id] %>
+          <button type="button" name="button" class="btn btn-success" id="finalizarTarea">Finalizar Tarea</button>
+        <% elsif @tarea.fecha_finalizado %>
+          <h1>FINALIZADO EL <%= @tarea.fecha_finalizado %> </h1>
+        <% else %>
+          <h2>Acciones unicamente para el responsable.</h2>
+        <% end %>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="row">
+  <% if  !@tarea.fecha_finalizado %>
+  <div class="col-md-4 col-sm-4 col-lg-4">
+    <textarea class="form-control" id="texto" name="name" rows="8" cols="80">
+    </textarea>
+    <button type="button" name="button" class="btn btn-default" id="addDescripcion">Agregar Descripcion</button>
+  </div>
+  <% end %>
+</div>
+<script type="text/javascript">
+  $("#addDescripcion").on('click', function(c){
+    //var AUTH_TOKEN = $('meta[name=csrf-token]').attr('content');
+    $.ajax({
+      url: "/addDescripcion?&authenticity_token=" + AUTH_TOKEN,
+      method: 'POST',
+      dataType: 'json',
+      data: {
+        descripcion: $("#texto").val(),
+        tarea_id: <%= @tarea.id %>,
+        authenticity_token:AUTH_TOKEN
+      }, headers: {
+        'X-CSRF-Token': AUTH_TOKEN
+      },
+      success: function( results ) {
+        document.location.reload();
+      }
+    });
+  });
+  $("#finalizarTarea").on('click', function(c){
+    $.ajax({
+      url: "/finalizarTarea",
+      method: 'POST',
+      dataType: 'json',
+      data: {
+        tarea_id: <%= @tarea.id %>
+      }, headers: {
+        'X-CSRF-Token': AUTH_TOKEN
+      }, success: function( results ) {
+        document.location.reload();
+      }
+    });
+  });
+</script>

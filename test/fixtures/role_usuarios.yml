@@ -1,0 +1,19 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  role: one
+  usuario: one
+  Estado: false
+  creado_por: 1
+  actualizado_por: 1
+  creado: 2017-06-06
+  actualizado: 2017-06-06 14:23:39
+
+two:
+  role: two
+  usuario: two
+  Estado: false
+  creado_por: 1
+  actualizado_por: 1
+  creado: 2017-06-06
+  actualizado: 2017-06-06 14:23:39

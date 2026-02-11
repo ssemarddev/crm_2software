@@ -1,0 +1,149 @@
+
+<% if  @documento.TipoDocumento.id == 4  %>
+  <%= link_to 'Procesar Cotización', cotizacion_path(@documento.Documento), class: 'btn btn-primary pull-right' %>
+<% end %>
+<button type="button" onclick="printDiv();" name="button" class="btn btn-info pull-right">Imprimir</button>
+<div id="DivIdToPrint">
+  <h1>Documento No. <%= @documento.Documento.to_s %></h1>
+  <div class="" style="display:inline;">
+  <%= image_tag("logo.png", :alt => "Logo MarcoCel", :style => "display:inline; height:120px;") %>
+  <table class="qr" style="border-width: 0; border-style: none; border-color: #0000ff; border-collapse: collapse; width: 100px; display:inline; float:right">
+    <% @qr.modules.each_index do |x| %>
+        <tr>
+          <% @qr.modules.each_index do |y| %>
+              <% if @qr.qrcode.checked?(x,y) %>
+                  <td class="black" style="background-color: #000;  border-width: 0; border-style: none; border-color: #0000ff; border-collapse: collapse; padding: 0; margin: 0; width: 10px; height: 5px;"/>
+              <% else %>
+                  <td class="black" style="background-color: #fff;  border-width: 0; border-style: none; border-color: #0000ff; border-collapse: collapse; padding: 0; margin: 0; width: 10px; height: 5px;"/>
+              <% end %>
+          <% end %>
+        </tr>
+    <% end %>
+  </table>
+  <% if @documento.TipoDocumento.id == 4  %>
+    <h1 ><strong sytle="color:red;"> COTIZACION </strong></h1>
+  <% elsif !@documento.Estado && @documento.status ==2  %>
+    <h1 ><strong sytle="color:red;"> PENDIENTE DE DESPACHO </strong></h1>
+  <%  elsif !@documento.Estado && @documento.status ==0  %>
+    <h1 ><strong sytle="color:red;"> DOCUMENTO CANCELADO </strong></h1>
+  <% end %>
+  <table class="table " style="display:inline" >
+    <thead>
+      <tr>
+        <td><strong>Documento:</strong> No. <%= @documento.Documento.to_s %></td>
+        <th></th>
+      </tr>
+      <% if @documento.TipoDocumento.id != 3 %>
+        <tr>
+          <td><strong>Cliente:</strong>
+            <% if @documento.nombreEntrega != "" %> <%= @documento.nombreEntrega %> <% end %> <%=  @documento.ClienteProveedor!= nil ? @documento.ClienteProveedor.Nombre.to_s : ''  %></td>
+          <td><%= @documento.creado_por != nil ? Usuario.find(@documento.creado_por).Nombres : '' %> <%= @documento.created_at %></td>
+        </tr>
+        <tr>
+          <td><strong>Nit:</strong><% if @documento.nitEntrega != "" %> <%= @documento.nitEntrega %> <% end %> <%= @documento.ClienteProveedor!= nil ? @documento.ClienteProveedor.nit.to_s : ''  %></td>
+          <td><% if @documento.piloto != nil %> <strong>Piloto:</strong> <%= @documento.piloto %> <% end %></td>
+        </tr>
+        <tr>
+          <td><strong>Direccion:</strong><% if @documento.direccionEntrega != "" %> <%= @documento.direccionEntrega %> <% end %> <%= @documento.ClienteProveedor!= nil ? @documento.ClienteProveedor.direccion.to_s : ''  %></td>
+          <td></td>
+        </tr>
+        <% if @documento.numeroEntrega != nil %>
+          <tr>
+            <td><strong>Numero: </strong><%= @documento.numeroEntrega %></td>
+            <td></td>
+          </tr>
+        <% end %>
+      <% else %>
+      <tr>
+        <td><%= Usuario.find(@documento.creado_por).Nombres %> <%= @documento.created_at %></td>
+        <td></td>
+      </tr>
+      <% end %>
+    </thead>
+  </table>
+  </div>
+  <hr style="width:80%;">
+  <br>
+  <br>
+  <br>
+  <table class="table table-stripped table-bordered" style=" border: 1px solid black; width: 100%;">
+    <thead>
+      <tr style="text-align:center;">
+        <th>Unidad</th>
+        <% if @documento.TipoDocumento.id == 1 %>
+          <th>Bodega Entrante</th>
+        <% elsif @documento.TipoDocumento.id == 3  %>
+          <th>Bodega Entrante</th>
+          <th>Bodega Saliente</th>
+        <% end %>
+        <th>Producto</th>
+        <th>Marca</th>
+        <th>Medida</th>
+        <th>Precio Unitario</th>
+        <th>Sub Total</th>
+      </tr>
+    </thead>
+    <tbody>
+      <% total = 0 %>
+      <% @detalleDocumento.each_with_index do |dd,i| %>
+        <tr>
+          <td><%= dd.cantidad %></td>
+          <% if @documento.TipoDocumento.id == 1 %>
+            <% movimientoProducto = MovimientoProducto.find_by(detalle_documento_id: dd.id) %>
+            <td><%= movimientoProducto.Entrante_Bodega.Nombre %></td>
+          <% elsif @documento.TipoDocumento.id == 3 %>
+            <% movimientoProducto = MovimientoProducto.where(detalle_documento_id: dd.id) %>
+            <% movimientoProducto.each do |mp| %>
+              <% if mp.Entrante_Bodega !=nil %>
+                <td><%= mp.Entrante_Bodega.Nombre %></td>
+              <% else %>
+                <td><%= mp.Saliente_Bodega.Nombre %></td>
+              <% end %>
+            <% end %>
+          <% end %>
+          <td><%= dd.descripcion %></td>
+          <td><%= dd.Producto.Marca.Nombre %></td>
+          <% if dd.Medida %>
+            <td><%= dd.Medida.Nombre %></td>
+          <% else %>
+            <td><%= dd.DetalleMedida.Nombre %></td>
+          <% end %>
+          <% if @documento.TipoDocumento.id == 2 || @documento.TipoDocumento.id == 4 %>
+            <td>Q <%= dd.valor_venta %></td>
+          <% else %>
+            <td>Q <%= dd.valor_compra %></td>
+          <% end %>
+          <td>Q <%= dd.total %></td>
+        </tr>
+        <% total += dd.total %>
+      <% end %>
+    </tbody>
+    <tfoot>
+      <tr>
+        <% if @documento.TipoDocumento.id == 1 %>
+          <td colspan="5"></td>
+        <% elsif @documento.TipoDocumento.id == 3  %>
+          <td colspan="6"></td>
+        <% else %>
+          <td colspan="4"></td>
+        <% end %>
+        <td style="text-align: right;"><strong>Total:</strong></td>
+        <td style="text-align: left;">Q <%= total %></td>
+      </tr>
+      <tr>
+        <td colspan="7"><%= Empresa.find(1).politicaventa %></td>
+      </tr>
+    </tfoot>
+  </table>
+</div>
+<script type="text/javascript">
+function printDiv()
+{
+  var divToPrint=document.getElementById('DivIdToPrint');
+  var newWin=window.open('','Print-Window');
+  newWin.document.open();
+  newWin.document.write('<html><body onload="window.print()">'+divToPrint.innerHTML+'</body></html>');
+  newWin.document.close();
+  setTimeout(function(){newWin.close();},10);
+}
+</script>

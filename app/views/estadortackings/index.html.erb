@@ -1,0 +1,41 @@
+<p id="notice"><%= notice %></p>
+
+<h1>Estadortackings</h1>
+
+<table>
+  <thead>
+    <tr>
+      <th>Tracking</th>
+      <th>Estado</th>
+      <th>Comentario</th>
+      <th>Status</th>
+      <th>Creado por</th>
+      <th>Actualizado por</th>
+      <th>Creado</th>
+      <th>Actualizado</th>
+      <th colspan="3"></th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <% @estadortackings.each do |estadortacking| %>
+      <tr>
+        <td><%= estadortacking.tracking %></td>
+        <td><%= estadortacking.estado %></td>
+        <td><%= estadortacking.comentario %></td>
+        <td><%= estadortacking.status %></td>
+        <td><%= estadortacking.creado_por %></td>
+        <td><%= estadortacking.actualizado_por %></td>
+        <td><%= estadortacking.creado %></td>
+        <td><%= estadortacking.actualizado %></td>
+        <td><%= link_to 'Show', estadortacking %></td>
+        <td><%= link_to 'Edit', edit_estadortacking_path(estadortacking) %></td>
+        <td><%= link_to 'Destroy', estadortacking, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+
+<br>
+
+<%= link_to 'New Estadortacking', new_estadortacking_path %>

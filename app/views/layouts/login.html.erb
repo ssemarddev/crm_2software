@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>CRM - Acceso</title>
+    <%= csrf_meta_tags %>
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <%= stylesheet_link_tag 'application', media: 'all', 'data-turbolinks-track': 'reload' %>
+    <%= stylesheet_link_tag 'user_login', media: 'all', 'data-turbolinks-track': 'reload' %>
+    <%= stylesheet_link_tag 'scaffolds', media: 'all', 'data-turbolinks-track': 'reload' %>
+
+    <%= javascript_include_tag 'application', 'data-turbolinks-track': 'reload' %>
+  </head>
+    <header class="login-topbar">
+    <div class="login-topbar__container">
+        <div class="login-topbar__brand">
+        <span class="login-topbar__dot"></span>
+        <span class="login-topbar__title">CRM</span>
+        </div>
+
+        <nav class="login-topbar__nav" aria-label="Menú principal">
+        <a class="login-topbar__link" href="/online_catalog">Repuestos</a>
+        <a class="login-topbar__link" href="/trackingView">Servicios técnicos</a>
+        <a class="login-topbar__link" href="/online_catalog">Herramientas</a>
+        </nav>
+    </div>
+    </header>
+  <body class="login-page">
+    <%= yield %>
+  </body>
+</html>

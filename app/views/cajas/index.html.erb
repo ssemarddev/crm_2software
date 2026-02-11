@@ -1,0 +1,59 @@
+<p id="notice"><%= notice %></p>
+
+<h1>Cajas
+<%= (link_to 'Abrir Caja <i class="fa fa-plus"></i>'.html_safe , new_caja_path, class: 'btn btn-primary') if user_is_admin%>
+</h1>
+
+<table id="productos" class="table table-condensed dataTable">
+  <thead>
+    <tr>
+      <th>Id</th>
+      <th>Nombre</th>
+      <th>Usuario</th>
+      <th>Inicial Efectivo</th>
+      <th>Final Efectivo</th>
+      <th>Final Pos</th>
+      <th>Abierta por</th>
+      <th>Cerrada por</th>
+      <th>Abierta</th>
+      <th>Cerrada</th>
+      <th>ESTADO ACTUAL</th>
+      <th></th>
+      <th></th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <% @cajas.each do |caja|
+    %>
+      <tr>
+        <td><%= caja.id %></td>
+        <td><%= caja.Nombre %></td>
+        <td><%= caja.usuario.Nombres %></td>
+        <td><%= caja.InicialEfectivo %></td>
+        <td><%= caja.FinalEfectivo %></td>
+        <td><%= caja.FinalPos %></td>
+        <td><%= caja.creado_por ? Usuario.find(caja.creado_por).Nombres : "" %></td>
+        <td><%= caja.actualizado_por ? Usuario.find(caja.actualizado_por).Nombres : "" %></td>
+        <td><%= caja.created_at %></td>
+        <td><%= caja.updated_at %></td>
+        <td>
+          <%=
+          if !caja.Estado
+          'CAJA ABIERTA'  
+          else 
+            'CAJA CERRADA'
+          end %>
+        </td>
+        <% if !caja.Estado  ||  user_is_admin %>
+          <td>
+          <%= link_to 'Ver' , edit_caja_path(caja), class:'btn btn-warning'  %>
+          </td>
+        <% else %>
+          <td>CAJA CERRADA</td>
+        <% end %>
+        <td><%= link_to 'Imprimir' , caja_path(caja), class:'btn btn-info'  %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>

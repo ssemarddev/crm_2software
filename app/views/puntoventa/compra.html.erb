@@ -1,0 +1,502 @@
+<h1>Punto de Compra</h1>
+
+  <div class="panel panel-default">
+      <div class="panel-heading">Datos del Documento:</div>
+      <div class="panel-body">
+        <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+          <input name="documento" type="hidden" id="documento" value="0"/>
+          <div class="col-xs-12 col-sm-12 col-md-3 col-lg-3">
+            <label for="fecha">Fecha:</label>
+            <input name="fecha" type="date" id="fecha"  value="<%= Time.now.strftime("%Y-%m-%d") %>" disabled class="form-control"/>
+          </div>
+          <div class="col-xs-12 col-sm-12 col-md-3 col-lg-3">
+            <label for="proveedor">Proveedor:</label>
+            <select class="form-control" id="proveedor" name="proveedor">
+            </select>
+          </div>
+          <div class="col-xs-12 col-sm-12 col-md-3 col-lg-3">
+            <label for="bodega">Bodega de Ingreso:</label>
+            <select name="bodega" type="text" id="bodega" class="form-control">
+            </select>
+          </div>
+          <div class="col-xs-12 col-sm-12 col-md-3 col-lg-3">
+            <label for="tipo_pago">Tipo Pago:</label>
+            <select class="form-control" id="tipo_pago" name="tipo_pago">
+            </select>
+          </div>
+        </div>
+        <div style="display:none;"  class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+          <label for="observacion">Observacion:</label>
+          <input name="observacion" type="text" id="observacion" class="form-control" />
+        </div>
+      </div>
+    </div>
+<fieldset id="form">
+    <div class="panel panel-primary">
+      <div class="panel-heading">Productos Adquiridos:</div>
+        <div class="panel-body">
+          <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 info">
+            <table class="table table-stripped">
+              <thead>
+                <th>Cantidad</th>
+                <th>Codigo</th>
+                <th>Descripcion</th>
+                <th>Medida</th>
+                <th>Val. Unitario</th>
+                <th>Total</th>
+              </thead>
+              <tbody id="detalle_venta">
+
+              </tbody>
+            </table>
+          </div>
+        </div>
+        <div class="panel-footer">
+          <table class="table">
+            <tr>
+              <td></td>
+              <td class="pull-right"><p id="subTotal" >Total Q00.00</p><input type="hidden" id="totalInput" value=""></td>
+            </tr>
+          </table>
+        </div>
+      </div>
+
+  <div class="panel panel-success ">
+    <div class="panel-heading">Productos: <span id="unidades"></span></div>
+      <div class="panel-body">
+        <div class="row">
+          <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 info">
+            <div class="col-xs-12 col-sm-12 col-md-2 col-lg-2">
+              <label for="unidad">Unidad</label>
+              <input name="unidad" type="number" id="unidad" value="1" class="form-control"/>
+            </div>
+            <div class="col-xs-12 col-sm-12 col-md-3 col-lg-">
+              <label for="codigoproducto">Producto</label>
+              <select id="codigoproducto" name="codigoproducto" class="form-control">
+              </select>
+            </div>
+            <div class="col-xs-12 col-sm-12 col-md-3 col-lg-3">
+              <label for="unidadmedida">Medida</label>
+              <select name="unidadmedida :selected option" id="unidadmedida" class="form-control"></select>
+            </div>
+            <div class="col-xs-12 col-sm-12 col-md-1 col-lg-2">
+              <label for="precio">Precio</label>
+              <input name="precio" type="number" id="precio" disabled="true" class="form-control"/>
+            </div>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 info">
+            <div class="col-xs-12 col-sm-12 col-md-3 col-lg-3">
+              <input name="idproducto" type="hidden" id="idproducto"/>
+                <label for="descripcion">Descripcion</label>
+                <input name="descripcion" type="text" id="descripcion" disabled="true" class="form-control"/>
+            </div>
+            <div class="col-xs-12 col-sm-12 col-md-6 col-lg-6">
+            </div>
+            <div class="col-xs-12 col-sm-12 col-md-3 col-lg-3 alert alert-primary">
+                <button type="button" name="button" id="agregar" class="btn btn-success">Agregar</button>
+                <button type="button" name="button" id="pagar" class="btn btn-primary">Congelar y Pagar</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+</fieldset>
+<div class="panel panel-info ">
+  <div class="panel-heading">Impresion</div>
+    <div class="panel-body">
+      <div class="row">
+        <div class="col-md-6 col-xs-6 col-sm-6 col-xl-6 pago"  style="display:none;">
+          <p><button type="button" class="btn btn-primary" name="button"  id="pago_efectivo"><i class="fontawesome-money" aria-hidden="true"></i> Pago con Efectivo</button></p>
+          <p><button type="button" class="btn btn-warning" name="button"  id="pago_tarjeta"><i class="fontawesome-credit-card" aria-hidden="true"></i> Pago con Tarjeta</button></p>
+          <p><button type="button" class="btn btn-success" name="button"  id="mixto">Mixto</button></p>
+          <p><button type="button" class="btn btn-danger" name="button"  id="descongelar">Descongelar</button></p>
+        </div>
+        <div class="col-md-6 col-xs-6 col-sm-6 col-xl-6 "  >
+          <div class="col-lg-3 col-md-3 col-sm-12 col-xs-12">
+            <label for="pago_inicial" class="efectivo">Cantidad en efectivo:</label>
+            <input class="form-control efectivo" type="number" name="pago_inicial" id="pago_inicial" />
+            <label for="pago_inicial_tarjeta" class="tarjeta">Cantidad en tarjeta:</label>
+            <input class="form-control tarjeta" type="number" name="pago_inicial_tarjeta" id="pago_inicial_tarjeta" />
+            <!--<label for="tarjeta">Tarjeta:</label>
+            <select name="tarjeta" id="tarjeta">
+              <option value="1">VISA</option>
+              <option value="2">MASTERCARD</option>
+            </select>
+            <label for="numero_tarjeta">Numero de tarjeta:</label>
+            <input class="form-control" type="text" name="numero_tarjeta" id="numero_tarjeta"/>
+            <label for="nombre_tarjeta">Nombre de tarjeta:</label>
+            <input class="form-control" type="text" name="nombre_tarjeta" id="nombre_tarjeta"/>-->
+            <label for="pago_inicial" class="efectivo">Cambio:</label>
+            <input class="form-control efectivo" type="number" name="cambio"   id="cambio" />
+            <label for="pago_inicial_tarjeta" class=""> <strong id="pendiente"></strong> Pendiente:</label>
+            <input class="form-control " type="number" name="total" value="total" id="total" readonly />
+          </div>
+        </div>
+
+    </div>
+  </div>
+  <div class="panel-footer">
+    <div class="centrarCaja"  style="display:none;">
+      <button type="button" name="button" id="guardar" class="btn btn-info"><i class="fontawesome-print"aria-hidden="true"></i> Imprimir y Guardar</button>
+    </div>
+  </div>
+</div>
+<script>
+    var existe         = false;
+    var precioProducto = 0;
+    var subTotalOrden  = 0;
+    function borrar(e,movProdId,detalleDocumentoId,total){
+      $.ajax({
+        url: "/unloadMovProd",
+        method: 'POST',
+        dataType: 'json',
+        data: {
+          movProdId: movProdId,
+          detalleDocumentoId: detalleDocumentoId
+        },
+        success: function( results ) {
+          subTotalOrden -= total
+          setTotal(subTotalOrden);
+          $(e.parentNode.parentNode).remove();
+        }
+      });
+    }
+
+    $("#pago_efectivo").on('click',function(){
+      console.log($("#pago_efectivo").is('checked'));
+        if($("#pago_efectivo").is('checked')){
+          $("#divtarjeta").hide();
+        }else{
+          $("#divtarjeta").show();
+        }
+    });
+    $(window).unload(function(evento){
+      if($("#documento").val()>0) {
+      	$.ajax({
+      		type:"POST",
+      		url:"/unloadOrder",
+      		dataType:"json",
+          data: {
+            documento: $("#documento").val()
+          },
+          async:false
+      		});
+        }
+    });
+    function calcularTotal(){
+      total = $("#totalInput").val();
+      $("#total").val(total);
+      return total;
+    }
+    $( window ).load(function() {
+      $("#pago_efectivo").on('click',function(){
+          $(".tmpj").addClass("tarjeta");
+          $(".tmpj").removeClass("tmpj");
+          $(".efectivo").addClass("tmpe");
+          $(".efectivo").removeClass("efectivo");
+          $("#pago_inicial").val(0);
+          $("#pago_inicial_tarjeta").val(0);
+      });
+
+      $("#pago_tarjeta").on('click',function(){
+          $(".tmpe").addClass("efectivo");
+          $(".tmpe").removeClass("tmpe");
+          $(".tarjeta").addClass("tmpj");
+          $(".tarjeta").removeClass("tarjeta");
+          $("#pago_inicial").val(0);
+          $("#pago_inicial_tarjeta").val(0);
+      });
+
+      $("#mixto").on('click',function(){
+          $(".tarjeta").addClass("tmpj");
+          $(".efectivo").addClass("tmpe");
+          $(".tarjeta").removeClass("tarjeta");
+          $(".efectivo").removeClass("efectivo");
+          $("#pago_inicial").val(0);
+          $("#pago_inicial_tarjeta").val(0);
+      });
+      $(".efectivo , .tarjeta").on('keyup',function(e){
+        valorEfectivo = $("#pago_inicial").val();
+        valorTarjeta  = $("#pago_inicial_tarjeta").val();
+        var total = calcularTotal();
+        valorEfectivo = isNaN(valorEfectivo) ? 0: valorEfectivo;
+        valorTarjeta = isNaN(valorTarjeta) ? 0: valorTarjeta;
+        var residuo = (total  - (valorEfectivo)) - (valorTarjeta)
+        if(residuo < 0 ){
+          $("#cambio").val(Math.round((residuo*-1 + Number.EPSILON) * 100) / 100 );
+          $("#total").val(0);
+        }else{
+          $("#cambio").val(0);
+          $("#total").val(Math.round((residuo+ Number.EPSILON) * 100) / 100);
+        }
+      });
+      getTipoPago();
+      getProveedor();
+      getBodegas();
+    });
+    $("#pagar").on('click', function(){
+      if(calcularTotal()>0){
+        $(".pago").show();
+        $('select').prop('disabled', true);
+        $('#form').prop('disabled', true);
+        $(".centrarCaja").show();
+      }else{
+        alert("Adquiere almenos un producto.")
+      }
+    });
+    $("#descongelar").on('click', function(){
+      $(".pago").hide();
+      $('#form select').prop('disabled', false);
+      $('#form').prop('disabled', false);
+      $(".centrarCaja").hide();
+      $("#pago_inicial").val(0);
+      $("#pago_inicial_tarjeta").val(0);
+      $("#cambio").val(0);
+    });
+    $("#guardar").on('click', function(c){
+      $.ajax({
+        url: "/saveOrder",
+        method: 'POST',
+        dataType: 'json',
+        data: {
+          documento            : $("#documento").val(),
+          pago_efectivo        : $("#pago_efectivo").prop("checked"),
+          pago_tarjeta         : $("#pago_tarjeta").prop("checked"),
+          pago_efectivo_tarjeta: $("#pago_efectivo_tarjeta").prop("checked"),
+          tarjeta              : $("#tarjeta").val(),
+          pago_inicial         : $("#pago_inicial").val(),
+          pago_inicial_tarjeta : $("#pago_inicial_tarjeta").val(),
+          numero_tarjeta       : $("#numero_tarjeta").val(),
+          nombre_tarjeta       : $("#nombre_tarjeta").val()
+        },
+        success: function( results ) {
+          if(results)
+            window.location.href = "print?documentoId="+$("#documento").val();
+          else
+            alert("Error, revise su documento.")
+        }
+      });
+    })
+    $("#proveedor").on('change', function(c){
+      var vProveedor = $("#proveedor").val();
+      $.ajax({
+        url: "/findProductosByProvider",
+        method: 'POST',
+        dataType: 'json',
+        data: {
+          proveedor: 'all'
+        },
+        success: function( result ) {
+          html = '<option value="">Seleccione...</option>'
+          for(i=0; i < result.length; i++){
+            html += "<option value='"+result[i].Codigo+"'>"+result[i].Nombre+"</option>";
+          }
+          $("#codigoproducto").html(html);
+        }
+      });
+    });
+    $("#codigoproducto, #bodega").on('change', function(c){
+      bodega = $("#bodega").val()
+      $.ajax({
+        url: "/findProduct",
+        method: 'POST',
+        dataType: 'json',
+        data: {
+          product: $("#codigoproducto").val(),
+          tipo:  1,
+          bodega: bodega
+        },
+        success: function( results ) {
+          //console.log(results[1])
+          result = results[0][0];
+          $("#descripcion").val(result.Nombre);
+          $("#codigoproducto").val(result.Codigo);
+          $("#idproducto").val(result.id);
+          precioProducto = result.Valor_Compra;
+          $("#precio").val(result.Valor_Compra)
+          $("#unidades").html("<h3>Unidades disponibles: <font color='red'>"+results[1].unidades+"</font></h3>")
+          if(result.Medida_id>0){
+            getMedidas(result.Medida_id)
+          }
+
+        }
+      });
+    });
+    $("#agregar").on('click',function(c){
+      var unidad  = $("#unidad").val();
+      if($("#proveedor").val().length > 0){
+        if(unidad > 0 && existe && $("#codigoproducto").val() != "" && $("#unidadmedida").val()!="" && $("#bodega").val() != "" ){
+          $("#agregar").attr('disabled',true);
+          var precio      = $("#precio").val();
+          var codigo      = $("#codigoproducto").val();
+          var descripcion = $("#descripcion").val();
+          var medida      = $("#unidadmedida option:selected").text();
+          var total       = (Math.round((precio*-1 + Number.EPSILON) * 100) / 100) * (Math.round((unidad*-1 + Number.EPSILON) * 100) / 100);
+          html  = "<tr><td>"+unidad+"</td>"
+          html += "<td>"+codigo+"</td>"
+          html += "<td>"+descripcion+"</td>"
+          html += "<td>"+medida+"</td>"
+          html += "<td>"+precio+"</td>"
+          html += "<td>"+total+"</td>"
+          subTotalOrden += total;
+          tipo = 1
+          if($("#cotizacion").prop('checked')){
+            tipo = 5
+          }
+          $.ajax({
+            url: "/saveMovProduct",
+            method: 'POST',
+            dataType: 'json',
+            data: {
+              unidad                : unidad,
+              descripcion           : descripcion,
+              unidad_medida         : $("#unidadmedida").val(),
+              tipo_pago             : $("#tipo_pago").val(),
+              detalle_unidad_medida : $("#unidadmedida").val(),
+              producto              : $("#idproducto").val(),
+              total                 : total,
+              proporcion            : $("#unidadmedida option:selected").attr('proporcion'),
+              ganancia              : $("#unidadmedida option:selected").attr('ganancia'),
+              tipo                  : tipo,
+              proveedor             : $("#proveedor").val(),
+              documento             : $("#documento").val(),
+              bodegaEntranteId      : $("#bodega").val()
+            },
+            success: function( results ) {
+              console.log(results);
+              if(results){
+                if($("#documento").val()<1){
+                  $("#documento").val(results[0].Documento);
+                }
+                html += "<td><button onclick='borrar(this,"+results[1].id+","+results[2].id+","+results[2].total+");' class='btn btn-danger' type='button'>X</button></td></tr>"
+                $("#proveedor").prop('disabled', true);
+                $("#bodega").prop('disabled', true);
+                $("#tipo_pago").prop('disabled', true);
+                $("#detalle_venta").append(html);
+                limpiar();
+                setTotal(subTotalOrden);
+                $("#agregar").attr('disabled',false);
+              }else{
+                alert("Error")
+                $("#agregar").attr('disabled',false);
+              }
+            }
+          })
+          existe = true;
+        }else{
+          alert("Esta agregando campos vacios.")
+        }
+      }else{
+        alert("Debe comprar mas de 0 unidades, intente de nuevo.");
+        $("#unidad").val(1);
+      }
+    });
+    $("#descuento").on('keyup', function (c) {
+      if(this.value > <%= session[:descuento]%>){
+        alert('Usted no pueder dar mas de un % <%= session[:descuento]%> de descuento')
+        $("#descuento").val(<%= session[:descuento]%>);
+      }
+    });
+    $("#unidadmedida").on('change', function(c){
+      var precioVenta  = $("#unidadmedida").find(":selected").attr('ganancia');
+      precioVenta      = precioProducto * (precioVenta/100);
+      $("#precio").val(precioVenta);
+    });
+
+    setInterval(function() {
+      //getFactura();// method to be executed;
+    }, 5000);
+    function limpiar(){
+      $("#precio").val("");
+      $("#codigoproducto").val("");
+      $("#descripcion").val("");
+      $("#unidadmedida").html("");
+      $("#descuento").val("");
+      $("#unidad").val(1);
+      $("#codigoproducto").focus();
+    }
+    function setTotal(subTotalOrden){
+      $("#subTotal").html('Total: '+subTotalOrden)
+      $("#total").val(subTotalOrden)
+      $("#pendiente").html(subTotalOrden);
+      $("#totalInput").val(subTotalOrden);
+    }
+    function getTipoPago(){
+      $.ajax({
+        url: "/findTipoPago",
+        method: 'POST',
+        dataType: 'json',
+        success: function( result ) {
+          html = ""
+          for(i=0; i < result.length; i++){
+            html += "<option value='"+result[i].id+"'>"+result[i].Nombre+"</option>";
+          }
+          $("#tipo_pago").html(html);
+        }
+      });
+    }
+    function getProveedor(){
+      $.ajax({
+        url: "/findProveedor",
+        method: 'POST',
+        dataType: 'json',
+        success: function( result ) {
+          html = '<option value="">Seleccione...</option>';
+          for(i=0; i < result.length; i++){
+            html += "<option value='"+result[i].id+"'>"+result[i].Nombre+"</option>";
+          }
+          $("#proveedor").html(html);
+        }
+      });
+    }
+    function getBodegas(){
+      $.ajax({
+        url: "/findBodegas",
+        method: 'POST',
+        dataType: 'json',
+        success: function( result ) {
+          html = '<option value="">Seleccione...</option>';
+          for(i=0; i < result.length; i++){
+            html += "<option value='"+result[i].id+"'>"+result[i].bodega+"-"+result[i].user+"</option>";
+          }
+          $("#bodega").html(html);
+        }
+      });
+    }
+    function getMedidas(medida, detalle= false){
+      var url        = "/findMedida";
+      var proporcion = 100;
+      var ganancia   = 100;
+      if(detalle)
+        url = "/findDetalleMedida";
+      $.ajax({
+        url: url,
+        method: 'POST',
+        dataType: 'json',
+        data: {
+          medida: medida
+        },
+        success: function( result ) {
+          html = ""
+          for(i=0; i < result.length; i++){
+            if(result[i].Proporcion){
+              proporcion = result[i].Proporcion;
+              ganancia   = result[i].Porcentaje_Ganancia;
+            }
+            html += "<option value='"+result[i].id+"' proporcion='"+proporcion+"' ganancia='"+ganancia+"'>"+result[i].Nombre+"</option>";
+          }
+          if(detalle){
+            $("#unidadmedida").append(html);
+          }else{
+            $("#unidadmedida").html(html);
+            getMedidas(medida, true);
+          }
+          existe = true
+        }
+      });
+    }
+    </script>
+  </div>
+</form>

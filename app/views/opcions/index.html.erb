@@ -1,0 +1,43 @@
+<p id="notice"><%= notice %></p>
+
+<h1>Opciones o Pantallas
+<%= link_to 'Nueva Pantalla <i class="fa fa-plus"></i>'.html_safe , new_opcion_path, class: 'btn btn-primary' %>
+</h1>
+
+<table id="productos" class="table table-condensed dataTable">
+  <thead>
+    <tr>
+      <th>Nombre</th>
+      <th>Letraconjunto</th>
+      <th>Conjunto</th>
+      <th>Estado</th>
+      <th>Creado por</th>
+      <th>Actualizado por</th>
+      <th>Creado</th>
+      <th>Actualizado</th>
+      <th></th>
+      <th></th>
+      <th></th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <% @opcions.each do |opcion| %>
+      <tr>
+        <td><%= opcion.Nombre %></td>
+        <td><%= opcion.LetraConjunto %></td>
+        <td><%= opcion.Conjunto %></td>
+        <td><%= opcion.Estado %></td>
+        <td><%= opcion.creado_por %></td>
+        <td><%= opcion.actualizado_por %></td>
+        <td><%= opcion.creado %></td>
+        <td><%= opcion.actualizado %></td>
+        <td><%= link_to icon('fa','eye'),  opcion, class:'btn btn-info' %></td>
+        <td><%= link_to icon('fa','edit'),  edit_opcion_path(opcion), class:'btn btn-warning' %></td>
+        <td><%= link_to icon('fa','trash-o'), opcion, method: :delete, data: { confirm: 'Estas Seguro?' }, class:'btn btn-danger' %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+
+<br>

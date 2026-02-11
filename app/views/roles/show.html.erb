@@ -1,0 +1,40 @@
+<p id="notice"><%= notice %></p>
+<div class="row">
+  <div class="col-md-6 col-lg-6 col-sm-6 col-xs-6">
+    <table class="table">
+      <tr>
+        <td><strong>Nombre:</strong></td>
+        <td><%= @role.Nombre %></td>
+      </tr>
+      <tr>
+        <td><strong>Estado:</strong></td>
+        <td><%= @role.Estado %></td>
+      </tr>
+      <tr>
+        <td><strong>Creado por:</strong></td>
+        <td><%= Usuario.find_by(id: @role.creado_por).Nombres %></td>
+      </tr>
+      <tr>
+        <td><strong>Actualizado por:</strong></td>
+        <td><%= Usuario.find_by(id: @role.actualizado_por).Nombres %></td>
+      </tr>
+      <tr>
+        <td><strong>Creado:</strong></td>
+        <td><%= @role.creado %></td>
+      </tr>
+      <tr>
+        <td><strong>Actualizado:</strong></td>
+        <td><%= @role.actualizado %></td>
+      </tr>
+    </table>
+  </div>
+  <div class="col-md-6 col-lg-6 col-sm-6 col-xs-6">
+    <div class="panel panel-info">
+      <div class="panel-heading">Acciones:</div>
+      <div class="panel-body">
+        <%= link_to 'Editar', edit_role_path(@role), class: 'btn btn-warning'  %>
+        <%= link_to 'Regresar', edit_role_path, class: 'btn btn-default' %>
+      </div>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,57 @@
+<%= form_with(model: tarea, local: true) do |form| %>
+  <% if tarea.errors.any? %>
+    <div id="error_explanation">
+      <h2><%= pluralize(tarea.errors.count, "error") %> prohibited this tarea from being saved:</h2>
+
+      <ul>
+      <% tarea.errors.full_messages.each do |message| %>
+        <li><%= message %></li>
+      <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+<div class="row">
+  <div class="col-md-6 col-lg-6 col-sm-6 col-xs-6">
+    <table class="table ">
+      <tr>
+        <td><%= form.label :nombre %></td>
+        <td><%= form.text_field :nombre, id: :tarea_nombre, class:'form-control' %></td>
+      </tr>
+      <tr>
+        <td><%= form.label :Fecha_Fin %></td>
+        <td><%= form.date_field :fechafin, id: :fechafin, class:'form-control' %></td>
+      </tr>
+      <tr>
+        <td><%= form.label :proyecto_id %></td>
+        <td><%= form.hidden_field :proyecto_id, id: :tarea_proyecto_id, class:'form-control',value: request.params['proyecto'] %> <%= request.params['proyecto_nombre'] %></td>
+      </tr>
+      <tr>
+        <td><%= form.label :subproyecto_id %></td>
+        <td><%= collection_select(:tarea, :subproyecto_id, Subproyecto.where(:estado => true), :id, :nombre, {:prompt => true}, class: 'form-control') %></td>
+      </tr>
+      <tr>
+        <td><%= form.label 'Responsable'%></td>
+        <td><%= collection_select(:tarea, :usuario_id, Usuario.where(:Estado => true), :id, :Nombres, {:prompt => true}, class: 'form-control') %></td>
+      </tr>
+      <tr>
+        <td><%= form.label :descripcion %></td>
+        <td><%= form.text_field :descripcion, id: :tarea_descripcion, class:'form-control' %></td>
+      </tr>
+      <tr>
+        <td><%= form.label :estado %></td>
+        <td><%= form.check_box :estado, id: :tarea_estado, checked: true %></td>
+      </tr>
+    </table>
+  </div>
+  <div class="col-md-6 col-lg-6 col-sm-6 col-xs-6">
+    <div class="panel panel-info">
+      <div class="panel-heading">Acciones:</div>
+      <div class="panel-body">
+        <button type="submit" name="button" class="btn btn-primary"><i class="fontawesome-save"></i> Guardar</button>
+        <%= link_to 'Regresar', proyectos_path, class: 'btn btn-default' %>
+      </div>
+    </div>
+  </div>
+</div>
+<% end %>

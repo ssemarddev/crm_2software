@@ -1,0 +1,94 @@
+<p id="notice"><%= notice %></p>
+
+<p>
+  <strong>Documento:</strong>
+  <%= @documento_pago.Documento %>
+</p>
+
+<p>
+  <strong>Clienteproveedor:</strong>
+  <%= @documento_pago.ClienteProveedor %>
+</p>
+
+<p>
+  <strong>Tarjeta:</strong>
+  <%= @documento_pago.Tarjeta %>
+</p>
+
+<p>
+  <strong>Pagado:</strong>
+  <%= @documento_pago.Pagado %>
+</p>
+
+<p>
+  <strong>Deuda:</strong>
+  <%= @documento_pago.Deuda %>
+</p>
+
+<p>
+  <strong>Pago efectivo:</strong>
+  <%= @documento_pago.Pago_Efectivo %>
+</p>
+
+<p>
+  <strong>Pago tarjeta:</strong>
+  <%= @documento_pago.Pago_Tarjeta %>
+</p>
+
+<p>
+  <strong>Numero tarjeta:</strong>
+  <%= @documento_pago.Numero_Tarjeta %>
+</p>
+
+<p>
+  <strong>Nombre targeta:</strong>
+  <%= @documento_pago.Nombre_Targeta %>
+</p>
+
+<p>
+  <strong>Interes:</strong>
+  <%= @documento_pago.Interes %>
+</p>
+
+<p>
+  <strong>Mora:</strong>
+  <%= @documento_pago.Mora %>
+</p>
+
+<p>
+  <strong>Total pagado:</strong>
+  <%= @documento_pago.Total_Pagado %>
+</p>
+
+<p>
+  <strong>Tipo documento:</strong>
+  <%= @documento_pago.Tipo_Documento %>
+</p>
+
+<p>
+  <strong>Estado:</strong>
+  <%= @documento_pago.Estado %>
+</p>
+
+<p>
+  <strong>Creado por:</strong>
+  <%= @documento_pago.creado_por %>
+</p>
+
+<p>
+  <strong>Actualizado por:</strong>
+  <%= @documento_pago.actualizado_por %>
+</p>
+
+<p>
+  <strong>Creado:</strong>
+  <%= @documento_pago.creado %>
+</p>
+
+<p>
+  <strong>Actualizado:</strong>
+  <%= @documento_pago.actualizado %>
+</p>
+
+<%= link_to 'Edit', edit_documento_pago_path(@documento_pago) %> |
+<%= link_to 'Back', documento_pagos_path %>

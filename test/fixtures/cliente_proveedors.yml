@@ -1,0 +1,29 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  Tipo: 1
+  Nombre: MyString
+  Moneda: MyString
+  Tipo_Cambio: 9.99
+  Porcentaje_Comision: 9.99
+  Destino: 1
+  Fax: 1
+  Estado: false
+  creado_por: 1
+  actualizado_por: 1
+  creado: 2017-06-06
+  actualizado: 2017-06-06 11:56:35
+
+two:
+  Tipo: 1
+  Nombre: MyString
+  Moneda: MyString
+  Tipo_Cambio: 9.99
+  Porcentaje_Comision: 9.99
+  Destino: 1
+  Fax: 1
+  Estado: false
+  creado_por: 1
+  actualizado_por: 1
+  creado: 2017-06-06
+  actualizado: 2017-06-06 11:56:35

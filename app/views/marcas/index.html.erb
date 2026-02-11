@@ -1,0 +1,41 @@
+<p id="notice"><%= notice %></p>
+
+<h1>Marcas
+  <%= link_to 'Nueva Marca <i class="fa fa-plus"></i>'.html_safe , new_marca_path, class: 'btn btn-primary' %>
+  <% if params[:deleted] %>
+    <%= link_to 'Regresar'.html_safe , marcas_path, class: 'btn btn-default' %>
+  <% else %>
+    <%= link_to 'Ver Papelera <i class="fa fa-trash"></i>'.html_safe , marcas_path(deleted: true), class: 'btn btn-danger' %>
+  <% end %>
+</h1>
+
+<table id="productos" class="table table-condensed dataTable">
+  <thead>
+    <tr>
+      <th>Nombre</th>
+      <th>Estado</th>
+      <!--<th>Creado por</th>
+      <th>Actualizado por</th>-->
+      <th>Creado</th>
+      <th>Actualizado</th>
+      <th></th>
+      <th></th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <% @marcas.each do |marca| %>
+      <tr>
+        <td class="<%= 'tr-'+marca.Estado.to_s %>"><%= marca.Nombre %></td>
+        <td class="<%= 'tr-'+marca.Estado.to_s %>"><%= marca.Estado %></td>
+        <!--<td class="<'tr-'+marca.Estado.to_s %>"><% marca.creado_por %></td>
+        <td class="< 'tr-'+marca.Estado.to_s %>"><% marca.actualizado_por %></td>-->
+        <td class="<%= 'tr-'+marca.Estado.to_s %>"><%= marca.creado %></td>
+        <td class="<%= 'tr-'+marca.Estado.to_s %>"><%= marca.actualizado %></td>
+        <!--<td class="< 'tr-'+marca.Estado.to_s %>"><% link_to  icon('fa','eye'), marca, class:'btn btn-info' %></td>-->
+        <td class="<%= 'tr-'+marca.Estado.to_s %>"><%= link_to icon('fa','edit'), edit_marca_path(marca), class:'btn btn-warning' %></td>
+        <td class="<%= 'tr-'+marca.Estado.to_s %>"><%= link_to icon('fa','trash-o'), marca, method: :delete, data: { confirm: 'Estas Seguro?' }, class:'btn btn-danger' %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>

@@ -1,0 +1,39 @@
+<p id="notice"><%= notice %></p>
+
+<p>
+  <strong>Role:</strong>
+  <%= @role_usuario.role.Nombre %>
+</p>
+
+<p>
+  <strong>Usuario:</strong>
+  <%= @role_usuario.usuario.User_Name %>
+</p>
+
+<p>
+  <strong>Estado:</strong>
+  <%= @role_usuario.Estado %>
+</p>
+
+<p>
+  <strong>Creado por:</strong>
+  <%= @role_usuario.creado_por %>
+</p>
+
+<p>
+  <strong>Actualizado por:</strong>
+  <%= @role_usuario.actualizado_por %>
+</p>
+
+<p>
+  <strong>Creado:</strong>
+  <%= @role_usuario.creado %>
+</p>
+
+<p>
+  <strong>Actualizado:</strong>
+  <%= @role_usuario.actualizado %>
+</p>
+
+<%= link_to 'Edit', edit_role_usuario_path(@role_usuario) %> |
+<%= link_to 'Back', role_usuarios_path %>

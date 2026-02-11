@@ -1,0 +1,27 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  numero: MyString
+  descripcion: MyString
+  direccionOrigen: MyString
+  direccionDestion: MyString
+  ClienteProveedor: one
+  Estado: one
+  state: false
+  creado_por: 1
+  actualizado_por: 1
+  creado: 2020-05-25
+  actualizado: 2020-05-25 22:17:53
+
+two:
+  numero: MyString
+  descripcion: MyString
+  direccionOrigen: MyString
+  direccionDestion: MyString
+  ClienteProveedor: two
+  Estado: two
+  state: false
+  creado_por: 1
+  actualizado_por: 1
+  creado: 2020-05-25
+  actualizado: 2020-05-25 22:17:53

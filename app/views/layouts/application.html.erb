@@ -1,0 +1,377 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Crm</title>
+
+    <%= csrf_meta_tags %>
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <%= javascript_tag "var AUTH_TOKEN = '#{form_authenticity_token}';" if protect_against_forgery? %>
+    <%= stylesheet_link_tag    'application', media: 'all', 'data-turbolinks-track': 'reload' %>
+    <%= javascript_include_tag 'application', 'data-turbolinks-track': 'reload' %>
+  </head>
+  <body  class="skin-blue">
+    <div class="wrapper">
+
+      <!-- Main Header -->
+      <header class="main-header">
+
+        <!-- Logo -->
+        <a href="index2.html" class="logo"><b><%= Empresa.find(1).nombre %></b></a>
+
+        <!-- Header Navbar -->
+        <nav class="navbar navbar-static-top" role="navigation">
+          <!-- Sidebar toggle button-->
+          <a href="#" class="sidebar-toggle" data-toggle="offcanvas" role="button">
+            <span class="sr-only">Toggle navigation</span>
+          </a>
+          <!-- Navbar Right Menu -->
+          <div class="navbar-custom-menu">
+            <ul class="nav navbar-nav">
+              <!-- Messages: style can be found in dropdown.less-->
+
+              <!-- User Account Menu -->
+              <li class="dropdown user user-menu">
+                <!-- Menu Toggle Button -->
+                <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                  <!-- The user image in the navbar-->
+                  <img src="dist/img/user2-160x160.jpg" class="user-image" alt=""/>
+                  <!-- hidden-xs hides the username on small devices so only the image appears. -->
+                  <span class="hidden-xs"> </span>
+                </a>
+                <ul class="dropdown-menu">
+                  <!-- The user image in the menu -->
+                  <li class="user-header">
+                  </li>
+                  <!-- Menu Body -->
+                  <li class="user-body">
+                    <div class="col-xs-4 text-center">
+                      <a href="#">Ventas</a>
+                    </div>
+                    <div class="col-xs-4 text-center">
+                      <a href="#">Notificaciones</a>
+                    </div>
+                    <div class="col-xs-4 text-center">
+                      <a href="#">Clientes nuevos</a>
+                    </div>
+                  </li>
+                  <!-- Menu Footer-->
+                  <li class="user-footer">
+                    <div class="pull-left">
+                      <a href="#" class="btn btn-default btn-flat">Perfil</a>
+                    </div>
+                    <div class="pull-right">
+                      <%= link_to "Salir", logout_path,class:"btn btn-default btn-flat" %>
+                    </div>
+                  </li>
+                </ul>
+              </li>
+            </ul>
+          </div>
+        </nav>
+      </header>
+      <!-- Left side column. contains the logo and sidebar -->
+      <aside class="main-sidebar">
+
+        <!-- sidebar: style can be found in sidebar.less -->
+        <section class="sidebar">
+
+          <!-- Sidebar user panel (optional) -->
+          <div class="user-panel">
+            <!--<div class="pull-left image">
+              <img src="dist/img/user2-160x160.jpg" class="img-circle" alt="User Image" />
+            </div>-->
+            <div class="pull-left info">
+              <p><%= session[:name] %></p>
+              <!-- Status -->
+              <a href="#"><i class="fa fa-circle text-success"></i> Online</a>
+            </div>
+          </div>
+
+          <!-- search form (Optional)
+          <form action="#" method="get" class="sidebar-form">
+            <div class="input-group">
+              <input type="text" name="q" class="form-control" placeholder="Search..."/>
+              <span class="input-group-btn">
+                <button type='submit' name='search' id='search-btn' class="btn btn-flat"><i class="fa fa-search"></i></button>
+              </span>
+            </div>
+          </form>
+          <!-- /.search form -->
+
+          <!-- Sidebar Menu -->
+          <ul class="sidebar-menu">
+            <li class="header">HEADER</li>
+            <!-- Optionally, you can add icons to the links -->
+            <!--li class="active"><a href="#"><span>Link</span></a></li>
+            <li><a href="#"><span>Another Link</span></a></li>-->
+            <% if session[:user_url].include? miEmpresa_path %>
+            <li><%= link_to "Mi Empresa", miEmpresa_path %></li>
+            <% end %>
+            <% if session[:user_url].include? chooseBodega_url %>
+            <li><%= link_to "Cambiar de Bodega", chooseBodega_url %></li>
+            <% end %>
+            <% if session[:user_url].include? '/puntoventa' %>
+              <li><%= link_to "Punto de Venta", '/puntoventa' %></li>
+            <% end %>
+            <% if session[:user_url].include? '/puntoventaMiniSuper' %>
+              <li><%= link_to "Punto de Venta", '/puntoventaMiniSuper' %></li>
+            <% end %>
+
+            <% if !(session[:user_url] & [productos_path,marcas_path,medidas_path,detalle_medidas_path,tipo_productos_path]).empty? %>
+              <li class="treeview">
+                <a href="#"><span>Productos</span> <i class="fa fa-angle-left pull-right"></i></a>
+                <ul class="treeview-menu">
+                  <% if session[:user_url].include? productos_path %>
+                  <li><%= link_to "Catalogo de Productos", productos_path %></li>
+                  <% end %>
+                  <% if session[:user_url].include? marcas_path %>
+                  <li><%= link_to "Marcas de Productos", marcas_path %></li>
+                  <% end %>
+                  <% if session[:user_url].include? medidas_path %>
+                  <li><%= link_to "Medidas de Productos", medidas_path %></li>
+                  <% end %>
+                  <% if session[:user_url].include? detalle_medidas_path %>
+                  <li><%= link_to "Detalle de Medidas", detalle_medidas_path %></li>
+                  <% end %>
+                  <% if session[:user_url].include? tipo_productos_path %>
+                  <li><%= link_to "Tipos de Producto", tipo_productos_path %></li>
+                  <% end %>
+                  <% if session[:user_url].include? calidads_path %>
+                  <li><%= link_to "Calidad", calidads_path %></li>
+                  <% end %>
+                </ul>
+              </li>
+            <% end %>
+            <% if !(session[:user_url] & [usuarios_path,roles_path,opcion_roles_path,role_usuarios_path,opcions_path]).empty? %>
+              <li class="treeview">
+                <a href="#"><span>Usuarios</span> <i class="fa fa-angle-left pull-right"></i></a>
+                <ul class="treeview-menu">
+                  <% if session[:user_url].include? usuarios_path %>
+                  <li><%= link_to "Usuarios", usuarios_path %></li>
+                  <% end %>
+                  <% if session[:user_url].include? roles_path %>
+                  <li><%= link_to "Perfiles", roles_path %></li>
+                  <% end %>
+                  <% if session[:user_url].include? opcion_roles_path %>
+                  <li><%= link_to "Pantallas por Perfil", opcion_roles_path %></li>
+                  <% end %>
+                  <% if session[:user_url].include? role_usuarios_path %>
+                  <li><%= link_to "Perfiles por Usuario", role_usuarios_path %></li>
+                  <% end %>
+                  <% if session[:user_url].include? opcions_path %>
+                  <li><%= link_to "Pantallas del Sistema", opcions_path %></li>
+                  <% end %>
+                </ul>
+              </li>
+            <% end %>
+            <% if !(session[:user_url] & ['/cliente_proveedor_tipo/1','/cliente_proveedor_tipo/2']).empty? %>
+              <li class="treeview">
+                <a href="#"><span>Clientes y Proveedores</span> <i class="fa fa-angle-left pull-right"></i></a>
+                <ul class="treeview-menu">
+                  <% if session[:user_url].include? "/cliente_proveedor_tipo/1" %>
+                  <li><%= link_to "Cliente", "/cliente_proveedor_tipo/1" %></li>
+                  <% end %>
+                  <% if session[:user_url].include? "/cliente_proveedor_tipo/2" %>
+                  <li><%= link_to "Proveedor", "/cliente_proveedor_tipo/2" %></li>
+                  <% end %>
+                  <% if session[:user_url].include? ruta_path %>
+                  <li><%= link_to "Rutas",  ruta_path %></li>
+                  <% end %>
+                </ul>
+              </li>
+            <% end %>
+            <% if !(session[:user_url] & [bodegas_path,procesamientoDocumentos_path,'/bodegausers',puntocompra_path,envio_bodega_path,aparatos_path]).empty? %>
+              <li class="treeview">
+                <a href="#"><span>Inventario</span> <i class="fa fa-angle-left pull-right"></i></a>
+                <ul class="treeview-menu">
+                  <% if session[:user_url].include? bodegas_path %>
+                  <li><%= link_to "Bodegas", bodegas_path %></li>
+                  <% end %>
+                  <% if session[:user_url].include? procesamientoDocumentosBodega_path %>
+                    <li><%= link_to "Despacho de Carga", procesamientoDocumentosBodega_path %></li>
+                  <% end %>
+                  <% if session[:user_url].include? procesamientoDocumentos_path %>
+                    <li><%= link_to "Despacho Rutas Definidas", procesamientoDocumentos_path %></li>
+                    <li><%= link_to "Despacho Rutas Dinamicas", procesamientoDocumentos_path(showOnlyPostDefinedRoutes: true) %></li>
+                  <% end %>
+                  <% if session[:user_url].include? '/bodegausers' %>
+                  <li><%= link_to "Bodegas por Usuario", '/bodegausers' %></li>
+                  <% end %>
+                  <% if session[:user_url].include? puntocompra_path %>
+                  <li><%= link_to "Punto de Compra", puntocompra_path %></li>
+                  <% end %>
+                  <% if session[:user_url].include? envio_bodega_path %>
+                  <li><%= link_to "Cambios en Bodegas", envio_bodega_path %></li>
+                  <% end %>
+                  <% if session[:user_url].include? aparatos_path %>
+                  <li><%= link_to "Inventario de Aparatos", aparatos_path %></li>
+                  <% end %>
+                </ul>
+              </li>
+            <% end %>
+            <% if !(session[:user_url] & [cajas_path,documento_pagos_path]).empty? %>
+              <li class="treeview">
+                <a href="#"><span>Dinero</span> <i class="fa fa-angle-left pull-right"></i></a>
+                <ul class="treeview-menu">
+                  <% if session[:user_url].include? cajas_path %>
+                    <li><%= link_to "Manejo de Caja", cajas_path %></li>
+                  <% end %>
+                  <% if session[:user_url].include?  documento_pagos_path %>
+                    <li><%= link_to "Documentos por Cobrar", documento_pagos_path(tipo: 2) %></li>
+                  <% end %>
+                  <% if session[:user_url].include? documento_pagos_path %>
+                    <li><%= link_to "Documentos por Pagar", documento_pagos_path(tipo: 1) %></li>
+                  <% end %>
+                  <% if session[:user_url].include? bancos_path %>
+                    <li><%= link_to "Bancos", bancos_path %></li>
+                  <% end %>
+                </ul>
+              </li>
+            <% end %>
+            <% if !(session[:user_url] & [trackings_path,estados_path]).empty? %>
+              <li class="treeview">
+                <a href="#"><span>Tracking</span> <i class="fa fa-angle-left pull-right"></i></a>
+                <ul class="treeview-menu">
+                  <% if session[:user_url].include? trackings_path %>
+                  <li><%= link_to "Tracking", trackings_path %></li>
+                  <% end %>
+                  <% if session[:user_url].include? estados_path %>
+                  <li><%= link_to "Estados", estados_path %></li>
+                  <% end %>
+                </ul>
+              </li>
+            <% end %>
+            <% if !(session[:user_url] & [reporteExistenciasBodega_path,documentos_path,reporteVentasYCompras_path]).empty? %>
+              <li class="treeview">
+                <a href="#"><span>Reportes</span> <i class="fa fa-angle-left pull-right"></i></a>
+                <ul class="treeview-menu">
+                  <% if session[:user_url].include? cotizaciones_path %>
+                  <li><%= link_to "Cotizaciones", cotizaciones_path %></li>
+                  <% end %>
+                  <% if session[:user_url].include? reporteExistenciasBodega_path %>
+                  <li><%= link_to "Existencias por Bodega", reporteExistenciasBodega_path %></li>
+                  <% end %>
+                  <% if session[:user_url].include? documentos_path %>
+                  <li><%= link_to "Reimpresion y Anulacion de Documentos", documentos_path %></li>
+                  <% end %>
+                  <% if session[:user_url].include? documentos_path %>
+                  <li><%= link_to "Ventas/Compras", reporteVentasYCompras_path %></li>
+                  <% end %>
+                </ul>
+              </li>
+            <% end %>
+            <!--
+              <li class="treeview">
+                <a href="#"><span>Admin. Proyectos</span> <i class="fa fa-angle-left pull-right"></i></a>
+                <ul class="treeview-menu">
+                  <li><%= link_to "Proyectos", proyectos_path %></li>
+                  <li><%= link_to "Tareas", tareas_path %></li>
+                </ul>
+              </li>
+              <li>
+            <% if !(session[:user_option] & [11,17,18]).empty? %>
+              <li class="treeview">
+                <a href="#"><span>Configuraciones Generales</span> <i class="fa fa-angle-left pull-right"></i></a>
+                <ul class="treeview-menu">
+                  <% if session[:user_option].include? 11 %>
+                  <li><%= link_to "Tipo de Pago", tipo_pagos_path %></li>
+                  <% end %>
+                  <% if session[:user_option].include? 17 %>
+                  <li><%= link_to "Autorizacion SAT", auto_sats_path %></li>
+                  <% end %>
+                  <% if session[:user_option].include? 18 %>
+                  <li><%= link_to "Tipos de Documentos", tipo_documentos_path %></li>
+                  <% end %>
+                </ul>
+              </li>
+            <% end %>
+
+            <li class="treeview">
+              <a href="#"><span>Admin. Proyectos</span> <i class="fa fa-angle-left pull-right"></i></a>
+              <ul class="treeview-menu">
+                <li><%= link_to "Proyectos", proyectos_path %></li>
+                <li><%= link_to "Tareas", tareas_path %></li>
+              </ul>
+            </li>
+            <li><# link_to "Salir", logout_path,class:"" %></li>
+
+            <li class="treeview">
+              <a href="#"><span>Marketing</span> <i class="fa fa-angle-left pull-right"></i></a>
+              <ul class="treeview-menu">
+                <li><a href="#">Email Marketing</a></li>
+                <li><a href="#">Ofertas</a></li>
+                <li><a href="#">Cupones</a></li>
+              </ul>
+            </li>
+            <li class="treeview">
+              <a href="#"><span>Reportes</span> <i class="fa fa-angle-left pull-right"></i></a>
+              <ul class="treeview-menu">
+                <li><a href="#">Link in level 2</a></li>
+                <li><a href="#">Link in level 2</a></li>
+              </ul>
+            </li>
+            <li class="treeview">
+              <a href="#"><span>Multilevel</span> <i class="fa fa-angle-left pull-right"></i></a>
+              <ul class="treeview-menu">
+                <li><a href="#">Link in level 2</a></li>
+                <li><a href="#">Link in level 2</a></li>
+              </ul>
+            </li>
+          </ul><!-- /.sidebar-menu -->
+          <li><%= link_to "Salir", logout_path ,class:"" %></li>
+        </section>
+        <!-- /.sidebar -->
+      </aside>
+
+      <!-- Content Wrapper. Contains page content -->
+      <div class="content-wrapper">
+        <!-- Content Header (Page header)
+        <section class="content-header">
+          <h1>
+            <small></small>
+          </h1>
+          <ol class="breadcrumb">
+            <li><a href="#"><i class="fa fa-dashboard"></i> Level</a></li>
+            <li class="active">Here</li>
+          </ol>
+        </section>-->
+
+        <!-- Main content -->
+        <section class="content">
+          <%= yield %>
+          <!-- Your Page Content Here -->
+
+        </section><!-- /.content -->
+      </div><!-- /.content-wrapper -->
+      <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="exampleModalLabel"></h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <div class="modal-body">
+            ...
+          </div>
+          <!--div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+            <button type="button" class="btn btn-primary">Save changes</button>
+          </div-->
+        </div>
+      </div>
+    </div>
+      <!-- Main Footer -->
+      <footer class="main-footer">
+        <!-- To the right -->
+        <div class="pull-right hidden-xs">
+          
+        </div>
+        <!-- Default to the left -->
+        <strong>Copyright &copy; 2026 <a href="#">MarcosCel</a>.</strong> All rights reserved.
+      </footer>
+
+    </div>
+  </body>
+</html>

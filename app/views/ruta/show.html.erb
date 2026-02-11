@@ -1,0 +1,39 @@
+<p id="notice"><%= notice %></p>
+
+<p>
+  <strong>Nombre:</strong>
+  <%= @rutum.nombre %>
+</p>
+
+<p>
+  <strong>Piloto:</strong>
+  <%= @rutum.piloto %>
+</p>
+
+<p>
+  <strong>Status:</strong>
+  <%= @rutum.status %>
+</p>
+
+<p>
+  <strong>Creado por:</strong>
+  <%= @rutum.creado_por %>
+</p>
+
+<p>
+  <strong>Actualizado por:</strong>
+  <%= @rutum.actualizado_por %>
+</p>
+
+<p>
+  <strong>Creado:</strong>
+  <%= @rutum.creado %>
+</p>
+
+<p>
+  <strong>Actualizado:</strong>
+  <%= @rutum.actualizado %>
+</p>
+
+<%= link_to 'Edit', edit_rutum_path(@rutum) %> |
+<%= link_to 'Back', ruta_path %>

@@ -1,0 +1,23 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  caja: one
+  cantidad: 1.5
+  tipo: 1
+  razon: MyString
+  status: false
+  creado_por: 1
+  actualizado_por: 1
+  creado: 2020-06-29
+  actualizado: 2020-06-29 15:57:07
+
+two:
+  caja: two
+  cantidad: 1.5
+  tipo: 1
+  razon: MyString
+  status: false
+  creado_por: 1
+  actualizado_por: 1
+  creado: 2020-06-29
+  actualizado: 2020-06-29 15:57:07

@@ -1,0 +1,43 @@
+<%= form_for(detalle_medida) do |f| %>
+  <% if detalle_medida.errors.any? %>
+    <div id="error_explanation">
+      <h2><%= pluralize(detalle_medida.errors.count, "error") %> prohibited this detalle_medida from being saved:</h2>
+
+      <ul>
+      <% detalle_medida.errors.full_messages.each do |message| %>
+        <li><%= message %></li>
+      <% end %>
+      </ul>
+    </div>
+  <% end %>
+<div class="row">
+  <div class="col-md-6 col-lg-6 col-sm-6 col-xs-6">
+    <div class="field">
+      <%= f.label :Medida_id %>
+      <%= collection_select(:detalle_medida, :Medida_id, Medida.where(:Estado => true), :id, :Nombre, {:prompt => true}) %>
+    </div>
+    <div class="field">
+      <%= f.label :Nombre %>
+      <%= f.text_field :Nombre, class: 'form-control' %>
+    </div>
+    <div class="field">
+      <%= f.label :Proporcion %> (Valores como 100,50 o 25 % sin el signo)
+      <%= f.number_field  :Proporcion, placeholder: '(Valores como 100,50 o 25 % sin el signo)' ,class: 'form-control' %>
+    </div>
+
+    <div class="field">
+      <%= f.label :Porcentaje_Ganancia %> (Valores como 100,50 o 25 % sin el signo)
+      <%= f.text_field :Porcentaje_Ganancia, class: 'form-control', placeholder: '(Valores como 100,50 o 25 % sin el signo)' %>
+    </div>
+  </div>
+  <div class="col-md-6 col-lg-6 col-sm-6 col-xs-6">
+    <div class="panel panel-info">
+      <div class="panel-heading">Acciones:</div>
+      <div class="panel-body">
+        <button type="submit" name="button" class="btn btn-primary"><i class="fontawesome-save"></i> Guardar</button>
+        <%= link_to 'Regresar', detalle_medidas_path, class: 'btn btn-default' %>
+      </div>
+    </div>
+  </div>
+</div>
+<% end %>

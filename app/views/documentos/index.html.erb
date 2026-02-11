@@ -1,0 +1,45 @@
+<p id="notice"><%= notice %></p>
+
+<h1><%= @title %></h1>
+
+<table class="table dataTable">
+  <thead>
+    <tr>
+      <th>Documento</th>
+      <th>Cliente / Proveedor</th>
+      <th>Tipo</th>
+      <th>Pago</th>
+      <th>Creado por</th>
+      <th>Creado</th>
+      <th></th>
+      <th></th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <% @documentos.each do |documento| %>
+      <tr>
+        <td><%= documento.Documento %></td>
+        <% if documento.ClienteProveedor %>
+          <td><%= documento.ClienteProveedor.Nombre %></td>
+        <% else %>
+          <td></td>
+        <% end %>
+        <% if documento.TipoDocumento %>
+          <td><%= documento.TipoDocumento.Nombre %></td>
+        <% else %>
+          <td></td>
+        <% end %>
+        <% if documento.TipoPago %>
+          <td><%= documento.TipoPago.Nombre %></td>
+        <% else %>
+          <td></td>
+        <% end %>
+        <td><%= documento.creado_por != nil ? Usuario.find(documento.creado_por).Nombres : '' %></td>
+        <td><%= documento.created_at %></td>
+        <td><%= link_to 'Ver', print_path(documento.Documento), class: 'btn btn-info' %></td>
+        <td><%= link_to 'Eliminar', documento, method: :delete, data: { confirm: 'Are you sure?' }, class: 'btn btn-danger'%></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>

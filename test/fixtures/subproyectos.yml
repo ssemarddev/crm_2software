@@ -1,0 +1,19 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  nombre: MyString
+  proyecto: one
+  estado: false
+  creado_por: 1
+  actualizado_por: 1
+  creado: 2019-10-15 23:04:10
+  actualizado: 2019-10-15 23:04:10
+
+two:
+  nombre: MyString
+  proyecto: two
+  estado: false
+  creado_por: 1
+  actualizado_por: 1
+  creado: 2019-10-15 23:04:10
+  actualizado: 2019-10-15 23:04:10

@@ -1,0 +1,117 @@
+<%= form_with(model: tracking, local: true) do |form| %>
+  <% if tracking.errors.any? %>
+    <div id="error_explanation">
+      <h2><%= pluralize(tracking.errors.count, "error") %> prohibited this tracking from being saved:</h2>
+
+      <ul>
+      <% tracking.errors.full_messages.each do |message| %>
+        <li><%= message %></li>
+      <% end %>
+      </ul>
+    </div>
+  <% end %>
+  <div class="row">
+    <div class="col-xs-12 col-sm-12 col-md-6">
+
+      <% if session[:version].include? "2.0" %>
+        <div class="field">
+          <%= form.label :Cliente %>
+          <%= collection_select(:tracking, :cliente_proveedor_id, ClienteProveedor.where(:Estado => true, :Tipo=>1), :id, :Nombre, {:prompt => true}, class: "form-control") %>
+        </div>
+      <% else %>
+        <div class="field">
+          <%= form.label :Cliente %>
+          <%= form.text_field :nombre_cliente, id: :tracking_nombre_cliente, class: "form-control"  %>
+        </div>
+        <div class="field">
+          <%= form.label :Numero_Contacto %>
+          <%= form.number_field :numero_contacto, id: :tracking_numero_contacto, class: "form-control"  %>
+        </div>
+        <div class="field">
+          <%= form.label :Clave %>
+          <%= form.text_field :clave, id: :tracking_clave, class: "form-control"  %>
+        </div>
+      <% end %>
+      <div class="field">
+        <%= form.label :Marca_id %>
+        <%= collection_select(:tracking, :marca_id, Marca.where(:Estado => true), :id, :Nombre, {:prompt => true}, class: "form-control" )%>
+      </div>
+
+      <div class="field">
+        <%= form.label :descripcion %>
+        <%= form.text_field :descripcion, id: :tracking_descripcion, class: "form-control"  %>
+      </div>
+
+      <div class="field">
+        <%= form.label :observacion %>
+        <%= form.text_field :observacion, id: :tracking_observacion, class: "form-control"  %>
+      </div>
+
+      <div class="field">
+        <%= form.label :serie %>
+        <%= form.text_field :serie, id: :tracking_serie, class: "form-control"  %>
+      </div>
+
+      <div class="field">
+        <%= form.label :falla %>
+        <%= form.text_field :falla, id: :tracking_falla, class: "form-control"  %>
+      </div>
+      <div class="field">
+        <%= form.label :Precio %>
+        <%= form.number_field :precio, id: :tracking_precio, class: "form-control"  %>
+      </div>
+      <!--div class="field">
+         form.label :direccionOrigen %>
+         form.text_field :direccionOrigen, id: :tracking_direccionOrigen, class: "form-control"  %>
+      </div>
+
+      <div class="field">
+         form.label :direccionDestion %>
+         form.text_field :direccionDestion, id: :tracking_direccionDestion, class: "form-control"  %>
+      </div>
+      -->
+      <div class="field">
+        <%= form.label :Estado_Inicial %>
+        <%= collection_select(:tracking, :estado_id, Estado.where(:Estado => true), :id, :Nombre, {:prompt => true}, class: "form-control") %>
+      </div>
+
+      <div class="field">
+        <%= form.label :state %>
+        <%= form.check_box :state, id: :tracking_state, checked: true %>
+      </div>
+  <!--
+  <div class="field">
+     form.label :numero %>
+     form.text_field :numero, id: :tracking_numero, class: "form-control"  %>
+  </div>
+  <div class="field">
+     form.label :creado_por %>
+     form.number_field :creado_por, id: :tracking_creado_por %>
+  </div>
+
+  <div class="field">
+     form.label :actualizado_por %>
+     form.number_field :actualizado_por, id: :tracking_actualizado_por %>
+  </div>
+
+  <div class="field">
+     form.label :creado %>
+     form.date_select :creado, id: :tracking_creado %>
+  </div
+
+  <div class="field">
+     form.label :actualizado %>
+     form.datetime_select :actualizado, id: :tracking_actualizado %>
+  </div>-->
+</div>
+<div class="col-md-6 col-lg-6 col-sm-6 col-xs-6">
+  <div class="panel panel-info">
+    <div class="panel-heading">Acciones:</div>
+    <div class="panel-body">
+      <button type="submit" name="button" class="btn btn-primary"><i class="fontawesome-save"></i> Guardar</button>
+      <%= link_to 'Regresar', trackings_path, class: 'btn btn-default' %>
+    </div>
+  </div>
+</div>
+</div>
+<% end %>

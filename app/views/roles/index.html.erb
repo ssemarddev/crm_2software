@@ -1,0 +1,36 @@
+<p id="notice"><%= notice %></p>
+
+<h1>Perfil
+  <%= link_to 'Nuevo Perfil <i class="fa fa-plus"></i>'.html_safe , new_role_path, class: 'btn btn-primary' %>
+  <% if params[:deleted] %>
+    <%= link_to 'Regresar'.html_safe , roles_path, class: 'btn btn-default' %>
+  <% else %>
+    <%= link_to 'Ver Papelera <i class="fa fa-trash"></i>'.html_safe , roles_path(deleted: true), class: 'btn btn-danger' %>
+  <% end %>
+</h1>
+
+<table id="productos" class="table table-condensed dataTable">
+  <thead>
+    <tr>
+      <th>Nombre</th>
+      <th>Creado</th>
+      <th>Actualizado</th>
+      <th></th>
+      <th></th>
+      <th></th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <% @roles.each do |role| %>
+      <tr>
+        <td class="<%= 'tr-'+role.Estado.to_s %>"><%= role.Nombre %></td>
+        <td class="<%= 'tr-'+role.Estado.to_s %>"><%= role.creado %></td>
+        <td class="<%= 'tr-'+role.Estado.to_s %>"><%= role.actualizado %></td>
+        <td class="<%= 'tr-'+role.Estado.to_s %>"><%= link_to  icon('fa','eye'), role, class:'btn btn-info' %></td>
+        <td class="<%= 'tr-'+role.Estado.to_s %>"><%= link_to icon('fa','edit'), edit_role_path(role), class:'btn btn-warning' %></td>
+        <td class="<%= 'tr-'+role.Estado.to_s %>"><%= link_to icon('fa','trash-o'), role, method: :delete, data: { confirm: 'Estas Seguro?' }, class:'btn btn-danger' %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>

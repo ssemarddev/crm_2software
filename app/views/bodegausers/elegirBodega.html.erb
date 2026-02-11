@@ -1,0 +1,106 @@
+<%= csrf_meta_tags %>
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <%= stylesheet_link_tag 'application', media: 'all', 'data-turbolinks-track': 'reload' %>
+    <%= stylesheet_link_tag 'user_login', media: 'all', 'data-turbolinks-track': 'reload' %>
+    <%= stylesheet_link_tag 'scaffolds', media: 'all', 'data-turbolinks-track': 'reload' %>
+
+    <%= javascript_include_tag 'application', 'data-turbolinks-track': 'reload' %>
+  <div class="choose-bodega-scope">
+  <form action="/saveChoose" method="get">
+    <div class="bodega-page">
+      <div class="bodega-header">
+        <div>
+          <h1 class="bodega-title">Elegir bodega</h1>
+          <p class="bodega-subtitle">Selecciona la bodega con la que vas a operar.</p>
+        </div>
+
+        <div class="bodega-actions">
+          <input
+            id="bodegaSearch"
+            type="text"
+            class="bodega-search"
+            placeholder="Buscar bodega…"
+            autocomplete="off"
+          />
+
+          <select id="bodegaSort" class="bodega-sort">
+            <option value="name_asc">Nombre (A → Z)</option>
+            <option value="name_desc">Nombre (Z → A)</option>
+          </select>
+        </div>
+      </div>
+
+      <% if @bodegas.present? %>
+        <div id="bodegaGrid" class="bodega-grid">
+          <% @bodegas.each do |b| %>
+            <% nombre = b.bodega.Nombre.to_s %>
+            <button
+              type="submit"
+              name="bodega"
+              value="<%= b.bodega.id %>"
+              class="bodega-card"
+              data-name="<%= nombre.downcase %>"
+              title="Seleccionar <%= nombre %>"
+            >
+              <div class="bodega-badge">BODEGA</div>
+              <div class="bodega-name"><%= nombre %></div>
+              <div class="bodega-hint">Click para entrar</div>
+            </button>
+          <% end %>
+        </div>
+      <% else %>
+        <div class="bodega-empty">
+          <h3>Sin bodegas asignadas</h3>
+          <p>No tienes bodegas para operar en el sistema. Solicita al administrador que te asigne una.</p>
+        </div>
+      <% end %>
+    </div>
+  </form>
+
+  <script>
+    (function () {
+      var search = document.getElementById('bodegaSearch');
+      var sort = document.getElementById('bodegaSort');
+      var grid = document.getElementById('bodegaGrid');
+
+      if (!search || !sort || !grid) return;
+
+      function filterCards() {
+        var q = (search.value || '').toLowerCase().trim();
+        var cards = grid.querySelectorAll('.bodega-card');
+
+        cards.forEach(function(card) {
+          var name = card.getAttribute('data-name') || '';
+          card.style.display = name.indexOf(q) !== -1 ? '' : 'none';
+        });
+      }
+
+      function sortCards() {
+        var mode = sort.value;
+        var cards = Array.prototype.slice.call(grid.querySelectorAll('.bodega-card'));
+
+        cards.sort(function(a, b) {
+          var an = (a.getAttribute('data-name') || '');
+          var bn = (b.getAttribute('data-name') || '');
+
+          if (mode === 'name_desc') return an < bn ? 1 : (an > bn ? -1 : 0);
+          return an > bn ? 1 : (an < bn ? -1 : 0);
+        });
+
+        cards.forEach(function(c) { grid.appendChild(c); });
+      }
+
+      search.addEventListener('input', function () {
+        filterCards();
+      });
+
+      sort.addEventListener('change', function () {
+        sortCards();
+        filterCards();
+      });
+
+      sortCards();
+    })();
+  </script>
+  </div>

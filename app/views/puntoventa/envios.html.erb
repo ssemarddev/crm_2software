@@ -1,0 +1,389 @@
+<h1>Envios entre Bodegas</h1>
+
+  <div class="panel panel-default">
+      <div class="panel-heading">Datos del Documento:</div>
+      <div class="panel-body">
+        <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+          <input name="documento" type="hidden" id="documento" value="0"/>
+          <div class="col-xs-12 col-sm-12 col-md-3 col-lg-3">
+            <label for="fecha">Fecha:</label>
+            <input name="fecha" type="date" id="fecha"  value="<%= Time.now.strftime("%Y-%m-%d") %>" disabled class="form-control"/>
+          </div>
+          <div class="col-xs-12 col-sm-12 col-md-3 col-lg-3">
+            <label for="bodega">Bodega de Egreso:</label>
+            <!--input name="bodega" type="text" id="bodega2" class="form-control" readonly value="<# session[:bodega] %>"/-->
+            <select name="bodega" type="text" id="bodega2" class="form-control">
+            </select>
+          </div>
+          <div class="col-xs-12 col-sm-12 col-md-3 col-lg-3">
+            <label for="bodega">Bodega de Ingreso:</label>
+            <select name="bodega" type="text" id="bodega" class="form-control">
+            </select>
+          </div>
+        </div>
+        <div style="display:none;" class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+          <label for="observacion">Observacion:</label>
+          <input name="observacion" type="text" id="observacion" class="form-control" />
+        </div>
+      </div>
+    </div>
+<fieldset id="form">
+    <div class="panel panel-primary">
+      <div class="panel-heading">Productos a Enviar:</div>
+        <div class="panel-body">
+          <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 info">
+            <table class="table table-stripped">
+              <thead>
+                <th>Cantidad</th>
+                <th>Codigo</th>
+                <th>Descripcion</th>
+                <th>Medida</th>
+                <th>Val. Unitario</th>
+                <th>Total</th>
+              </thead>
+              <tbody id="detalle_venta">
+
+              </tbody>
+            </table>
+          </div>
+        </div>
+        <div class="panel-footer">
+          <table class="table">
+            <tr>
+              <td></td>
+              <td class="pull-right"><p id="subTotal" >Total Q00.00</p><input type="hidden" id="totalInput" value=""></td>
+            </tr>
+          </table>
+        </div>
+      </div>
+
+  <div class="panel panel-success ">
+    <div class="panel-heading">Productos: <span id="unidades"></span></div>
+      <div class="panel-body">
+        <div class="row">
+          <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 info">
+            <div class="col-xs-12 col-sm-12 col-md-1 col-lg-1">
+              <label for="unidad">Unidad</label>
+              <input name="unidad" type="number" id="unidad" value="1" class="form-control"/>
+            </div>
+            <div class="col-xs-12 col-sm-12 col-md-3 col-lg-">
+              <label for="codigoproducto">Producto</label>
+              <select id="codigoproducto" name="codigoproducto" class="form-control">
+              </select>
+            </div>
+            <div class="col-xs-12 col-sm-12 col-md-3 col-lg-3">
+              <label for="unidadmedida">Medida</label>
+              <select name="unidadmedida :selected option" id="unidadmedida" class="form-control"></select>
+            </div>
+            <div class="col-xs-12 col-sm-12 col-md-1 col-lg-1">
+              <label for="precio">Precio</label>
+              <input name="precio" type="number" id="precio" disabled="true" class="form-control"/>
+            </div>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 info">
+            <div class="col-xs-12 col-sm-12 col-md-3 col-lg-3">
+              <input name="idproducto" type="hidden" id="idproducto"/>
+                <label for="descripcion">Descripcion</label>
+                <input name="descripcion" type="text" id="descripcion" disabled="true" class="form-control"/>
+            </div>
+            <div class="col-xs-12 col-sm-12 col-md-6 col-lg-6">
+            </div>
+            <div class="col-xs-12 col-sm-12 col-md-3 col-lg-3 alert alert-primary">
+                <button type="button" name="button" id="agregar" class="btn btn-success">Agregar</button>
+                <button type="button" name="button" id="pagar" class="btn btn-primary">Congelar</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+</fieldset>
+<div class="panel panel-info ">
+  <div class="panel-heading">Impresion</div>
+    <div class="panel-body">
+      <div class="row">
+
+      </div>
+  </div>
+  <div class="panel-footer">
+    <div class="centrarCaja" >
+      <button type="button" name="button" id="guardar" class="btn btn-info"><i class="fontawesome-print"aria-hidden="true"></i> Imprimir y Guardar</button>
+    </div>
+  </div>
+</div>
+<script>
+    var existe         = false;
+    var precioProducto = 0;
+    var subTotalOrden = 0;
+    function borrar(e,movProdId,detalleDocumentoId,total){
+      $.ajax({
+        url: "/unloadMovProd",
+        method: 'POST',
+        dataType: 'json',
+        data: {
+          movProdId: movProdId,
+          detalleDocumentoId: detalleDocumentoId
+        },
+        success: function( results ) {
+          subTotalOrden -= total;
+          setTotal(subTotalOrden)
+          $(e.parentNode.parentNode).remove();
+        }
+      });
+    }
+    $("#pago_efectivo").on('click',function(){
+      console.log($("#pago_efectivo").is('checked'));
+        if($("#pago_efectivo").is('checked')){
+          $("#divtarjeta").hide();
+        }else{
+          $("#divtarjeta").show();
+        }
+    });
+    $(window).unload(function(evento){
+      if($("#documento").val()>0) {
+      	$.ajax({
+      		type:"POST",
+      		url:"/unloadOrder",
+      		dataType:"json",
+          data: {
+            documento: $("#documento").val()
+          },
+          async:false
+      		});
+        }
+    });
+    function calcularTotal(){
+      total = $("#totalInput").val();
+      $("#total").val(total);
+      return total;
+    }
+    $( window ).load(function() {
+      getBodegas();
+      getProducts();
+    });
+    $("#pagar").on('click', function(){
+      if(calcularTotal()>0){
+        $(".pago").show();
+        $('#form').prop('disabled', true);
+        $('#form select').prop('disabled', true);
+      }else{
+        alert("Envia almenos un producto.")
+      }
+    });
+    $("#descongelar").on('click', function(){
+      $(".pago").hide();
+      $('select').prop('disabled', false);
+      $('#form').prop('disabled', false);
+    });
+    $("#guardar").on('click', function(c){
+      $.ajax({
+        url: "/saveOrder",
+        method: 'POST',
+        dataType: 'json',
+        data: {
+          documento            : $("#documento").val(),
+          pago_efectivo        : $("#pago_efectivo").prop("checked"),
+          pago_tarjeta         : $("#pago_tarjeta").prop("checked"),
+          pago_efectivo_tarjeta: $("#pago_efectivo_tarjeta").prop("checked"),
+          tarjeta              : $("#tarjeta").val(),
+          pago_inicial         : $("#pago_inicial").val(),
+          pago_inicial_tarjeta : $("#pago_inicial_tarjeta").val(),
+          numero_tarjeta       : $("#numero_tarjeta").val(),
+          nombre_tarjeta       : $("#nombre_tarjeta").val()
+        },
+        success: function( results ) {
+          window.location.href = "print?documentoId="+$("#documento").val();
+        }
+      });
+    })
+    function getProducts(){
+      $.ajax({
+        url: "/findProductosByProvider",
+        method: 'POST',
+        dataType: 'json',
+        data: {
+          proveedor: 'all'
+        },
+        success: function( result ) {
+          html = '<option value="">Seleccione...</option>'
+          for(i=0; i < result.length; i++){
+            html += "<option value='"+result[i].Codigo+"'>"+result[i].Nombre+"</option>";
+          }
+          $("#codigoproducto").html(html);
+        }
+      });
+    }
+    $("#codigoproducto, #bodega").on('change', function(c){
+      $("#unidades").html("")
+      bodega = $("#bodega").val()
+      findProducts(<%= session[:bodega_id] %>, false, true) //bodega Origen
+      findProducts(bodega , true, false) //bodega Destino
+    });
+    function findProducts(bodega, ingreso, egreso){
+      $.ajax({
+        url: "/findProduct",
+        method: 'POST',
+        dataType: 'json',
+        data: {
+          product: $("#codigoproducto").val(),
+          tipo:  3,
+          bodega: bodega
+        },
+        success: function( results ) {
+          //console.log(results[1])
+          result = results[0][0];
+          $("#descripcion").val(result.Nombre);
+          $("#codigoproducto").val(result.Codigo);
+          $("#idproducto").val(result.id);
+          precioProducto = result.Valor_Compra;
+          $("#precio").val(result.Valor_Compra)
+          if(egreso)
+            $("#unidades").append("<h3>Unidades disponibles en bodega origen: <font color='red'>"+results[1].unidades+"</font></h3>")
+          else
+            $("#unidades").append("<h3>Unidades disponibles en bodega destino: <font color='red'>"+results[1].unidades+"</font></h3>")
+
+          if(result.Medida_id>0){
+            getMedidas(result.Medida_id)
+          }
+
+        }
+      });
+    }
+    $("#agregar").on('click',function(c){
+      $("#agregar").attr('disabled',true);
+      var unidad  = $("#unidad").val();
+      if(unidad > 0 && $("#codigoproducto").val() != "" && $("#unidadmedida").val()!="" ){
+        var precio      = $("#precio").val();
+        var codigo      = $("#codigoproducto").val();
+        var descripcion = $("#descripcion").val();
+        var medida      = $("#unidadmedida option:selected").text();
+        var total       = precio * unidad;
+        html  = "<tr><td>"+unidad+"</td>"
+        html += "<td>"+codigo+"</td>"
+        html += "<td>"+descripcion+"</td>"
+        html += "<td>"+medida+"</td>"
+        html += "<td>"+precio+"</td>"
+        html += "<td>"+total+"</td>"
+        subTotalOrden += total;
+        tipo = 3
+        $.ajax({
+          url: "/saveMovProduct",
+          method: 'POST',
+          dataType: 'json',
+          data: {
+            unidad                : unidad,
+            descripcion           : descripcion,
+            unidad_medida         : $("#unidadmedida").val(),
+            tipo_pago             : $("#tipo_pago").val(),
+            detalle_unidad_medida : $("#unidadmedida").val(),
+            producto              : $("#idproducto").val(),
+            total                 : total,
+            proporcion            : $("#unidadmedida option:selected").attr('proporcion'),
+            ganancia              : $("#unidadmedida option:selected").attr('ganancia'),
+            tipo                  : tipo,
+            proveedor             : $("#proveedor").val(),
+            documento             : $("#documento").val(),
+            bodegaEntranteId      : $("#bodega").val()
+          },
+          success: function( results ) {
+            console.log(results);
+            if(results){
+              if($("#documento").val()<1){
+                $("#documento").val(results[0].Documento);
+              }
+              html += "<td><button onclick='borrar(this,"+results[1].id+","+results[2].id+");' class='btn btn-danger' type='button'>X</button></td></tr>"
+              $("#tipo_pago").prop('disabled', true);
+              $("#detalle_venta").append(html);
+              $("#bodega").attr('disabled',false);
+              limpiar();
+              setTotal(subTotalOrden);
+              $("#agregar").attr('disabled',false);
+            }else{
+              $("#agregar").attr('disabled',true);
+              alert("Error")
+            }
+          }
+        })
+        existe = true;
+      }
+    });
+    $("#unidadmedida").on('change', function(c){
+      var precioVenta  = $("#unidadmedida").find(":selected").attr('ganancia');
+      precioVenta      = precioProducto * (precioVenta/100);
+      $("#precio").val(precioVenta);
+    });
+
+    setInterval(function() {
+      //getFactura();// method to be executed;
+    }, 5000);
+    function limpiar(){
+      $("#precio").val("");
+      $("#codigoproducto").val("");
+      $("#descripcion").val("");
+      $("#unidadmedida").html("");
+      $("#descuento").val("");
+      $("#unidad").val(1);
+      $("#codigoproducto").focus();
+    }
+    function setTotal(subTotalOrden){
+      subTotalOrden = Math.round((subTotalOrden + Number.EPSILON) * 100) / 100
+      $("#subTotal").html('Total: '+subTotalOrden)
+      $("#total").val(subTotalOrden)
+      $("#pendiente").html(subTotalOrden);
+      $("#totalInput").val(subTotalOrden);
+    }
+    function getBodegas(){
+      $.ajax({
+        url: "/findBodegas",
+        method: 'POST',
+        dataType: 'json',
+        success: function( result ) {
+          html  = '<option value="">Seleccione...</option>';
+          html2 = '<option value="">Seleccione...</option>';
+          for(i=0; i < result.length; i++){
+            actualBodega = <%= session[:bodega_id] %>
+            if(actualBodega!=result[i].id){
+              html += "<option value='"+result[i].id+"'>"+result[i].bodega+"-"+result[i].user+"</option>";
+            }
+            html2 += "<option value='"+result[i].id+"'>"+result[i].bodega+"-"+result[i].user+"</option>";
+
+          }
+          $("#bodega").html(html);
+          $("#bodega2").html(html2);
+        }
+      });
+    }
+    function getMedidas(medida, detalle= false){
+      var url        = "/findMedida";
+      var proporcion = 100;
+      var ganancia   = 100;
+      if(detalle)
+        url = "/findDetalleMedida";
+      $.ajax({
+        url: url,
+        method: 'POST',
+        dataType: 'json',
+        data: {
+          medida: medida
+        },
+        success: function( result ) {
+          html = ""
+          for(i=0; i < result.length; i++){
+            if(result[i].Proporcion){
+              proporcion = result[i].Proporcion;
+              ganancia   = result[i].Porcentaje_Ganancia;
+            }
+            html += "<option value='"+result[i].id+"' proporcion='"+proporcion+"' ganancia='"+ganancia+"'>"+result[i].Nombre+"</option>";
+          }
+          if(detalle){
+            $("#unidadmedida").append(html);
+          }else{
+            $("#unidadmedida").html(html);
+            getMedidas(medida, true);
+          }
+          existe = true
+        }
+      });
+    }
+    </script>

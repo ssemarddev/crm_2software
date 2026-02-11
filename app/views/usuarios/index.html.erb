@@ -1,0 +1,40 @@
+<p id="notice"><%= notice %></p>
+
+<h1>Usuarios
+  <%= link_to 'Nuevo Usuario <i class="fa fa-plus"></i>'.html_safe , new_usuario_path, class: 'btn btn-primary' %>
+  <% if params[:deleted] %>
+    <%= link_to 'Regresar'.html_safe , usuarios_path, class: 'btn btn-default' %>
+  <% else %>
+    <%= link_to 'Ver Papelera <i class="fa fa-trash"></i>'.html_safe , usuarios_path(deleted: true), class: 'btn btn-danger' %>
+  <% end %>
+</h1>
+
+<table id="productos" class="table table-condensed dataTable">
+  <thead>
+    <tr>
+      <th>User name</th>
+      <th>Ultimo login</th>
+      <th>Nombres</th>
+      <th>Apellidos</th>
+      <th>Correo</th>
+      <th></th>
+      <th></th>
+      <th></th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <% @usuarios.each do |usuario| %>
+      <tr>
+        <td class="<%= 'tr-'+usuario.Estado.to_s %>"><%= usuario.User_Name %></td>
+        <td class="<%= 'tr-'+usuario.Estado.to_s %>"><%= usuario.Ultimo_Login %></td>
+        <td class="<%= 'tr-'+usuario.Estado.to_s %>"><%= usuario.Nombres %></td>
+        <td class="<%= 'tr-'+usuario.Estado.to_s %>"><%= usuario.Apellidos %></td>
+        <td class="<%= 'tr-'+usuario.Estado.to_s %>"><%= usuario.Correo %></td>
+        <td class="<%= 'tr-'+usuario.Estado.to_s %>"><%= link_to icon('fa','eye'),  usuario, class:'btn btn-info' %></td>
+        <td class="<%= 'tr-'+usuario.Estado.to_s %>"><%= link_to icon('fa','edit'),  edit_usuario_path(usuario), class:'btn btn-warning' %></td>
+        <td class="<%= 'tr-'+usuario.Estado.to_s %>"><%= link_to icon('fa','trash-o'), usuario, method: :delete, data: { confirm: 'Estas Seguro?' }, class:'btn btn-danger' %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>

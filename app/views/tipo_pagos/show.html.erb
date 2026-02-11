@@ -1,0 +1,57 @@
+<p id="notice"><%= notice %></p>
+
+<div class="row">
+  <div class="col-md-6 col-lg-6 col-sm-6 col-xs-6">
+    <table class="table">
+      <p>
+        <strong>Nombre:</strong>
+        <%= @tipo_pago.Nombre %>
+      </p>
+
+      <p>
+        <strong>Moneda:</strong>
+        <%= @tipo_pago.Moneda %>
+      </p>
+
+      <p>
+        <strong>Tipo cambio:</strong>
+        <%= @tipo_pago.Tipo_Cambio %>
+      </p>
+
+      <p>
+        <strong>Porcentaje comision:</strong>
+        <%= @tipo_pago.Porcentaje_Comision %>
+      </p>
+
+      <p>
+        <strong>Destino:</strong>
+        <%= @tipo_pago.Destino %>
+      </p>
+
+      <p>
+        <strong>Estado:</strong>
+        <%= @tipo_pago.Estado %>
+      </p>
+
+      <p>
+        <strong>Creado por:</strong>
+        <%= @tipo_pago.creado_por %>
+      </p>
+
+      <p>
+        <strong>Actualizado por:</strong>
+        <%= @tipo_pago.actualizado_por %>
+      </p>
+
+      <p>
+        <strong>Creado:</strong>
+        <%= @tipo_pago.creado %>
+      </p>
+
+      <p>
+        <strong>Actualizado:</strong>
+        <%= @tipo_pago.actualizado %>
+      </p>
+
+<%= link_to 'Edit', edit_tipo_pago_path(@tipo_pago) %> |
+<%= link_to 'Back', tipo_pagos_path %>

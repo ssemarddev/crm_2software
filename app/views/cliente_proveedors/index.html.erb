@@ -1,0 +1,74 @@
+<p id="notice"><%= notice %></p>
+
+<h1>
+  <% if params["Tipo"].to_i == 1 %>
+    Clientes
+    <% if session["access_lvl"] > 1 %>
+      <%= link_to 'Nuevo Cliente <i class="fa fa-plus"></i>'.html_safe , new_cliente_proveedor_path(params["Tipo"].to_i), class: 'btn btn-primary' %>
+    <% end %>
+  <% else %>
+    Proveedores
+    <% if session["access_lvl"] > 1 %>
+      <%= link_to 'Nuevo Proveedor <i class="fa fa-plus"></i>'.html_safe , new_cliente_proveedor_path(params["Tipo"].to_i), class: 'btn btn-primary' %>
+    <% end %>
+  <% end %>
+  <% if params[:deleted] %>
+    <%= link_to 'Regresar'.html_safe , cliente_proveedors_path(Tipo: params["Tipo"]), class: 'btn btn-default' %>
+  <% else %>
+    <%= link_to 'Ver Papelera <i class="fa fa-trash"></i>'.html_safe , cliente_proveedors_path(deleted: true,Tipo: params["Tipo"].to_i), class: 'btn btn-danger' %>
+  <% end %>
+</h1>
+
+<table id="productos" class="table table-condensed dataTable">
+  <thead>
+    <tr>
+      <th>Nit</th>
+      <th>Nombre</th>
+      <th>Direccion</th>
+      <th>Telefono</th>
+      <th>Observacion</th>
+      <% if session[:version].include? "2.0" %>
+      <th>Municipio</th>
+      <th>Equipos</th>
+      <th>Tipo</th>
+      <% end %>
+      <th></th>
+      <% if session["access_lvl"] > 1 %>
+        <th></th>
+        <th></th>
+      <% end %>
+    </tr>
+  </thead>
+
+  <tbody>
+    <% @cliente_proveedors.each do |cliente_proveedor| %>
+      <tr>
+        <td class="<%= 'tr-'+cliente_proveedor.Estado.to_s %>"><%= cliente_proveedor.nit %></td>
+        <td class="<%= 'tr-'+cliente_proveedor.Estado.to_s %>"><%= cliente_proveedor.Nombre %></td>
+        <td class="<%= 'tr-'+cliente_proveedor.Estado.to_s %>"><%= cliente_proveedor.direccion %></td>
+        <td class="<%= 'tr-'+cliente_proveedor.Estado.to_s %>"><%= cliente_proveedor.Fax %></td>
+        <td class="<%= 'tr-'+cliente_proveedor.Estado.to_s %>"><%= cliente_proveedor.observacion %></td>
+        <% if session[:version].include? "2.0"
+          @aparatos = Aparato.where(cliente: cliente_proveedor.id)
+          aparatos = ""
+          @aparatos.each do |ap|
+          aparatos += "[Serie: "+ap.serie+" Cov:"+ap.cov+" Estado:"+ap.estado.Nombre+" ]" %>
+          <% end %>
+          <!---td class=" 'tr-'+cliente_proveedor.Estado.to_s %>"> cliente_proveedor.municipio %></td-->
+          <% if  cliente_proveedor.ruta_id!=nil %>
+            <td class="<%= 'tr-'+cliente_proveedor.Estado.to_s %>"><%= cliente_proveedor.ruta %></td>
+          <% else %>
+            <td class="<%= 'tr-'+cliente_proveedor.Estado.to_s %>"></td>
+          <% end %>
+          <td><%= aparatos %></td>
+          <td class="<%= 'tr-'+cliente_proveedor.Estado.to_s %>"><%= cliente_proveedor.clasificacion %></td>
+        <% end %>
+        <td class="<%= 'tr-'+cliente_proveedor.Estado.to_s %>"><%= link_to  icon('fa','eye'), cliente_proveedor, class:'btn btn-info' %></td>
+        <% if session["access_lvl"] > 1 %>
+          <td class="<%= 'tr-'+cliente_proveedor.Estado.to_s %>"><%= link_to icon('fa','edit'), edit_cliente_proveedor_path(cliente_proveedor), class:'btn btn-warning' %></td>
+          <td class="<%= 'tr-'+cliente_proveedor.Estado.to_s %>"><%= link_to icon('fa','trash-o'), cliente_proveedor, method: :delete, data: { confirm: 'Estas Seguro?' }, class:'btn btn-danger' %></td>
+        <% end %>
+      </tr>
+    <% end %>
+  </tbody>
+</table>

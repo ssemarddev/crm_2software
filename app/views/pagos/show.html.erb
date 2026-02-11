@@ -1,0 +1,59 @@
+<p id="notice"><%= notice %></p>
+
+<p>
+  <strong>Cantidad:</strong>
+  <%= @pago.cantidad %>
+</p>
+
+<p>
+  <strong>Documento pago:</strong>
+  <%= @pago.documento_pago %>
+</p>
+
+<p>
+  <strong>Referencia:</strong>
+  <%= @pago.referencia %>
+</p>
+
+<p>
+  <strong>Interes:</strong>
+  <%= @pago.interes %>
+</p>
+
+<p>
+  <strong>Mora:</strong>
+  <%= @pago.mora %>
+</p>
+
+<p>
+  <strong>Observacion:</strong>
+  <%= @pago.observacion %>
+</p>
+
+<p>
+  <strong>Status:</strong>
+  <%= @pago.status %>
+</p>
+
+<p>
+  <strong>Creado por:</strong>
+  <%= @pago.creado_por %>
+</p>
+
+<p>
+  <strong>Actualizado por:</strong>
+  <%= @pago.actualizado_por %>
+</p>
+
+<p>
+  <strong>Creado:</strong>
+  <%= @pago.creado %>
+</p>
+
+<p>
+  <strong>Actualizado:</strong>
+  <%= @pago.actualizado %>
+</p>
+
+<%= link_to 'Edit', edit_pago_path(@pago) %> |
+<%= link_to 'Back', pagos_path %>

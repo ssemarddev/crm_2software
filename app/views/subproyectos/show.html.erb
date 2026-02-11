@@ -1,0 +1,39 @@
+<p id="notice"><%= notice %></p>
+
+<p>
+  <strong>Nombre:</strong>
+  <%= @subproyecto.nombre %>
+</p>
+
+<p>
+  <strong>Proyecto:</strong>
+  <%= @subproyecto.proyecto %>
+</p>
+
+<p>
+  <strong>Estado:</strong>
+  <%= @subproyecto.estado %>
+</p>
+
+<p>
+  <strong>Creado por:</strong>
+  <%= @subproyecto.creado_por %>
+</p>
+
+<p>
+  <strong>Actualizado por:</strong>
+  <%= @subproyecto.actualizado_por %>
+</p>
+
+<p>
+  <strong>Creado:</strong>
+  <%= @subproyecto.creado %>
+</p>
+
+<p>
+  <strong>Actualizado:</strong>
+  <%= @subproyecto.actualizado %>
+</p>
+
+<%= link_to 'Edit', edit_subproyecto_path(@subproyecto) %> |
+<%= link_to 'Back', subproyectos_path %>

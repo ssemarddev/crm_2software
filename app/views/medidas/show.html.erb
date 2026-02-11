@@ -1,0 +1,34 @@
+<p id="notice"><%= notice %></p>
+
+<p>
+  <strong>Nombre:</strong>
+  <%= @medida.Nombre %>
+</p>
+
+<p>
+  <strong>Estado:</strong>
+  <%= @medida.Estado %>
+</p>
+
+<p>
+  <strong>Creado por:</strong>
+  <%= @medida.creado_por %>
+</p>
+
+<p>
+  <strong>Actualizado por:</strong>
+  <%= @medida.actualizado_por %>
+</p>
+
+<p>
+  <strong>Creado:</strong>
+  <%= @medida.creado %>
+</p>
+
+<p>
+  <strong>Actualizado:</strong>
+  <%= @medida.actualizado %>
+</p>
+
+<%= link_to 'Edit', edit_medida_path(@medida) %> |
+<%= link_to 'Back', medidas_path %>

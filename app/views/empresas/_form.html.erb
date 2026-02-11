@@ -1,0 +1,162 @@
+<%= form_with(model: empresa, local: true) do |form| %>
+  <% if empresa.errors.any? %>
+    <div id="error_explanation">
+      <h2><%= pluralize(empresa.errors.count, "error") %> prohibited this empresa from being saved:</h2>
+
+      <ul>
+      <% empresa.errors.full_messages.each do |message| %>
+        <li><%= message %></li>
+      <% end %>
+      </ul>
+    </div>
+  <% end %>
+<div class="row">
+  <div class="col-xs-12 col-sm-12 col-md-6">
+    <div class="field">
+      <%= form.label :nombre %>
+      <%= form.text_field :nombre, id: :empresa_nombre, class: "form-control" %>
+    </div>
+    <div class="field">
+      <%= form.label :direccion %>
+      <%= form.text_field :direccion, id: :empresa_direccion, class: "form-control" %>
+    </div>
+
+    <div class="field">
+      <%= form.label :Politica_Tracking %>
+      <%= form.text_area :politicatracking, id: :empresa_politicatracking, class: "form-control" %>
+    </div>
+
+    <div class="field">
+      <%= form.label :Politica_Venta %>
+      <%= form.text_area :politicaventa, id: :empresa_politicaventa, class: "form-control" %>
+    </div>
+
+    <div class="field">
+      <%= form.label :Pie_de_Pagina %>
+      <%= form.text_area :addressInfo, id: :empresa_addressInfo, class: "form-control" %>
+    </div>
+
+    <div class="field">
+      <%= form.label :Whatsapp %>
+      <%= form.text_field :wtpNumber, id: :empresa_wtpNumber, class: "form-control" %>
+    </div>
+
+    <div class="field">
+      <%= form.label :color1 %>
+      <%= form.color_field :color1, id: :empresa_color1, class: "form-control" %>
+    </div>
+
+    <div class="field">
+      <%= form.label :color2 %>
+      <%= form.color_field :color2, id: :empresa_color2, class: "form-control" %>
+    </div>
+    <div class="panel panel-warning">
+      <div class="panel-heading">Configuraciones</div>
+        <div class="panel-body">
+          <div class="field" style="">
+            <%= form.label :Facturar_En_Negativos %>
+            <%= form.check_box :facturaNegativos, id: :empresa_facturaNegativos  %>
+          </div>
+          <div class="field" style="">
+            <%= form.label :Desplegable_de_Productos %>
+            <%= form.check_box :desplegableProducto, id: :empresa_desplegableProducto  %>
+          </div>
+          <div class="field" style="">
+            <%= form.label :Desplegable_de_Nit %>
+            <%= form.check_box :desplegableNit, id: :empresa_desplegableProducto  %>
+          </div>
+      </div>
+    </div>
+
+    <% if session[:version].include? "3.0" %>
+      <div class="panel panel-info">
+        <div class="panel-heading">Metodo de Pago</div>
+          <div class="panel-body">
+            <div class="field" style="">
+              <%= form.label :Habilitar_Pago_Contra_Entrega  %>
+              <%= form.check_box :pagoContraEntrega, id: :empresa_pagoContraEntrega  %>
+            </div>
+            <label>Cuentas para deposito:</label>
+            <div class="field col-md-12" style="">
+              <div class=" col-md-5">
+                <input type="text" name="" placeholder="BANCO" class="form-control" id="bank">
+              </div>
+              <div class=" col-md-5">
+                <input type="text" name="" placeholder="No Cuenta" class="form-control" id="bankNumber">
+              </div>
+              <div class=" col-md-2">
+                <button type="button" name="button" class="btn btn-default  addAccount">+</button>
+              </div>
+              <div style="display:none">
+                <input type="text" name="empresa[bankAccounts]" id="accounts" value="<%= @empresa.bankAccounts %>">
+              </div>
+            </div>
+            <div class="field col-md-12">
+              <table class="table">
+                <thead>
+                  <th>Banco</th>
+                  <th>No Cuenta</th>
+                </thead>
+                <tbody id="tbody">
+
+                </tbody>
+              </table>
+            </div>
+          <div class="field" style="display:none;">
+            <%= form.label :status %>
+            <%= form.check_box :status, id: :empresa_status , checked:true %>
+          </div>
+        </div>
+      </div>
+  <% end %>
+  </div>
+  <div class="col-xs-12 col-sm-12 col-md-6">
+    <%= form.file_field :logo, id: :empresa_logo , :accept=>"image/png, image/jpeg", :id=>"dropImage"%>
+    <!--input type="file" class="custom-file-input" id="dropImage" aria-describedby="inputGroupFileAddon01" name="producto[dropImage[]]" accept="image/png, image/jpeg" multiple="true">-->
+    <img src="" class="drop-image" />
+    <div id="drop-container">
+        <div class="drop-area-text">Previsualizacion</div>
+        <% if @empresa  %>
+          <div class="containerImg preview" >
+            ACTUAL
+            <img src="<%= url_to_image(@empresa.logo) %>" class="preview" />
+          </div>
+        <% end %>
+    </div>
+    <div class="panel panel-info">
+      <div class="panel-heading"> <h3 class="panel-title">Acciones</h3> </div>
+      <div class="panel-body">
+        <%= form.submit "Guardar", class:'btn btn-primary' %>
+      </div>
+    </div>
+  </div>
+<% end %>
+
+<script type="text/javascript">
+  accounts = []
+  loadData()
+  function loadData(){
+    accounts = <%= @empresa.bankAccounts !=nil ? @empresa.bankAccounts.html_safe : [] %>
+    for(i=0; i< accounts.length; i++){
+      html = "<tr><td>"+accounts[i][0]+"</td><td>"+accounts[i][1]+"</td><td><button type='button' class='btn btn-danger' onclick='removeAccount(this,"+i+")'>X</button></td></tr>"
+      $("#tbody").append(html)
+    }
+  }
+  function removeAccount(e,id){
+    $(e.parentNode.parentNode).remove();
+    accounts.splice(id, 1);
+    $("#accounts").val(JSON.stringify(accounts))
+  }
+  $(".addAccount").on('click', function(){
+    if($("#bank").val()!="" && $("#bankNumber").val() !=""){
+      accounts[accounts.length] = []
+      accounts[accounts.length-1][0] = $("#bank").val()
+      accounts[accounts.length-1][1] = $("#bankNumber").val()
+      html = "<tr><td>"+$("#bank").val()+"</td><td>"+$("#bankNumber").val()+"</td><td><button type='button' class='btn btn-danger' onclick='removeAccount(this,accounts.length-1)'>X</button></td></tr>"
+      $("#tbody").append(html)
+      $("#bank").val("")
+      $("#bankNumber").val("")
+      $("#accounts").val(JSON.stringify(accounts))
+    }
+  });
+</script>

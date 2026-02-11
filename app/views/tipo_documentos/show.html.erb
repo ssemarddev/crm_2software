@@ -1,0 +1,34 @@
+<p id="notice"><%= notice %></p>
+
+<p>
+  <strong>Nombre:</strong>
+  <%= @tipo_documento.Nombre %>
+</p>
+
+<p>
+  <strong>Estado:</strong>
+  <%= @tipo_documento.Estado %>
+</p>
+
+<p>
+  <strong>Creado por:</strong>
+  <%= @tipo_documento.creado_por %>
+</p>
+
+<p>
+  <strong>Actualizado por:</strong>
+  <%= @tipo_documento.actualizado_por %>
+</p>
+
+<p>
+  <strong>Creado:</strong>
+  <%= @tipo_documento.creado %>
+</p>
+
+<p>
+  <strong>Actualizado:</strong>
+  <%= @tipo_documento.actualizado %>
+</p>
+
+<%= link_to 'Edit', edit_tipo_documento_path(@tipo_documento) %> |
+<%= link_to 'Back', tipo_documentos_path %>

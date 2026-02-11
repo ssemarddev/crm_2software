@@ -1,0 +1,73 @@
+<p id="notice"><%= notice %></p>
+
+<div class="row">
+  <div class="col-md-6 col-lg-6 col-sm-6 col-xs-6">
+    <table class="table">
+      <tr>
+        <td><strong>Tipo:</strong></td>
+        <td><%= @cliente_proveedor.Tipo %></td>
+      </tr>
+      <tr>
+        <td><strong>Nit:</strong></td>
+        <td><%= @cliente_proveedor.nit %></td>
+      </tr>
+      <tr>
+        <td><strong>Nombre:</strong></td>
+        <td><%= @cliente_proveedor.Nombre %></td>
+      </tr>
+      <tr>
+        <td><strong>Direccion:</strong></td>
+        <td><%= @cliente_proveedor.direccion %></td>
+      </tr>
+      <tr>
+        <td><strong>Moneda:</strong></td>
+        <td><%= @cliente_proveedor.Moneda %></td>
+      </tr>
+      <tr>
+        <td><strong>Tipo cambio:</strong></td>
+        <td><%= @cliente_proveedor.Tipo_Cambio %></td>
+      </tr>
+      <tr>
+        <td><strong>Porcentaje comision:</strong></td>
+        <td><%= @cliente_proveedor.Porcentaje_Comision %></td>
+      </tr>
+      <tr>
+        <td><strong>Destino:</strong></td>
+        <td><%= @cliente_proveedor.Destino %></td>
+      </tr>
+      <tr>
+        <td><strong>Fax:</strong></td>
+        <td><%= @cliente_proveedor.Fax %></td>
+      </tr>
+      <tr>
+        <td><strong>Estado:</strong></td>
+        <td><%= @cliente_proveedor.Estado %></td>
+      </tr>
+      <tr>
+        <td><strong>Creado por:</strong></td>
+        <td><%= Usuario.find_by(id: @cliente_proveedor.creado_por).Nombres %></td>
+      </tr>
+      <tr>
+        <td><strong>Actualizado por:</strong></td>
+        <td><%= Usuario.find_by(id: @cliente_proveedor.actualizado_por).Nombres %></td>
+      </tr>
+      <tr>
+        <td><strong>Creado:</strong></td>
+        <td><%= @cliente_proveedor.creado %></td>
+      </tr>
+      <tr>
+        <td><strong>Actualizado:</strong></td>
+        <td><%= @cliente_proveedor.actualizado %></td>
+      </tr>
+    </table>
+  </div>
+  <div class="col-md-6 col-lg-6 col-sm-6 col-xs-6">
+    <div class="panel panel-info">
+      <div class="panel-heading">Acciones:</div>
+      <div class="panel-body">
+        <%= link_to 'Editar', edit_cliente_proveedor_path(@cliente_proveedor), class: 'btn btn-warning'  %>
+        <%= link_to 'Regresar', '/cliente_proveedor_tipo/'+@cliente_proveedor.Tipo.to_s , class: 'btn btn-default' %>
+      </div>
+    </div>
+  </div>
+</div>

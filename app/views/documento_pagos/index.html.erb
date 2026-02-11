@@ -1,0 +1,48 @@
+<p id="notice"><%= notice %></p>
+<h1>Documentos por <%= params[:tipo].to_s=="1" ? "Pagar" : "Cobrar" %>
+<%= link_to 'Nuevo Documento', new_documento_pago_path(tipo: params[:tipo]), class: 'btn btn-primary' %>
+</h1>
+
+<table class="table dataTable">
+  <thead>
+    <tr>
+      <th>Documento</th>
+      <th>Cliente/Proveedor</th>
+      <th>Deuda Total</th>
+      <th>Deuda Actual</th>
+      <th>Abonado</th>
+      <th>Interes</th>
+      <th>Mora</th>
+      <th>Total pagado</th>
+      <th># Pagos</th>
+      <th>Creado</th>
+      <th>Fecha Limite</th>
+      <th>Dias desde el ultimo pago</th>
+      <th></th>
+      <th></th>
+      <th></th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <% @documento_pagos.each do |documento_pago| %>
+      <tr>
+        <td class="<%= "#{semaphore_color documento_pago}" %>"><%= documento_pago.Documento == nil ? documento_pago.referencia : documento_pago.Documento.Documento  %></td>
+        <td class="<%= "#{semaphore_color documento_pago}" %>"><%= documento_pago.ClienteProveedor.Nombre %></td>
+        <td class="<%= "#{semaphore_color documento_pago}" %>"><%= documento_pago.Deuda %></td>
+        <td class="<%= "#{semaphore_color documento_pago}" %>"><%= documento_pago.deuda %></td>
+        <td class="<%= "#{semaphore_color documento_pago}" %>"><%= documento_pago.abonos %></td>
+        <td class="<%= "#{semaphore_color documento_pago}" %>"><%= documento_pago.Interes %></td>
+        <td class="<%= "#{semaphore_color documento_pago}" %>"><%= documento_pago.Mora %></td>
+        <td class="<%= "#{semaphore_color documento_pago}" %>"><%= documento_pago.Total_Pagado %></td>
+        <td class="<%= "#{semaphore_color documento_pago}" %>"><%= documento_pago.pagos.to_i %>/<%= documento_pago.cuotas %></td>
+        <td class="<%= "#{semaphore_color documento_pago}" %>"><%=  Usuario.find(documento_pago.creado_por).Nombres%></td>
+        <td class="<%= "#{semaphore_color documento_pago}" %>"><%= documento_pago.fechaLimite %></td>
+        <td class="<%= "#{semaphore_color documento_pago}" %>"><%= semaphore_days documento_pago %></td>
+        <td class="<%= "#{semaphore_color documento_pago}" %>"><%= link_to 'Cuotas', "/cuotas/"+documento_pago.id.to_s, class: "btn btn-primary" %></td>
+        <td class="<%= "#{semaphore_color documento_pago}" %>"><%= link_to 'Editar', edit_documento_pago_path(documento_pago), class: "btn btn-warning" %></td>
+        <td class="<%= "#{semaphore_color documento_pago}" %>"><%= link_to 'Eliminar', documento_pago, method: :delete, data: { confirm: 'Are you sure?' } , class: "btn btn-danger" %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>

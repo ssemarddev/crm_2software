@@ -1,0 +1,46 @@
+<%= form_with(model: estadortacking, local: true) do |form| %>
+  <% if estadortacking.errors.any? %>
+    <div id="error_explanation">
+      <h2><%= pluralize(estadortacking.errors.count, "error") %> prohibited this estadortacking from being saved:</h2>
+
+      <ul>
+      <% estadortacking.errors.full_messages.each do |message| %>
+        <li><%= message %></li>
+      <% end %>
+      </ul>
+    </div>
+  <% end %>
+<div class="row">
+  <div class="col-md-6 col-lg-6 col-sm-6 col-xs-6">
+    <div class="field">
+      <%= form.hidden_field :tracking_id, id: :estadortacking_tracking_id, value: request.params[:id] %>
+    </div>
+
+    <div class="field">
+      <%= form.label :estado_id %>
+      <%= collection_select(:estadortacking, :estado_id, Estado.where(:Estado => true, :tipo => 2), :id, :Nombre, {:prompt => true}, class: "form-control") %>
+    </div>
+
+    <div class="field">
+      <%= form.label :comentario %>
+      <%= form.text_area :comentario, id: :estadortacking_comentario, class:'form-control' %>
+    </div>
+
+    <div class="field" style="display:none">
+      <%= form.label :status %>
+      <%= form.check_box :status, id: :estadortacking_status, checked:true %>
+    </div>
+
+  </div>
+  <div class="col-md-6 col-lg-6 col-sm-6 col-xs-6">
+    <div class="panel panel-info">
+      <div class="panel-heading">Acciones:</div>
+      <div class="panel-body">
+        <button type="submit" name="button" class="btn btn-primary"><i class="fontawesome-save"></i> Guardar</button>
+        <%= link_to 'Regresar', trackings_path, class: 'btn btn-default' %>
+      </div>
+    </div>
+  </div>
+</div>
+
+<% end %>

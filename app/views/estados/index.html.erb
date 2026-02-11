@@ -1,0 +1,31 @@
+<p id="notice"><%= notice %></p>
+
+<h1>Estados
+  <%= link_to 'Nuevo Estado <i class="fa fa-plus"></i>'.html_safe , new_estado_path, class: 'btn btn-primary' %>
+  <% if params[:deleted] %>
+    <%= link_to 'Regresar'.html_safe , estados_path, class: 'btn btn-default' %>
+  <% else %>
+    <%= link_to 'Ver Papelera <i class="fa fa-trash"></i>'.html_safe , estados_path(deleted: true), class: 'btn btn-danger' %>
+  <% end %>
+</h1>
+<table class="table dataTable">
+  <thead>
+    <tr>
+      <th>Nombre</th>
+      <th>Conjunto</th>
+      <th></th>
+      <th></th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <% @estados.each do |estado| %>
+      <tr>
+        <td class="<%= 'tr-'+estado.Estado.to_s %>"><%= estado.Nombre %></td>
+        <td class="<%= 'tr-'+estado.Estado.to_s %>"><%= case estado.tipo when 1 then "TALLER" when 2 then "ENVIOS" else "" end %></td>
+        <td class="<%= 'tr-'+estado.Estado.to_s %>"><%= link_to 'Editar', edit_estado_path(estado) , class:'btn btn-warning' %></td>
+        <td class="<%= 'tr-'+estado.Estado.to_s %>"><%= link_to 'Eliminar', estado, method: :delete, data: { confirm: 'Are you sure?' } , class:'btn btn-danger' %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>

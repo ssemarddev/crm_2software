@@ -1,0 +1,32 @@
+<p id="notice"><%= notice %></p>
+
+<h1>Bodega Usuarios
+<%= link_to 'Nueva Asignacion <i class="fa fa-plus"></i>'.html_safe , new_bodegauser_path, class: 'btn btn-primary' %>
+<% if params[:deleted] %>
+  <%= link_to 'Regresar'.html_safe , bodegausers_path, class: 'btn btn-default' %>
+<% else %>
+  <%= link_to 'Ver Papelera <i class="fa fa-trash"></i>'.html_safe , bodegausers_path(deleted: true), class: 'btn btn-danger' %>
+<% end %>
+</h1>
+
+<table class="table dataTable">
+  <thead>
+    <tr>
+      <th>Bodega</th>
+      <th>Usuario</th>
+      <th></th>
+      <th></th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <% @bodegausers.each do |bodegauser| %>
+      <tr>
+        <td class="<%= 'tr-'+bodegauser.status.to_s %>"><%= bodegauser.bodega.Nombre %></td>
+        <td class="<%= 'tr-'+bodegauser.status.to_s %>"><%= bodegauser.usuario.Nombres %></td>
+        <td class="<%= 'tr-'+bodegauser.status.to_s %>"><%= link_to icon('fa','edit'), edit_bodegauser_path(bodegauser), class:'btn btn-warning' %></td>
+        <td class="<%= 'tr-'+bodegauser.status.to_s %>"><%= link_to icon('fa','trash-o'), bodegauser, method: :delete, data: { confirm: 'Estas Seguro?' }, class:'btn btn-danger' %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>

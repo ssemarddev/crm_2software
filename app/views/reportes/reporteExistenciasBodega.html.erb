@@ -1,0 +1,106 @@
+<h1>Reporte de Existencias Por Bodega</h1>
+
+<table class="table">
+  <tr>
+    <td><label for="">Producto:</label></td>
+    <td>
+      <select id="productoId" name="codigoproducto" class="form-control short-select">
+        <option value="">Seleccione...</option>
+        <% @productos_list.each do |producto|  %>
+          <option value="<%= producto.id %>"$><%= producto.Nombre %></option>
+        <% end %>
+      </select>
+    </td>
+    <td><label for="">Bodega:</label></td>
+    <td><select id="bodega" name="bodega" class="form-control">
+    </select></td>
+    <td><button type="button" name="button" class="btn btn-primary" onclick="search();">Buscar</button></td>
+  </tr>
+</table>
+<br/>
+<div class="">
+    <table class="table dataTable">
+    <thead>
+      <th>Codigo</th>
+      <th>Producto</th>
+      <th>Precio Compra</th>
+      <th>Precio Venta</th>
+      <th>Marca</th>
+      <th>Medida</th>
+      <th>Proveedor</th>
+      <th>Fila</th>
+      <th>Columna</th>
+      <th>Bodega</th>
+      <th>Existencias Actuales</th>
+    </thead>
+    <tbody>
+      <% if @movimientoProductos != nil
+          @movimientoProductos.each do |p| %>
+          <tr>
+            <td><%= p.Codigo %></td>
+            <td><%= p.producto %></td>
+            <td><%= p.Valor_Compra %></td>
+            <td><%= p.Valor_Venta %></td>
+            <td><%= p.Marca %></td>
+            <td><%= p.Medida %></td>
+            <td><%= p.Proveedor %></td>
+            <td><%= p.Fila %></td>
+            <td><%= p.Columna %></td>
+            <td><%= p.bodega %></td>
+            <td><%= p.existencias %></td>
+          </tr>
+      <%  end
+        end
+      %>
+    </tbody>
+  </table>
+</div>
+<script type="text/javascript">
+  //getProducts();
+  getBodegas();
+  function getProducts(){
+    $.ajax({
+      url: "/findProductosByProvider",
+      method: 'POST',
+      dataType: 'json',
+      data: {
+        proveedor: 'all'
+      },
+      success: function( result ) {
+        html = '<option value="">Seleccione...</option>'
+        for(i=0; i < result.length; i++){
+          html += "<option value='"+result[i].id+"'>"+result[i].Nombre+"</option>";
+        }
+        $("#productoId").html(html);
+      }
+    });
+  }
+  function getBodegas(){
+    $.ajax({
+      url: "/findBodegas",
+      method: 'POST',
+      dataType: 'json',
+      success: function( result ) {
+        html = '<option value="">Seleccione...</option>';
+        for(i=0; i < result.length; i++){
+          html += "<option value='"+result[i].id+"'>"+result[i].bodega+"-"+result[i].user+"</option>";
+        }
+        $("#bodega").html(html);
+      }
+    });
+  }
+  function search(){
+    if($("#productoId").val()!=""){
+      window.location.href = "reporteExistenciasBodega?productoId="+$("#productoId").val();
+    }
+    if($("#bodega").val()!=""){
+      window.location.href = "reporteExistenciasBodega?bodegaId="+$("#bodega").val();
+    }
+    if($("#productoId").val()!="" && $("#bodega").val()!=""){
+      window.location.href = "reporteExistenciasBodega?productoId="+$("#productoId").val()+"&bodegaId="+$("#bodega").val();
+    }
+    if($("#productoId").val() =="" && $("#bodega").val()==""){
+      window.location.href = "reporteExistenciasBodega?search=ON"
+    }
+  }
+</script>

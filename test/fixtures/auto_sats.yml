@@ -1,0 +1,27 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  Numero_autorizacion: 1
+  Serie: MyString
+  Actual: 1
+  Inicio: 1
+  Fin: 1
+  Bodega: one
+  Estado: false
+  creado_por: 1
+  actualizado_por: 1
+  creado: 2017-06-06
+  actualizado: 2017-06-06 14:34:17
+
+two:
+  Numero_autorizacion: 1
+  Serie: MyString
+  Actual: 1
+  Inicio: 1
+  Fin: 1
+  Bodega: two
+  Estado: false
+  creado_por: 1
+  actualizado_por: 1
+  creado: 2017-06-06
+  actualizado: 2017-06-06 14:34:17

@@ -1,0 +1,60 @@
+<%= form_with(model: bodegauser, local: true) do |form| %>
+  <% if bodegauser.errors.any? %>
+    <div id="error_explanation">
+      <h2><%= pluralize(bodegauser.errors.count, "error") %> prohibited this bodegauser from being saved:</h2>
+
+      <ul>
+      <% bodegauser.errors.full_messages.each do |message| %>
+        <li><%= message %></li>
+      <% end %>
+      </ul>
+    </div>
+  <% end %>
+  <div class="row">
+    <div class="col-md-6 col-lg-6 col-sm-6 col-xs-6">
+      <div class="field">
+        <%= form.label :bodega_id %>
+        <%= collection_select(:bodegauser, :bodega_id, Bodega.where(:Estado => true), :id, :Nombre, {:prompt => true}, class: "form-control") %>
+      </div>
+
+      <div class="field">
+        <%= form.label :usuario_id %>
+        <%= collection_select(:bodegauser, :usuario_id, Usuario.where(:Estado => true), :id, :Nombres, {:prompt => true}, class: "form-control") %>
+      </div>
+
+      <div class="field">
+        <%= form.label :status %>
+        <%= form.check_box :status, id: :bodegauser_status, checked: true %>
+      </div>
+    </div>
+    <div class="col-md-6 col-lg-6 col-sm-6 col-xs-6">
+      <div class="panel panel-info">
+        <div class="panel-heading">Acciones:</div>
+        <div class="panel-body">
+          <button type="submit" name="button" class="btn btn-primary"><i class="fontawesome-save"></i> Guardar</button>
+          <%= link_to 'Regresar', bodegausers_path , class: 'btn btn-default' %>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!--div class="field">
+     form.label :creado_por %>
+     form.number_field :creado_por, id: :bodegauser_creado_por %>
+  </div>
+
+  <div class="field">
+     form.label :actualizado_por %>
+     form.number_field :actualizado_por, id: :bodegauser_actualizado_por %>
+  </div>
+
+  <div class="field">
+     form.label :creado %>
+     form.date_select :creado, id: :bodegauser_creado %>
+  </div>
+
+  <div class="field">
+     form.label :actualizado %>
+     form.datetime_select :actualizado, id: :bodegauser_actualizado %>
+  </div-->
+
+<% end %>

@@ -1,0 +1,34 @@
+<p id="notice"><%= notice %></p>
+
+<h1>Ruta
+<%= link_to 'Nueva Ruta', new_rutum_path, class: 'btn btn-primary' %>
+<% if params[:deleted] %>
+  <%= link_to 'Regresar'.html_safe , ruta_path, class: 'btn btn-default' %>
+<% else %>
+  <%= link_to 'Ver Papelera <i class="fa fa-trash"></i>'.html_safe , ruta_path(deleted: true), class: 'btn btn-danger' %>
+<% end %>
+</h1>
+
+<table class="table dataTable">
+  <thead>
+    <tr>
+      <th>Nombre</th>
+      <th>Piloto</th>
+      <th>Tipo</th>
+      <th></th>
+      <th></th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <% @ruta.each do |rutum| %>
+      <tr>
+        <td><%= rutum.nombre %></td>
+        <td><%= rutum.piloto %></td>
+        <td><%= rutum.tipo ==1? "Estatica" : "Dinamica" %></td>
+        <td><%= link_to 'Editar', edit_rutum_path(rutum), class:'btn btn-warning' %></td>
+        <td><%= link_to 'Eliminar', rutum, method: :delete, data: { confirm: 'Estas seguro?' } , class:'btn btn-danger'%></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>

@@ -1,0 +1,57 @@
+<p id="notice"><%= notice %></p>
+
+<h1>Aparatos
+<%= link_to 'Nuevo Aparato', new_aparato_path, class: 'btn btn-primary' %>
+<% if params[:deleted] %>
+  <%= link_to 'Regresar'.html_safe , aparatos_path, class: 'btn btn-default' %>
+<% else %>
+  <%= link_to 'Ver Papelera <i class="fa fa-trash"></i>'.html_safe , aparatos_path(deleted: true), class: 'btn btn-danger' %>
+<% end %>
+</h1>
+
+<table class="table dataTable">
+  <thead>
+    <tr>
+      <th>Serie</th>
+      <th>Cov</th>
+      <th>Bodega</th>
+      <th>Serie remplazo</th>
+      <th>Cov remplazo</th>
+      <th>Proveedor</th>
+      <th>Cliente</th>
+      <th>Ruta</th>
+      <th>Estado</th>
+      <th>Comentario</th>
+      <th></th>
+      <th></th>
+      <th></th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <% @aparatos.each do |aparato| %>
+      <tr>
+        <td><%= aparato.serie %></td>
+        <td><%= aparato.cov %></td>
+        <td><%= aparato.bodega.Nombre %></td>
+        <td><%= aparato.serie_remplazo %></td>
+        <td><%= aparato.cov_remplazo %></td>
+        <td><%= ClienteProveedor.find(aparato.proveedor).Nombre %></td>
+        <td><%
+          municipio  = ""
+          if aparato.cliente != nil
+            cliente = ClienteProveedor.find(aparato.cliente)
+            municipio = cliente.municipio %>
+            <%= cliente.Nombre %>
+          <% end %>
+        </td>
+        <td><%  municipio %></td>
+        <td><%= aparato.estado.Nombre %></td>
+        <td><%= aparato.comentario %></td>
+        <td><%= link_to 'Ver', aparato, class: 'btn btn-info' %></td>
+        <td><%= link_to 'Editar', edit_aparato_path(aparato) , class: 'btn btn-warning'%></td>
+        <td><%= link_to 'Eliminar', aparato, method: :delete, data: { confirm: 'Are you sure?' }, class: 'btn btn-danger' %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>

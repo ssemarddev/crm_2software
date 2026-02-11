@@ -1,0 +1,97 @@
+<%= form_for(detalle_documento) do |f| %>
+  <% if detalle_documento.errors.any? %>
+    <div id="error_explanation">
+      <h2><%= pluralize(detalle_documento.errors.count, "error") %> prohibited this detalle_documento from being saved:</h2>
+
+      <ul>
+      <% detalle_documento.errors.full_messages.each do |message| %>
+        <li><%= message %></li>
+      <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div class="field">
+    <%= f.label :Documento_id %>
+    <%= f.text_field :Documento_id %>
+  </div>
+
+  <div class="field">
+    <%= f.label :Producto_id %>
+    <%= f.text_field :Producto_id %>
+  </div>
+
+  <div class="field">
+    <%= f.label :Medida_id %>
+    <%= f.text_field :Medida_id %>
+  </div>
+
+  <div class="field">
+    <%= f.label :DetalleMedida_id %>
+    <%= f.text_field :DetalleMedida_id %>
+  </div>
+
+  <div class="field">
+    <%= f.label :cantidad %>
+    <%= f.text_field :cantidad %>
+  </div>
+
+  <div class="field">
+    <%= f.label :descripcion %>
+    <%= f.text_field :descripcion %>
+  </div>
+
+  <div class="field">
+    <%= f.label :valor_compra %>
+    <%= f.text_field :valor_compra %>
+  </div>
+
+  <div class="field">
+    <%= f.label :valor_venta %>
+    <%= f.text_field :valor_venta %>
+  </div>
+
+  <div class="field">
+    <%= f.label :descuento %>
+    <%= f.text_field :descuento %>
+  </div>
+
+  <div class="field">
+    <%= f.label :descuento_porcentaje %>
+    <%= f.text_field :descuento_porcentaje %>
+  </div>
+
+  <div class="field">
+    <%= f.label :total %>
+    <%= f.text_field :total %>
+  </div>
+
+  <div class="field">
+    <%= f.label :Estado %>
+    <%= f.check_box :Estado %>
+  </div>
+
+  <div class="field">
+    <%= f.label :creado_por %>
+    <%= f.number_field :creado_por %>
+  </div>
+
+  <div class="field">
+    <%= f.label :actualizado_por %>
+    <%= f.number_field :actualizado_por %>
+  </div>
+
+  <div class="field">
+    <%= f.label :creado %>
+    <%= f.date_select :creado %>
+  </div>
+
+  <div class="field">
+    <%= f.label :actualizado %>
+    <%= f.date_select :actualizado %>
+  </div>
+
+  <div class="actions">
+    <%= f.submit %>
+  </div>
+<% end %>

@@ -1,0 +1,43 @@
+<p id="notice"><%= notice %></p>
+
+<h1>Detallecajas</h1>
+
+<table>
+  <thead>
+    <tr>
+      <th>Caja</th>
+      <th>Cantidad</th>
+      <th>Tipo</th>
+      <th>Razon</th>
+      <th>Status</th>
+      <th>Creado por</th>
+      <th>Actualizado por</th>
+      <th>Creado</th>
+      <th>Actualizado</th>
+      <th colspan="3"></th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <% @detallecajas.each do |detallecaja| %>
+      <tr>
+        <td><%= detallecaja.caja %></td>
+        <td><%= detallecaja.cantidad %></td>
+        <td><%= detallecaja.tipo %></td>
+        <td><%= detallecaja.razon %></td>
+        <td><%= detallecaja.status %></td>
+        <td><%= detallecaja.creado_por %></td>
+        <td><%= detallecaja.actualizado_por %></td>
+        <td><%= detallecaja.creado %></td>
+        <td><%= detallecaja.actualizado %></td>
+        <td><%= link_to 'Show', detallecaja %></td>
+        <td><%= link_to 'Edit', edit_detallecaja_path(detallecaja) %></td>
+        <td><%= link_to 'Destroy', detallecaja, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+
+<br>
+
+<%= link_to 'New Detallecaja', new_detallecaja_path %>

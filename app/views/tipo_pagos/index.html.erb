@@ -1,0 +1,33 @@
+<p id="notice"><%= notice %></p>
+
+<h1>Metodos de Pagos
+  <%= link_to 'Nuevo metodo de pago <i class="fa fa-plus"></i>'.html_safe , new_tipo_pago_path, class: 'btn btn-primary' %>
+</h1>
+
+<table id="productos" class="table table-condensed dataTable">
+  <thead>
+    <tr>
+      <th>Nombre</th>
+      <th>Moneda</th>
+      <th>Tipo cambio</th>
+      <th>Porcentaje comision</th>
+      <th>Destino</th>
+      <th></th>
+      <th></th>
+    </tr>
+  </thead>
+  <tbody>
+    <% @tipo_pagos.each do |tipo_pago| %>
+      <tr>
+        <td><%= tipo_pago.Nombre %></td>
+        <td><%= tipo_pago.Moneda %></td>
+        <td><%= tipo_pago.Tipo_Cambio %></td>
+        <td><%= tipo_pago.Porcentaje_Comision %></td>
+        <td><%= tipo_pago.Destino %></td>
+        <!--<td><%= link_to  icon('fa','eye'), tipo_pago, class:'btn btn-info' %></td>-->
+        <td><%= link_to icon('fa','edit'), edit_tipo_pago_path(tipo_pago), class:'btn btn-warning' %></td>
+        <td><%= link_to icon('fa','trash-o'), tipo_pago, method: :delete, data: { confirm: 'Estas Seguro?' }, class:'btn btn-danger' %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>

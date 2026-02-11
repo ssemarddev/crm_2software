@@ -1,0 +1,46 @@
+<p id="notice"><%= notice %></p>
+
+<h1>Ordenes de Seguimiento
+  <%= link_to 'Nuevo Seguimiento <i class="fa fa-plus"></i>'.html_safe , new_tracking_path, class: 'btn btn-primary' %>
+  <% if params[:deleted] %>
+    <%= link_to 'Regresar'.html_safe ,  trackings_path, class: 'btn btn-default' %>
+  <% else %>
+    <%= link_to 'Ver Papelera <i class="fa fa-trash"></i>'.html_safe , trackings_path(deleted: true), class: 'btn btn-danger' %>
+  <% end %>
+</h1>
+
+<table class="table dataTable">
+  <thead>
+    <tr>
+      <th>Numero</th>
+      <th>Serie</th>
+      <th>Descripcion</th>
+      <th>Falla</th>
+      <th>Cliente</th>
+      <th>Estado</th>
+      <th ></th>
+      <th ></th>
+      <th ></th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <% @trackings.each do |tracking| %>
+      <tr>
+        <td><%= tracking.numero %></td>
+        <td><%= tracking.serie %></td>
+        <td><%= tracking.descripcion %></td>
+        <td><%= tracking.falla %></td>
+        <% if session[:version].include? "2.0" %>
+          <td><%= tracking.cliente_proveedor.Nombre %></td>
+        <% else %>
+          <td><%= tracking.nombre_cliente %></td>
+        <% end %>
+        <td><%= tracking.estado.Nombre %></td>
+        <td><%= link_to icon('fa','eye'), tracking, class:'btn btn-info' %></td>
+        <td><%= link_to icon('fa','edit'), new_estadortacking_path+'?id='+tracking.id.to_s, class:'btn btn-warning' %></td>
+        <td><%= link_to icon('fa','trash-o'), tracking, method: :delete, data: { confirm: 'Estas Seguro?' }, class:'btn btn-danger' %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>

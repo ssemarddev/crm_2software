@@ -1,0 +1,148 @@
+<p id="notice"><%= notice %></p>
+
+<div class="row">
+  <div class="col-md-3 col-lg-3 col-sm-12 col-xs-12">
+    <div class="panel panel-info">
+      <div class="panel-heading">Proyecto:
+        <%= link_to 'Editar', edit_proyecto_path(@proyecto) , class: 'btn btn-warning'  %>
+        <%= link_to 'Regresar', proyectos_path , class: 'btn btn-default' %>
+        <%= link_to 'Desempeño', '/avanceProyecto?id='+@proyecto.id.to_s , class: 'btn btn-default' %>
+      </div>
+      <div class="panel-body">
+      <table class="table">
+        <tr>
+          <td><strong>Nombre:</strong></td>
+          <td><%= @proyecto.nombre %></td>
+        </tr>
+        <tr>
+          <td><strong>Participantes:</strong></td>
+          <td><%= @participantes %></td>
+        </tr>
+        <tr>
+          <td><strong>Estado:</strong></td>
+          <td><%= @proyecto.estado %></td>
+        </tr>
+        <tr>
+          <td><strong>Creado por:</strong></td>
+          <td><%= @proyecto.creado_por %></td>
+        </tr>
+        <tr>
+          <td><strong>Actualizado por:</strong></td>
+          <td><%= @proyecto.actualizado_por %></td>
+        </tr>
+        <tr>
+          <td><strong>Creado:</strong></td>
+          <td><%= @proyecto.creado %></td>
+        </tr>
+        <tr>
+          <td><strong>Actualizado:</strong></td>
+          <td><%= @proyecto.actualizado %></td>
+        </tr>
+      </table>
+      </div>
+    </div>
+  </div>
+
+  <div class="col-md-5 col-lg-5 col-sm-12 col-xs-12">
+    <%= link_to 'Nuevo Subproyecto', new_subproyecto_path(:proyecto => @proyecto,:proyecto_nombre => @proyecto.nombre), class:'btn btn-default pull-right' %>
+    <div class="panel panel-primary">
+      <div class="panel-heading">Sub proyecto:</div>
+      <div class="panel-body">
+        <ul class="list-group">
+          <% @subproyectos.each_with_index do |subproyecto,index| %>
+          <li class="list-group-item">
+            <div class="row toggle" id="dropdown-detail-1" data-toggle="detail-<%=index%>">
+              <div class="col-xs-10">
+                  <%= subproyecto.nombre %>
+              </div>
+              <div class="col-xs-2"><i class="fa fa-chevron-down pull-right"></i></div>
+              <div id="detail-<%=index%>">
+                <hr></hr>
+                <div class="container">
+                  <% tareasSubPr = Tarea.where(subproyecto_id: subproyecto.id)
+                  if tareasSubPr
+                    tareasSubPr.each do |tsp|
+                    tarea = tsp
+                    tareaObj = Tarea.find(tsp.id)
+                  %>
+                  <div class="fluid-row">
+                    <div class="col-xs-4">
+                      Tarea:<%= link_to tsp.nombre, tareaObj %>(
+                      <% if tarea.fecha_finalizado %>
+                        <% if tarea.fecha_finalizado > tarea.fechafin    %>
+                          <span class="btn-warning">Finalizado</span>
+                        <% elsif tarea.fecha_finalizado < tarea.fechafin %>
+                          <span class="btn-success">Finalizado a tiempo</span>
+                        <% else %>
+                          <% if Date.parse(Time.now.strftime("%Y-%m-%d")) < Time.now %>
+                            <span class="btn-info">OK</span>
+                          <% end %>
+                        <% end %>
+                      <% else %>
+                        <% if Date.parse(Time.now.strftime("%Y-%m-%d")) > tarea.fechafin  %>
+                          <span class="btn-danger">Atrasado</span>
+                        <% else %>
+                          <span class="btn-info">OK</span>
+                        <% end %>
+                      <% end %>) - <%= tsp.usuario.Nombres %>
+
+                    </div>
+                  </div>
+                  <%
+                      end
+                    end
+                  %>
+                </div>
+              </div>
+            </div>
+          </li>
+          <% end %>
+        </ul>
+      </div>
+    </div>
+  </div>
+  <div class="col-md-4 col-lg-4 col-sm-12 col-xs-12">
+    <%= link_to 'Nueva tarea', new_tarea_path(:proyecto => @proyecto,:proyecto_nombre => @proyecto.nombre,:subproyecto => ''), class:'btn btn-default pull-right' %>
+    <div class="panel panel-primary">
+      <div class="panel-heading">Tareas Directas:</div>
+      <div class="panel-body">
+        <ul class="list-group">
+          <% @tareas.each do |tarea|
+            if !tarea.subproyecto
+          %>
+              <li class="list-group-item">Tarea: <%= link_to tarea.nombre, tarea %>(
+              <% if tarea.fecha_finalizado %>
+                <% if tarea.fecha_finalizado > tarea.fechafin    %>
+                  <span class="btn-warning">Finalizado</span>
+                <% elsif tarea.fecha_finalizado < tarea.fechafin %>
+                  <span class="btn-success">Finalizado a tiempo</span>
+                <% else %>
+                  <% if Date.parse(Time.now.strftime("%Y-%m-%d")) < Time.now %>
+                    <span class="btn-info">OK</span>
+                  <% end %>
+                <% end %>
+              <% else %>
+                <% if Date.parse(Time.now.strftime("%Y-%m-%d")) > tarea.fechafin  %>
+                  <span class="btn-danger">Atrasado</span>
+                <% else %>
+                  <span class="btn-info">OK</span>
+                <% end %>
+              <% end %>) -
+                <%= tarea.usuario.Nombres %>
+            </li>
+            <% end %>
+          <% end %>
+
+        </ul>
+      </div>
+    </div>
+  </div>
+</div>
+<script type="text/javascript">
+  $('[id^=detail-]').hide();
+  $('.toggle').click(function() {
+      $input = $( this );
+      $target = $('#'+$input.attr('data-toggle'));
+      $target.slideToggle();
+  });
+</script>

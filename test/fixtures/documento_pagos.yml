@@ -1,0 +1,41 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  Documento: one
+  ClienteProveedor: one
+  Tarjeta: one
+  Pagado: false
+  Deuda: 1.5
+  Pago_Efectivo: 1.5
+  Pago_Tarjeta: 1.5
+  Numero_Tarjeta: 1
+  Nombre_Targeta: MyString
+  Interes: 1.5
+  Mora: 1.5
+  Total_Pagado: 1.5
+  Tipo_Documento: 1
+  Estado: false
+  creado_por: 1
+  actualizado_por: 1
+  creado: 2017-08-03
+  actualizado: 2017-08-03
+
+two:
+  Documento: two
+  ClienteProveedor: two
+  Tarjeta: two
+  Pagado: false
+  Deuda: 1.5
+  Pago_Efectivo: 1.5
+  Pago_Tarjeta: 1.5
+  Numero_Tarjeta: 1
+  Nombre_Targeta: MyString
+  Interes: 1.5
+  Mora: 1.5
+  Total_Pagado: 1.5
+  Tipo_Documento: 1
+  Estado: false
+  creado_por: 1
+  actualizado_por: 1
+  creado: 2017-08-03
+  actualizado: 2017-08-03

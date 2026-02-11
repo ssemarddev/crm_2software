@@ -1,0 +1,49 @@
+<p id="notice"><%= notice %></p>
+
+<p>
+  <strong>Caja:</strong>
+  <%= @detallecaja.caja %>
+</p>
+
+<p>
+  <strong>Cantidad:</strong>
+  <%= @detallecaja.cantidad %>
+</p>
+
+<p>
+  <strong>Tipo:</strong>
+  <%= @detallecaja.tipo %>
+</p>
+
+<p>
+  <strong>Razon:</strong>
+  <%= @detallecaja.razon %>
+</p>
+
+<p>
+  <strong>Status:</strong>
+  <%= @detallecaja.status %>
+</p>
+
+<p>
+  <strong>Creado por:</strong>
+  <%= @detallecaja.creado_por %>
+</p>
+
+<p>
+  <strong>Actualizado por:</strong>
+  <%= @detallecaja.actualizado_por %>
+</p>
+
+<p>
+  <strong>Creado:</strong>
+  <%= @detallecaja.creado %>
+</p>
+
+<p>
+  <strong>Actualizado:</strong>
+  <%= @detallecaja.actualizado %>
+</p>
+
+<%= link_to 'Edit', edit_detallecaja_path(@detallecaja) %> |
+<%= link_to 'Back', detallecajas_path %>

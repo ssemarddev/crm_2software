@@ -1,0 +1,53 @@
+<!--
+$$= stylesheet_link_tag    'user_login', media: 'all', 'data-turbolinks-track': 'reload' %>
+$$= stylesheet_link_tag    'scaffolds', media: 'all', 'data-turbolinks-track': 'reload' %>
+
+<div id="clouds" style="background: -webkit-linear-gradient(top, #c9dbe9 0%, #fff 100%);">
+	<div class="cloud x1"></div>
+</div>
+
+ <div class="container-login">
+  <div id="login">
+
+    $$= form_tag '/login' do %>
+
+      <fieldset class="clearfix">
+				$$ if flash[:alert] %>
+				<p id="notice">$$= flash[:alert ]%></p>
+				$$ end %>
+        <input type="text" name="User_Name" placeholder="Usuario" required>
+		<input type="password" name="Password" placeholder="Contraseña" required>
+
+        <p><input type="submit" value="Iniciar Sesion"></p>
+
+      </fieldset>
+    $$ end %>
+
+  </div>
+</div> -->
+
+
+	
+
+		
+
+	 <div class="container-login">
+	  <div id="login">
+
+	    <%= form_tag '/login' do %>
+				<%= image_tag("logo.png", :alt => "Logo MarcoCel", :style => "display:inline; height:160px;margin-left:25%;") %>
+	      <fieldset class="clearfix">
+					<% if flash[:alert] %>
+					<p id="notice"><%= flash[:alert ]%></p>
+					<% end %>
+
+	        <p><span class="fontawesome-user"></span><input type="text" name="User_Name" value="" onBlur="if(this.value == '') this.value = 'Username'" onFocus="if(this.value == 'Username') this.value = ''" required value="3"></p>
+	        <p><span class="fontawesome-lock"></span><input type="password" name="Password"  value="" onBlur="if(this.value == '') this.value = 'Password'" onFocus="if(this.value == 'Password') this.value = ''" required value="3"></p>
+					<p><input type="submit" value="Iniciar Sesion">
+						<button href="/productosView" onclick="javascript:window.location = '/online_catalog'" type="button" name="button" style="width:280px;height:50px;color: #fff;background-color: #F0AD4E;">PRODUCTOS</button>
+						<button href="/trackingView" onclick="javascript:window.location = '/trackingView'" type="button" name="button" style="margin-top:5px;width:280px;height:50px;color: #fff;background-color: #F0AD4E;">SEGUIMIENTO DE ORDEN</button>
+					</p>
+	      </fieldset>
+	    <% end %>
+	  	</div>
+		</div>

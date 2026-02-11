@@ -1,0 +1,82 @@
+<%= form_for(documento) do |f| %>
+  <% if documento.errors.any? %>
+    <div id="error_explanation">
+      <h2><%= pluralize(documento.errors.count, "error") %> prohibited this documento from being saved:</h2>
+
+      <ul>
+      <% documento.errors.full_messages.each do |message| %>
+        <li><%= message %></li>
+      <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div class="field">
+    <%= f.label :Fecha_Entrega %>
+    <%= f.date_select :Fecha_Entrega %>
+  </div>
+
+  <div class="field">
+    <%= f.label :Fecha_Recibido %>
+    <%= f.date_select :Fecha_Recibido %>
+  </div>
+
+  <div class="field">
+    <%= f.label :Serie %>
+    <%= f.text_field :Serie %>
+  </div>
+
+  <div class="field">
+    <%= f.label :Factura %>
+    <%= f.text_field :Factura %>
+  </div>
+
+  <div class="field">
+    <%= f.label :Documento %>
+    <%= f.number_field :Documento %>
+  </div>
+
+  <div class="field">
+    <%= f.label :ClienteProveedor_id %>
+    <%= f.text_field :ClienteProveedor_id %>
+  </div>
+
+  <div class="field">
+    <%= f.label :TipoDocumento_id %>
+    <%= f.text_field :TipoDocumento_id %>
+  </div>
+
+  <div class="field">
+    <%= f.label :TipoPago_id %>
+    <%= f.text_field :TipoPago_id %>
+  </div>
+
+  <div class="field">
+    <%= f.label :Usuario_enviado_id %>
+    <%= f.text_field :Usuario_enviado_id %>
+  </div>
+
+  <div class="field">
+    <%= f.label :Usuario_recibido_id %>
+    <%= f.text_field :Usuario_recibido_id %>
+  </div>
+
+  <div class="field">
+    <%= f.label :creado_por %>
+    <%= f.number_field :creado_por %>
+  </div>
+
+  <div class="field">
+    <%= f.label :actualizado_por %>
+    <%= f.number_field :actualizado_por %>
+  </div>
+
+  <div class="field">
+    <%= f.label :Estado %>
+    <%= f.check_box :Estado %>
+  </div>
+
+  <div class="actions">
+    <%= f.submit %>
+  </div>
+<% end %>

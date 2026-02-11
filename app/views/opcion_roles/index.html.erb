@@ -1,0 +1,44 @@
+<p id="notice"><%= notice %></p>
+
+<h1>Pantallas por Perfil
+  <%= link_to 'Nueva Configuracion <i class="fa fa-plus"></i>'.html_safe , new_opcion_role_path, class: 'btn btn-primary' %>
+  <% if params[:deleted] %>
+    <%= link_to 'Regresar'.html_safe , opcion_roles_path, class: 'btn btn-default' %>
+  <% else %>
+    <%= link_to 'Ver Papelera <i class="fa fa-trash"></i>'.html_safe , opcion_roles_path(deleted: true), class: 'btn btn-danger' %>
+  <% end %>
+</h1>
+
+<table id="productos" class="table table-condensed dataTable">
+  <thead>
+    <tr>
+      <th>Opcion</th>
+      <th>Role</th>
+      <th>Estado</th>
+      <th>Creado por</th>
+      <th>Actualizado por</th>
+      <th>Creado</th>
+      <th>Actualizado</th>
+      <th></th>
+      <th></th>
+      <th></th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <% @opcion_roles.each do |opcion_role| %>
+      <tr>
+        <td class="<%= 'tr-'+opcion_role.Estado.to_s %>"><%= opcion_role.opcion.Nombre %></td>
+        <td class="<%= 'tr-'+opcion_role.Estado.to_s %>"><%= opcion_role.role.Nombre %></td>
+        <td class="<%= 'tr-'+opcion_role.Estado.to_s %>"><%= opcion_role.Estado %></td>
+        <td class="<%= 'tr-'+opcion_role.Estado.to_s %>"><%= opcion_role.creado_por %></td>
+        <td class="<%= 'tr-'+opcion_role.Estado.to_s %>"><%= opcion_role.actualizado_por %></td>
+        <td class="<%= 'tr-'+opcion_role.Estado.to_s %>"><%= opcion_role.creado %></td>
+        <td class="<%= 'tr-'+opcion_role.Estado.to_s %>"><%= opcion_role.actualizado %></td>
+        <td class="<%= 'tr-'+opcion_role.Estado.to_s %>"><%= link_to  icon('fa','eye'), opcion_role, class:'btn btn-info' %></td>
+        <td class="<%= 'tr-'+opcion_role.Estado.to_s %>"><%= link_to icon('fa','edit'), edit_opcion_role_path(opcion_role), class:'btn btn-warning' %></td>
+        <td class="<%= 'tr-'+opcion_role.Estado.to_s %>"><%= link_to icon('fa','trash-o'), opcion_role, method: :delete, data: { confirm: 'Estas Seguro?' }, class:'btn btn-danger' %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>

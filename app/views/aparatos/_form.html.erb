@@ -1,0 +1,70 @@
+<%= form_with(model: aparato, local: true) do |form| %>
+  <% if aparato.errors.any? %>
+    <div id="error_explanation">
+      <h2><%= pluralize(aparato.errors.count, "error") %> prohibited this aparato from being saved:</h2>
+
+      <ul>
+      <% aparato.errors.full_messages.each do |message| %>
+        <li><%= message %></li>
+      <% end %>
+      </ul>
+    </div>
+  <% end %>
+<div class="row">
+  <div class="col-md-6 col-lg-6 col-sm-6 col-xs-6">
+    <div class="field">
+      <%= form.label :serie %>
+      <%= form.text_field :serie, id: :aparato_serie, class: 'form-control' %>
+    </div>
+
+    <div class="field">
+      <%= form.label :cov %>
+      <%= form.text_field :cov, id: :aparato_cov, class: 'form-control' %>
+    </div>
+
+    <div class="field">
+      <%= form.label :bodega_id %>
+      <%= collection_select(:aparato, :bodega_id, Bodega.where(:Estado => true), :id, :Nombre, {:prompt => true}, class: "form-control") %>
+    </div>
+
+    <div class="field">
+      <%= form.label :serie_remplazo %>
+      <%= collection_select(:aparato, :serie_remplazo, Aparato.where('"status"=true and "cliente" is null '), :serie, :serie, {:prompt => true}, class: "form-control") %>
+    </div>
+
+    <!--div class="field" >
+      < form.label :cov_remplazo %>
+      < collection_select(:aparato, :cov_remplazo, Aparato.where('"status"=true and "cliente" is null '), :cov, :cov, {:prompt => true}, class: "form-control") %>
+    </div.-->
+
+    <div class="field">
+      <%= form.label :proveedor %>
+      <%= collection_select(:aparato, :proveedor, ClienteProveedor.where(:Estado => true, :Tipo => 2), :id, :Nombre, {:prompt => true}, class: "form-control") %>
+    </div>
+
+    <div class="field">
+      <%= form.label :cliente %>
+      <%= collection_select(:aparato, :cliente, ClienteProveedor.where(:Estado => true, :Tipo => 1), :id, :Nombre, {:prompt => true}, class: "form-control") %>
+    </div>
+
+    <div class="field">
+      <%= form.label :estado_id %>
+      <%= collection_select(:aparato, :estado_id, Estado.where(:Estado => true, :tipo => 1), :id, :Nombre, {:prompt => true}, class: "form-control") %>
+    </div>
+
+    <div class="field">
+      <%= form.label :comentario %>
+      <%= form.text_field :comentario, id: :aparato_comentario, class: 'form-control' %>
+    </div>
+  </div>
+  <div class="col-md-6 col-lg-6 col-sm-6 col-xs-6">
+    <div class="panel panel-info">
+      <div class="panel-heading">Acciones:</div>
+      <div class="panel-body">
+        <button type="submit" name="button" class="btn btn-primary"><i class="fontawesome-save"></i> Guardar</button>
+        <%= link_to 'Regresar', aparatos_path, class: 'btn btn-default' %>
+      </div>
+    </div>
+  </div>
+</div>
+<% end %>

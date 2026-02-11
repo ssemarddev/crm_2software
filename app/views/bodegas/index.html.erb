@@ -1,0 +1,35 @@
+<p id="notice"><%= notice %></p>
+
+<h1>Bodegas
+  <%= link_to 'Nueva Bodega <i class="fa fa-plus"></i>'.html_safe , new_bodega_path, class: 'btn btn-primary' %>
+  <% if params[:deleted] %>
+    <%= link_to 'Regresar'.html_safe , bodegas_path, class: 'btn btn-default' %>
+  <% else %>
+    <%= link_to 'Ver Papelera <i class="fa fa-trash"></i>'.html_safe , bodegas_path(deleted: true), class: 'btn btn-danger' %>
+  <% end %>
+</h1>
+
+<table id="productos" class="table table-condensed dataTable">
+  <thead>
+    <tr>
+      <th>Nombre</th>
+      <th>Direccion</th>
+      <th>Usuario Encargado</th>
+      <th></th>
+      <th></th>
+      <th></th>
+    </tr>
+  </thead>
+  <tbody>
+    <% @bodegas.each do |bodega| %>
+      <tr>
+        <td class="<%= 'tr-'+bodega.Estado.to_s %>"><%= bodega.Nombre %></td>
+        <td class="<%= 'tr-'+bodega.Estado.to_s %>"><%= bodega.Direccion %></td>
+        <td class="<%= 'tr-'+bodega.Estado.to_s %>"><%= bodega.Usuario.User_Name %></td>
+        <td class="<%= 'tr-'+bodega.Estado.to_s %>"><%= link_to  icon('fa','eye'), bodega, class:'btn btn-info' %></td>
+        <td class="<%= 'tr-'+bodega.Estado.to_s %>"><%= link_to icon('fa','edit'), edit_bodega_path(bodega), class:'btn btn-warning' %></td>
+        <td class="<%= 'tr-'+bodega.Estado.to_s %>"><%= link_to icon('fa','trash-o'), bodega, method: :delete, data: { confirm: 'Estas Seguro?' }, class:'btn btn-danger' %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>

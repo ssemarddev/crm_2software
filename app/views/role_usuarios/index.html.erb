@@ -1,0 +1,36 @@
+<p id="notice"><%= notice %></p>
+
+<h1>Perfil por Usuario
+  <%= link_to 'Nueva Asignacion de Perfiles <i class="fa fa-plus"></i>'.html_safe , new_role_usuario_path, class: 'btn btn-primary' %>
+  <% if params[:deleted] %>
+    <%= link_to 'Regresar'.html_safe , role_usuarios_path, class: 'btn btn-default' %>
+  <% else %>
+    <%= link_to 'Ver Papelera <i class="fa fa-trash"></i>'.html_safe , role_usuarios_path(deleted: true), class: 'btn btn-danger' %>
+  <% end %>
+</h1>
+
+<table id="productos" class="table table-condensed dataTable">
+  <thead>
+    <tr>
+      <th>Perfil</th>
+      <th>Usuario</th>
+      <th>Creado</th>
+      <th>Actualizado</th>
+      <th></th>
+      <th></th>
+    </tr>
+  </thead>
+  <tbody>
+    <% @role_usuarios.each do |role_usuario| %>
+      <tr>
+        <td class="<%= 'tr-'+role_usuario.Estado.to_s %>"><%= role_usuario.role.Nombre %></td>
+        <td class="<%= 'tr-'+role_usuario.Estado.to_s %>"><%= role_usuario.usuario.User_Name %></td>
+        <td class="<%= 'tr-'+role_usuario.Estado.to_s %>"><%= role_usuario.creado %></td>
+        <td class="<%= 'tr-'+role_usuario.Estado.to_s %>"><%= role_usuario.actualizado %></td>
+        <!--<td>< link_to  icon('fa','eye'), role_usuario, class:'btn btn-info' %></td>-->
+        <td class="<%= 'tr-'+role_usuario.Estado.to_s %>"><%= link_to icon('fa','edit'), edit_role_usuario_path(role_usuario), class:'btn btn-warning' %></td>
+        <td class="<%= 'tr-'+role_usuario.Estado.to_s %>"><%= link_to icon('fa','trash-o'), role_usuario, method: :delete, data: { confirm: 'Estas Seguro?' }, class:'btn btn-danger' %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>

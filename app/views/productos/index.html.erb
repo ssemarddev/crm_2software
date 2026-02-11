@@ -1,0 +1,115 @@
+<p id="notice"><%= notice %></p>
+
+<h1>Productos
+  <%= link_to 'Nuevo Producto <i class="fa fa-plus"></i>'.html_safe , new_producto_path, class: 'btn btn-primary' %>
+  <% if params[:deleted] %>
+    <%= link_to 'Regresar'.html_safe , productos_path, class: 'btn btn-default' %>
+  <% else %>
+    <%= link_to 'Ver Papelera <i class="fa fa-trash"></i>'.html_safe , productos_path(deleted: true), class: 'btn btn-danger' %>
+  <% end %>
+</h1>
+
+<div class="row">
+  <div class="col-md-4">
+    <%= form_for productos_path, method: :get  do |f| %>
+      <%= f.label :Producto %>
+      <%= f.text_field :nombre_producto, name: :nombre_producto , class: 'form-control' %>
+      <%= f.submit :Buscar, class:'btn btn-info pull-right' %>
+    <% end %>
+  </div>
+</div>
+
+<div style="overflow-x:auto;">
+  <table id="productos" class="table table-condensed">
+    <thead>
+      <tr>
+        <th>Codigo</th>
+        <th>Nombre</th>
+        <th>Marca</th>
+        <th>Proveedor</th>
+        <th>Tipo Producto</th>
+        <th>Minimos</th>
+        <th>Valor compra</th>
+        <th>Valor venta</th>
+        <th>Medida</th>
+        <th>Fila</th>
+        <th>Columna</th>
+        <th>Mayorista</th>
+        <th>Mayorista Instalado</th>
+        <th>Cliente Final Descuento</th>
+        <th>Cliente Final</th>
+        <th></th>
+        <th></th>
+        <th></th>
+      </tr>
+    </thead>
+    <tbody>
+      <% @productos.each do |producto| %>
+        <tr>
+          <td class="<%= 'tr-'+producto.estado.to_s %>"><%= producto.Codigo %></td>
+          <td  class="<%= 'tr-'+producto.estado.to_s %>"><%= producto.Nombre %></td>
+          <td  class="<%= 'tr-'+producto.estado.to_s %>"><%= producto.Marca.Nombre %></td>
+          <td  class="<%= 'tr-'+producto.estado.to_s %>"><%= producto.ClienteProveedor.Nombre %></td>
+          <td  class="<%= 'tr-'+producto.estado.to_s %>"><%= producto.TipoProducto.Nombre %></td>
+          <td  class="<%= 'tr-'+producto.estado.to_s %>"><%= producto.Minimos %></td>
+          <td  class="<%= 'tr-'+producto.estado.to_s %>"><%= producto.Valor_Compra %></td>
+          <td  class="<%= 'tr-'+producto.estado.to_s %>"><%= producto.Valor_Venta %></td>
+          <td  class="<%= 'tr-'+producto.estado.to_s %>"><%= producto.Medida.Nombre %></td>
+          <td  class="<%= 'tr-'+producto.estado.to_s %>"><%= producto.Fila %></td>
+          <td  class="<%= 'tr-'+producto.estado.to_s %>"><%= producto.Columna %></td>
+          <td  class="<%= 'tr-'+producto.estado.to_s %>"><%= producto.preciouno %></td>
+          <td  class="<%= 'tr-'+producto.estado.to_s %>"><%= producto.preciodos %></td>
+          <td  class="<%= 'tr-'+producto.estado.to_s %>"><%= producto.preciotres %></td>
+          <td  class="<%= 'tr-'+producto.estado.to_s %>"><%= producto.preciocuatro %></td>
+          <td  class="<%= 'tr-'+producto.estado.to_s %>"><%= link_to  icon('fa','eye'), producto, class:'btn btn-info' %></td>
+          <td  class="<%= 'tr-'+producto.estado.to_s %>"><%= link_to icon('fa','edit'), edit_producto_path(producto), class:'btn btn-warning' %></td>
+          <td  class="<%= 'tr-'+producto.estado.to_s %>"><%= link_to icon('fa','trash-o'), producto, method: :delete, data: { confirm: 'Estas Seguro?' }, class:'btn btn-danger' %></td>
+        </tr>
+      <% end %>
+    </tbody>
+  </table>
+</div>
+
+
+<div class="flickr_pagination mb-4">
+  <%= will_paginate @productos, container: false %>
+</div>
+
+<script>
+$(document).ready(function() {
+  $("table").dataTable({
+    "order": [[0,'desc']],
+    "paging":   false,
+    "info":     false,
+    "bJQueryUI":true,
+    "dom": 'Bfrtip',
+    "buttons": [
+        'copyHtml5', 'excelHtml5', 'pdfHtml5'
+    ],
+    "language": {
+          "sProcessing":    "Procesando...",
+          "sLengthMenu":    "Mostrar _MENU_ registros",
+          "sZeroRecords":   "No se encontraron resultados",
+          "sEmptyTable":    "Ningún dato disponible en esta tabla",
+          "sInfo":          "Mostrando registros del _START_ al _END_ de un total de _TOTAL_ registros",
+          "sInfoEmpty":     "Mostrando registros del 0 al 0 de un total de 0 registros",
+          "sInfoFiltered":  "(filtrado de un total de _MAX_ registros)",
+          "sInfoPostFix":   "",
+          "sSearch":        "Buscar:",
+          "sUrl":           "",
+          "sInfoThousands":  ",",
+          "sLoadingRecords": "Cargando...",
+          "oPaginate": {
+              "sFirst":    "Primero",
+              "sLast":    "Último",
+              "sNext":    "Siguiente",
+              "sPrevious": "Anterior"
+          },
+          "oAria": {
+              "sSortAscending":  ": Activar para ordenar la columna de manera ascendente",
+              "sSortDescending": ": Activar para ordenar la columna de manera descendente"
+          }
+      }
+  });
+});
+</script>

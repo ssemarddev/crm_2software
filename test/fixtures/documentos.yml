@@ -1,0 +1,29 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  Fecha_Entrega: 2017-06-23
+  Fecha_Recibido: 2017-06-23
+  Serie: MyString
+  Factura: MyString
+  Documento: 1
+  ClienteProveedor: one
+  TipoDocumento: one
+  TipoPago: one
+  Usuario_enviado: one
+  Usuario_recibido: one
+  creado_por: 1
+  actualizado_por: 1
+
+two:
+  Fecha_Entrega: 2017-06-23
+  Fecha_Recibido: 2017-06-23
+  Serie: MyString
+  Factura: MyString
+  Documento: 1
+  ClienteProveedor: two
+  TipoDocumento: two
+  TipoPago: two
+  Usuario_enviado: two
+  Usuario_recibido: two
+  creado_por: 1
+  actualizado_por: 1

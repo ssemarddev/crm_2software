@@ -1,0 +1,97 @@
+<%= form_for(@producto) do |f| %>
+
+  <div class="row">
+    <div class="col-xs-12 col-sm-12 col-md-6">
+      <fieldset disabled="true">
+        <div class="field">
+          <%= f.label :Codigo %>
+          <%= f.text_field :Codigo , class: "form-control"%>
+        </div>
+
+        <div class="field">
+          <%= f.label :Nombre %>
+          <%= f.text_field :Nombre, class: "form-control" %>
+        </div>
+
+        <div class="field">
+          <%= f.label :Marca_id %>
+          <%= collection_select(:producto, :Marca_id, Marca.where(:Estado => true), :id, :Nombre, {:prompt => true}, class: "form-control" )%>
+        </div>
+
+        <div class="field">
+          <%= f.label "Proveedor" %>
+          <%= collection_select(:producto, :ClienteProveedor_id, ClienteProveedor.where(:Estado => true, :Tipo=>2), :id, :Nombre, {:prompt => true}, class: "form-control") %>
+        </div>
+
+        <div class="field">
+          <%= f.label "Tipo Producto" %>
+          <%= collection_select(:producto, :TipoProducto_id, TipoProducto.where(:Estado => true), :id, :Nombre, {:prompt => true}, class: "form-control") %>
+        </div>
+
+        <div class="field">
+          <%= f.label :Minimos %>
+          <%= f.number_field :Minimos, class: "form-control" %>
+        </div>
+
+        <div class="field">
+          <%= f.label :Valor_Compra %>
+          <%= f.text_field :Valor_Compra, class: "form-control" %>
+        </div>
+
+        <div class="field">
+          <%= f.label :Valor_Venta %>
+          <%= f.text_field :Valor_Venta, class: "form-control" %>
+        </div>
+
+        <div class="field">
+          <%= f.label :Medida_id %>
+          <%= collection_select(:producto, :Medida_id, Medida.where(:Estado => true), :id, :Nombre, {:prompt => true}, class: "form-control") %>
+        </div>
+
+        <div class="field">
+          <%= f.label :Fila %>
+          <%= f.text_field :Fila, class: "form-control" %>
+        </div>
+
+        <div class="field">
+          <%= f.label :Columna %>
+          <%= f.text_field :Columna, class: "form-control" %>
+        </div>
+      </div>
+    </fieldset>
+    <div class="col-xs-12 col-sm-12 col-md-6">
+      <!--input type="file" class="custom-file-input" id="dropImage" aria-describedby="inputGroupFileAddon01" name="producto[dropImage[]]" accept="image/png, image/jpeg" multiple="true">-->
+      <img src="" class="drop-image" />
+      <div id="drop-container">
+          <div class="drop-area-text">Previsualizacion</div>
+          <% @producto.product_image&.each do |pI| %>
+            <img src="<%= asset_url('uploads/'+pI.descripcion)%>" class="preview" />
+          <% end %>
+      </div>
+      
+      <div class="panel panel-info">
+        <div class="panel-heading"> <h3 class="panel-title">Acciones</h3> </div>
+        <div class="panel-body">
+          <%= link_to 'Editar', edit_producto_path(@producto), class:'btn btn-warning' %>
+          <%= link_to 'Nuevo', new_producto_path, class:'btn btn-primary' %>
+          <%= link_to 'Regresar', productos_path, class:'btn btn-default' %>
+        </div>
+      </div>
+    </div>
+    <div class="col-xs-12 col-sm-12 col-md-6">
+      <table class="qr" style="border-width: 0; border-style: none; border-color: #0000ff; border-collapse: collapse; width: 150px; display:inline; float:left">
+        <% @qr.modules.each_index do |x| %>
+            <tr>
+              <% @qr.modules.each_index do |y| %>
+                  <% if @qr.qrcode.checked?(x,y) %>
+                      <td class="black" style="background-color: #000;  border-width: 0; border-style: none; border-color: #0000ff; border-collapse: collapse; padding: 0; margin: 0; width: 10px; height: 5px;"/>
+                  <% else %>
+                      <td class="black" style="background-color: #fff;  border-width: 0; border-style: none; border-color: #0000ff; border-collapse: collapse; padding: 0; margin: 0; width: 10px; height: 5px;"/>
+                  <% end %>
+              <% end %>
+            </tr>
+        <% end %>
+      </table>
+    </div>
+  </div>
+  <% end %>

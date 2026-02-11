@@ -1,0 +1,103 @@
+<h1>Reporte de Compras y Ventas</h1>
+
+<table class="table">
+  <tr>
+    <td><label for="">Producto:</label></td>
+    <td><select id="productoId" name="codigoproducto" class="form-control">
+    </select></td>
+    <td><label for="">Movimiento:</label></td>
+    <td><select id="tipoDocumentoId" name="tipoDocumentoId" class="form-control">
+      <option value="">Seleccione...</option>
+      <option value="1">Compras</option>
+      <option value="2">Ventas</option>
+    </select></td>
+  </tr>
+  <tr>
+    <td><label for="">Fecha Inicio:</label></td>
+    <td><input type="date" id="fechaInicio" class="form-control" name="" value=""></td>
+    <td><label for="">Fecha Inicio:</label></td>
+    <td><input type="date" id="fechaFin" class="form-control" name="" value=""></td>
+    <td><button type="button" name="button" class="btn btn-primary" onclick="search();">Buscar</button></td>
+  </tr>
+</table>
+<br/>
+<div class="">
+  <table class="table dataTable">
+    <thead>
+      <th>Movimiento</th>
+      <th>Codigo</th>
+      <th>Producto</th>
+      <th>Precio Compra</th>
+      <th>Precio Venta</th>
+      <th>Marca</th>
+      <th>Medida</th>
+      <th>Proveedor</th>
+      <th>Fila</th>
+      <th>Columna</th>
+      <th>Cantidad</th>
+      <th>Ganancias</th>
+      <th>Costo</th>
+    </thead>
+    <tbody>
+      <% if @detalleDocumentos != nil
+          @detalleDocumentos.each do |p| %>
+          <tr>
+            <td><%= p.tipoDoc %></td>
+            <td><%= p.Codigo %></td>
+            <td><%= p.producto %></td>
+            <td><%= p.Valor_Compra %></td>
+            <td><%= p.Valor_Venta %></td>
+            <td><%= p.marca %></td>
+            <td><%= p.medida %></td>
+            <td><%= p.Proveedor %></td>
+            <td><%= p.Fila %></td>
+            <td><%= p.Columna %></td>
+            <td><%= p.cantidadVentas %></td>
+            <td><%= p.ganancias %></td>
+            <td><%= p.costo %></td>
+          </tr>
+      <%  end
+        end
+      %>
+    </tbody>
+  </table>
+</div>
+<script type="text/javascript">
+  getProducts();
+  function getProducts(){
+    $.ajax({
+      url: "/findProductosByProvider",
+      method: 'POST',
+      dataType: 'json',
+      data: {
+        proveedor: 'all'
+      },
+      success: function( result ) {
+        html = '<option value="">Seleccione...</option>'
+        for(i=0; i < result.length; i++){
+          html += "<option value='"+result[i].id+"'>"+result[i].Nombre+"</option>";
+        }
+        $("#productoId").html(html);
+      }
+    });
+  }
+  function search(){
+    if(($("#fechaInicio").val()!="" && $("#fechaFin").val()!="" ) && ($("#fechaInicio").val() <= $("#fechaFin").val() )){
+      if($("#tipoDocumentoId").val()!=""){
+        window.location.href = "reporteVentasYCompras?tipoDocumentoId="+$("#tipoDocumentoId").val()+"&fechaInicio="+$("#fechaInicio").val()+"&fechaFin="+$("#fechaFin").val();
+      }
+      if($("#tipoDocumentoId").val()!=""){
+        window.location.href = "reporteVentasYCompras?tipoDocumentoId="+$("#tipoDocumentoId").val()+"&fechaInicio="+$("#fechaInicio").val()+"&fechaFin="+$("#fechaFin").val();
+      }
+      if($("#productoId").val()!="" && $("#tipoDocumentoId").val()!=""){
+        window.location.href = "reporteVentasYCompras?productoId="+$("#productoId").val()+"&tipoDocumentoId="+$("#tipoDocumentoId").val()+"&fechaInicio="+$("#fechaInicio").val()+"&fechaFin="+$("#fechaFin").val();
+      }
+      if($("#productoId").val()=="" && $("#tipoDocumentoId").val()==""){
+        window.location.href = "reporteVentasYCompras?fechaInicio="+$("#fechaInicio").val()+"&fechaFin="+$("#fechaFin").val();
+      }
+
+    }else{
+      alert("Ingresar un rango valido de fechas.")
+    }
+  }
+</script>

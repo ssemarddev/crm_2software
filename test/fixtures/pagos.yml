@@ -1,0 +1,27 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  cantidad: 1.5
+  documento_pago: one
+  referencia: MyString
+  interes: 1.5
+  mora: 1.5
+  observacion: MyString
+  status: false
+  creado_por: 1
+  actualizado_por: 1
+  creado: 2020-06-28
+  actualizado: 2020-06-28 08:24:37
+
+two:
+  cantidad: 1.5
+  documento_pago: two
+  referencia: MyString
+  interes: 1.5
+  mora: 1.5
+  observacion: MyString
+  status: false
+  creado_por: 1
+  actualizado_por: 1
+  creado: 2020-06-28
+  actualizado: 2020-06-28 08:24:37

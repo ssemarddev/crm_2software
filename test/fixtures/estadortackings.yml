@@ -1,0 +1,21 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  tracking: one
+  estado: one
+  comentario: MyString
+  status: false
+  creado_por: 1
+  actualizado_por: 1
+  creado: 2020-05-26
+  actualizado: 2020-05-26 19:18:50
+
+two:
+  tracking: two
+  estado: two
+  comentario: MyString
+  status: false
+  creado_por: 1
+  actualizado_por: 1
+  creado: 2020-05-26
+  actualizado: 2020-05-26 19:18:50

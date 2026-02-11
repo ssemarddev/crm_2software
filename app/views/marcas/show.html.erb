@@ -1,0 +1,34 @@
+<p id="notice"><%= notice %></p>
+
+<p>
+  <strong>Nombre:</strong>
+  <%= @marca.Nombre %>
+</p>
+
+<p>
+  <strong>Estado:</strong>
+  <%= @marca.Estado %>
+</p>
+
+<p>
+  <strong>Creado por:</strong>
+  <%= @marca.creado_por %>
+</p>
+
+<p>
+  <strong>Actualizado por:</strong>
+  <%= @marca.actualizado_por %>
+</p>
+
+<p>
+  <strong>Creado:</strong>
+  <%= @marca.creado %>
+</p>
+
+<p>
+  <strong>Actualizado:</strong>
+  <%= @marca.actualizado %>
+</p>
+
+<%= link_to 'Edit', edit_marca_path(@marca) %> |
+<%= link_to 'Back', marcas_path %>

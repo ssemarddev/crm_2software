@@ -1,0 +1,39 @@
+<p id="notice"><%= notice %></p>
+
+<p>
+  <strong>Nombre:</strong>
+  <%= @tipo_producto.Nombre %>
+</p>
+
+<p>
+  <strong>Es servicio:</strong>
+  <%= @tipo_producto.Es_Servicio %>
+</p>
+
+<p>
+  <strong>Estado:</strong>
+  <%= @tipo_producto.Estado %>
+</p>
+
+<p>
+  <strong>Creado por:</strong>
+  <%= @tipo_producto.creado_por %>
+</p>
+
+<p>
+  <strong>Actualizado por:</strong>
+  <%= @tipo_producto.actualizado_por %>
+</p>
+
+<p>
+  <strong>Creado:</strong>
+  <%= @tipo_producto.creado %>
+</p>
+
+<p>
+  <strong>Actualizado:</strong>
+  <%= @tipo_producto.actualizado %>
+</p>
+
+<%= link_to 'Edit', edit_tipo_producto_path(@tipo_producto) %> |
+<%= link_to 'Back', tipo_productos_path %>

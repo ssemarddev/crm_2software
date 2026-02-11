@@ -1,0 +1,24 @@
+<p id="notice"><%= notice %></p>
+
+<h1>Proyectos <%= link_to 'Crear proyecto', new_proyecto_path, class:'btn btn-primary' %></h1>
+<div class="row">
+  <div class="col-md-6 col-lg-6 col-sm-6 col-xs-6">
+    <table class="table dataTable">
+      <thead>
+        <tr>
+          <th>Nombre</th>
+          <th></th>
+        </tr>
+      </thead>
+      <tbody>
+        <% @proyectos.each do |proyecto| %>
+          <tr>
+            <td><%= proyecto.nombre %></td>
+            <td><%= link_to 'Ver', proyecto, class:'btn btn-info'%></td>
+          </tr>
+        <% end %>
+      </tbody>
+    </table>
+    
+  </div>
+</div>

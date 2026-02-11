@@ -1,0 +1,48 @@
+<%= form_with(model: detallecaja, local: true) do |form| %>
+  <% if detallecaja.errors.any? %>
+    <div id="error_explanation">
+      <h2><%= pluralize(detallecaja.errors.count, "error") %> prohibited this detallecaja from being saved:</h2>
+
+      <ul>
+      <% detallecaja.errors.full_messages.each do |message| %>
+        <li><%= message %></li>
+      <% end %>
+      </ul>
+    </div>
+  <% end %>
+<div class="row">
+  <div class="col-md-6 col-lg-6 col-sm-6 col-xs-6">
+    <div class="field">
+      <%= form.hidden_field :caja_id, id: :detallecaja_caja_id, value:params[:caja] %>
+    </div>
+
+    <div class="field">
+      <%= form.label :cantidad %>
+      <%= form.number_field :cantidad, id: :detallecaja_cantidad, class: 'form-control' %>
+    </div>
+
+    <div class="field">
+      <%= form.label :tipo %>
+      <select class="form-control" name="detallecaja[tipo]">
+        <option value="1">Ingreso</option>
+        <option value="0">Egreso</option>
+      </select>
+    </div>
+
+    <div class="field">
+      <%= form.label :razon %>
+      <%= form.text_field :razon, id: :detallecaja_razon, class: 'form-control' %>
+    </div>
+  </div>
+  <div class="col-md-6 col-lg-6 col-sm-6 col-xs-6">
+    <div class="panel panel-info">
+      <div class="panel-heading">Acciones:</div>
+      <div class="panel-body">
+        <button type="submit" name="button" class="btn btn-primary"><i class="fontawesome-save"></i> Guardar</button>
+        <%= link_to 'Regresar', estados_path, class: 'btn btn-default' %>
+      </div>
+    </div>
+  </div>
+</div>
+
+<% end %>

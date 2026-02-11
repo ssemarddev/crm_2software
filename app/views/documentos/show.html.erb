@@ -1,0 +1,68 @@
+<p id="notice"><%= notice %></p>
+
+<p>
+  <strong>Fecha entrega:</strong>
+  <%= @documento.Fecha_Entrega %>
+</p>
+
+<p>
+  <strong>Fecha recibido:</strong>
+  <%= @documento.Fecha_Recibido %>
+</p>
+
+<p>
+  <strong>Serie:</strong>
+  <%= @documento.Serie %>
+</p>
+<p>
+  <strong>Estado:</strong>
+  <%= @documento.Estado %>
+</p>
+
+<p>
+  <strong>Factura:</strong>
+  <%= @documento.Factura %>
+</p>
+
+<p>
+  <strong>Documento:</strong>
+  <%= @documento.Documento %>
+</p>
+
+<p>
+  <strong>Clienteproveedor:</strong>
+  <%= @documento.ClienteProveedor %>
+</p>
+
+<p>
+  <strong>Tipodocumento:</strong>
+  <%= @documento.TipoDocumento %>
+</p>
+
+<p>
+  <strong>Tipopago:</strong>
+  <%= @documento.TipoPago %>
+</p>
+
+<p>
+  <strong>Usuario enviado:</strong>
+  <%= @documento.Usuario_enviado %>
+</p>
+
+<p>
+  <strong>Usuario recibido:</strong>
+  <%= @documento.Usuario_recibido %>
+</p>
+
+<p>
+  <strong>Creado por:</strong>
+  <%= @documento.creado_por %>
+</p>
+
+<p>
+  <strong>Actualizado por:</strong>
+  <%= @documento.actualizado_por %>
+</p>
+
+<%= link_to 'Edit', edit_documento_path(@documento) %> |
+<%= link_to 'Back', documentos_path %>

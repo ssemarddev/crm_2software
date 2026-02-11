@@ -1,0 +1,24 @@
+<p id="notice"><%= notice %></p>
+
+<p>
+  <strong>Nombre:</strong>
+  <%= @detalle_medida.Nombre %>
+</p>
+
+<p>
+  <strong>Medida:</strong>
+  <%= @detalle_medida.Medida.Nombre %>
+</p>
+
+<p>
+  <strong>Proporcion:</strong>
+  <%= @detalle_medida.Proporcion %>
+</p>
+
+<p>
+  <strong>Porcentaje ganancia:</strong>
+  <%= @detalle_medida.Porcentaje_Ganancia %>
+</p>
+
+<%= link_to 'Edit', edit_detalle_medida_path(@detalle_medida) %> |
+<%= link_to 'Back', detalle_medidas_path %>

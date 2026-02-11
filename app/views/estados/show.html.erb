@@ -1,0 +1,34 @@
+<p id="notice"><%= notice %></p>
+
+<p>
+  <strong>Nombre:</strong>
+  <%= @estado.Nombre %>
+</p>
+
+<p>
+  <strong>Estado:</strong>
+  <%= @estado.Estado %>
+</p>
+
+<p>
+  <strong>Creado por:</strong>
+  <%= @estado.creado_por %>
+</p>
+
+<p>
+  <strong>Actualizado por:</strong>
+  <%= @estado.actualizado_por %>
+</p>
+
+<p>
+  <strong>Creado:</strong>
+  <%= @estado.creado %>
+</p>
+
+<p>
+  <strong>Actualizado:</strong>
+  <%= @estado.actualizado %>
+</p>
+
+<%= link_to 'Edit', edit_estado_path(@estado) %> |
+<%= link_to 'Back', estados_path %>

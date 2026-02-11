@@ -1,0 +1,57 @@
+<p id="notice"><%= notice %></p>
+
+<h1>Detalle Documentos</h1>
+
+<table>
+  <thead>
+    <tr>
+      <th>Documento</th>
+      <th>Producto</th>
+      <th>Medida</th>
+      <th>Detallemedida</th>
+      <th>Cantidad</th>
+      <th>Descripcion</th>
+      <th>Valor compra</th>
+      <th>Valor venta</th>
+      <th>Descuento</th>
+      <th>Descuento porcentaje</th>
+      <th>Total</th>
+      <th>Estado</th>
+      <th>Creado por</th>
+      <th>Actualizado por</th>
+      <th>Creado</th>
+      <th>Actualizado</th>
+      <th colspan="3"></th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <% @detalle_documentos.each do |detalle_documento| %>
+      <tr>
+        <td><%= detalle_documento.Documento %></td>
+        <td><%= detalle_documento.Producto %></td>
+        <td><%= detalle_documento.Medida %></td>
+        <td><%= detalle_documento.DetalleMedida %></td>
+        <td><%= detalle_documento.cantidad %></td>
+        <td><%= detalle_documento.descripcion %></td>
+        <td><%= detalle_documento.valor_compra %></td>
+        <td><%= detalle_documento.valor_venta %></td>
+        <td><%= detalle_documento.descuento %></td>
+        <td><%= detalle_documento.descuento_porcentaje %></td>
+        <td><%= detalle_documento.total %></td>
+        <td><%= detalle_documento.Estado %></td>
+        <td><%= detalle_documento.creado_por %></td>
+        <td><%= detalle_documento.actualizado_por %></td>
+        <td><%= detalle_documento.creado %></td>
+        <td><%= detalle_documento.actualizado %></td>
+        <td><%= link_to 'Show', detalle_documento %></td>
+        <td><%= link_to 'Edit', edit_detalle_documento_path(detalle_documento) %></td>
+        <td><%= link_to 'Destroy', detalle_documento, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+
+<br>
+
+<%= link_to 'New Detalle Documento', new_detalle_documento_path %>

@@ -1,0 +1,34 @@
+<p id="notice"><%= notice %></p>
+
+<p>
+  <strong>Nombre:</strong>
+  <%= @tarjeta_credito.nombre %>
+</p>
+
+<p>
+  <strong>Estado:</strong>
+  <%= @tarjeta_credito.Estado %>
+</p>
+
+<p>
+  <strong>Creado por:</strong>
+  <%= @tarjeta_credito.creado_por %>
+</p>
+
+<p>
+  <strong>Actualizado por:</strong>
+  <%= @tarjeta_credito.actualizado_por %>
+</p>
+
+<p>
+  <strong>Creado:</strong>
+  <%= @tarjeta_credito.creado %>
+</p>
+
+<p>
+  <strong>Actualizado:</strong>
+  <%= @tarjeta_credito.actualizado %>
+</p>
+
+<%= link_to 'Edit', edit_tarjeta_credito_path(@tarjeta_credito) %> |
+<%= link_to 'Back', tarjeta_creditos_path %>

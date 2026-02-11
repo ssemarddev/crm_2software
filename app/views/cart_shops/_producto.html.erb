@@ -1,0 +1,25 @@
+<div class="col-lg-2 col-md-2 col-xs-12 col-sm-6">
+  <article class="col-item">
+    <div class="photo">
+      <a href="#"> <img src="<%= url %>" class="img-fluid" alt="Product Image" /> </a>
+    </div>
+    <div class="info">
+      <div class="row">
+        <div class="price-details col-md-5">
+          <p class="details">
+            <%= producto.MarcaNombre %>
+            <%= producto.MedidaNombre %>
+          </p>
+          <h1><%= producto.Nombre %></h1>
+        </div>
+        
+      </div>
+    </div>
+    <div class="button-container">
+        <%= button_to "product_details/#{producto.id}?phone=#{params[:phone]}", class:'btn btn-primary', method: :get do %>
+          Ver Mas
+          <input type="hidden" name="phone" value="<%=params[:phone]%>" >
+        <% end %>
+      </div>
+  </article>
+</div>

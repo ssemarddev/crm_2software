@@ -1,0 +1,29 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  Producto: one
+  Saliente_Bodega: one
+  Entrante_Bodega: one
+  cantidad: 1
+  porcentaje_proporcion: 9.99
+  movimiento_tipo: 1
+  signo: MyString
+  Documento: one
+  creado_por: 1
+  actualizado_por: 1
+  creado: 2017-06-23
+  actualizado: 2017-06-23
+
+two:
+  Producto: two
+  Saliente_Bodega: two
+  Entrante_Bodega: two
+  cantidad: 1
+  porcentaje_proporcion: 9.99
+  movimiento_tipo: 1
+  signo: MyString
+  Documento: two
+  creado_por: 1
+  actualizado_por: 1
+  creado: 2017-06-23
+  actualizado: 2017-06-23

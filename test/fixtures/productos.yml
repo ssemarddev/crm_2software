@@ -1,0 +1,27 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  Codigo: MyString
+  Nombre: MyString
+  Marca: one
+  ClienteProveedor: one
+  TipoProducto: one
+  Minimos: 1
+  Valor_Compra: 9.99
+  Valor_Venta: 9.99
+  Medida: one
+  Fila: MyString
+  Columna: MyString
+
+two:
+  Codigo: MyString
+  Nombre: MyString
+  Marca: two
+  ClienteProveedor: two
+  TipoProducto: two
+  Minimos: 1
+  Valor_Compra: 9.99
+  Valor_Venta: 9.99
+  Medida: two
+  Fila: MyString
+  Columna: MyString

@@ -1,0 +1,39 @@
+<p id="notice"><%= notice %></p>
+
+<h1>Subproyectos</h1>
+
+<table>
+  <thead>
+    <tr>
+      <th>Nombre</th>
+      <th>Proyecto</th>
+      <th>Estado</th>
+      <th>Creado por</th>
+      <th>Actualizado por</th>
+      <th>Creado</th>
+      <th>Actualizado</th>
+      <th colspan="3"></th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <% @subproyectos.each do |subproyecto| %>
+      <tr>
+        <td><%= subproyecto.nombre %></td>
+        <td><%= subproyecto.proyecto %></td>
+        <td><%= subproyecto.estado %></td>
+        <td><%= subproyecto.creado_por %></td>
+        <td><%= subproyecto.actualizado_por %></td>
+        <td><%= subproyecto.creado %></td>
+        <td><%= subproyecto.actualizado %></td>
+        <td><%= link_to 'Show', subproyecto %></td>
+        <td><%= link_to 'Edit', edit_subproyecto_path(subproyecto) %></td>
+        <td><%= link_to 'Destroy', subproyecto, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+
+<br>
+
+<%= link_to 'New Subproyecto', new_subproyecto_path %>

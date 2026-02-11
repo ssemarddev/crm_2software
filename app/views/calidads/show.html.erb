@@ -1,0 +1,34 @@
+<p id="notice"><%= notice %></p>
+
+<p>
+  <strong>Nombre:</strong>
+  <%= @calidad.nombre %>
+</p>
+
+<p>
+  <strong>Status:</strong>
+  <%= @calidad.status %>
+</p>
+
+<p>
+  <strong>Creado por:</strong>
+  <%= @calidad.creado_por %>
+</p>
+
+<p>
+  <strong>Actualizado por:</strong>
+  <%= @calidad.actualizado_por %>
+</p>
+
+<p>
+  <strong>Creado:</strong>
+  <%= @calidad.creado %>
+</p>
+
+<p>
+  <strong>Actualizado:</strong>
+  <%= @calidad.actualizado %>
+</p>
+
+<%= link_to 'Edit', edit_calidad_path(@calidad) %> |
+<%= link_to 'Back', calidads_path %>

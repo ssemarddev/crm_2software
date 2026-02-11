@@ -1,0 +1,13 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  Nombre: MyString
+  Medida: one
+  Proporcion: 9.99
+  Porcentaje_Ganancia: 9.99
+
+two:
+  Nombre: MyString
+  Medida: two
+  Proporcion: 9.99
+  Porcentaje_Ganancia: 9.99

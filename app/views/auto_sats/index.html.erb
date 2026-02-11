@@ -1,0 +1,44 @@
+<p id="notice"><%= notice %></p>
+
+<h1>Auto Sats</h1>
+
+<table>
+  <thead>
+    <tr>
+      <th>Nombre</th>
+      <th>Direccion</th>
+      <th>Usuario</th>
+      <th>Telefono</th>
+      <th>Estado</th>
+      <th>Creado por</th>
+      <th>Actualizado por</th>
+      <th>Creado</th>
+      <th>Actualizado</th>
+      <th colspan="3"></th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <% @auto_sats.each do |auto_sat| %>
+      <tr>
+        <td><%= auto_sat.Numero_autorizacion %></td>
+        <td><%= auto_sat.Serie %></td>
+        <td><%= auto_sat.Actual %></td>
+        <td><%= auto_sat.Inicio  %></td>
+        <td><%= auto_sat.Fin  %></td>
+        <td><%= auto_sat.Bodega.Nombre  %></td>
+        <td><%= auto_sat.creado_por %></td>
+        <td><%= auto_sat.actualizado_por %></td>
+        <td><%= auto_sat.creado %></td>
+        <td><%= auto_sat.actualizado %></td>
+        <td><%= link_to 'Show', auto_sat %></td>
+        <td><%= link_to 'Edit', edit_auto_sat_path(auto_sat) %></td>
+        <!--<td><%= link_to 'Destroy', auto_sat, method: :delete, data: { confirm: 'Are you sure?' } %></td>-->
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+
+<br>
+
+<%= link_to 'New Auto Sat', new_auto_sat_path %>

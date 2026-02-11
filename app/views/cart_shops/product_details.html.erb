@@ -1,0 +1,51 @@
+
+<div class="container">
+  <div class="row">
+    <div class="col-md-3">
+      <h1><%= @product.Nombre.capitalize %></h1>
+      <p><strong>Marca:</strong> <%= @product.Marca.Nombre %></p>
+      <p><strong>Medida:</strong> <%= @product.Medida.Nombre %></p>
+      <p><strong>Tipo de Producto:</strong> <%= @product.TipoProducto.Nombre %></p>
+      <p><strong>Existencias:</strong> <%= ProductosController.get_product_stock @product.id, nil %></p>
+      <p><strong>Pedir</strong> <%= link_to 'Whatsapp', "https://wa.me/502#{@empresa.wtpNumber}?text=Vi este producto en linea y me interesa #{request.base_url + request.original_fullpath}",target: '_blank', class: 'btn btn-success'  %></p>
+      <p><strong>Copiar Link</strong>
+        <%= link_to @product.Nombre.capitalize, "javascript:copy_to_clipboard('#{request.base_url + request.original_fullpath}')", :type => "button", :id => "clipboard-btn", class: 'btn btn-info' %> 
+      </p>
+
+      <p>
+        <% if @client %>
+          <h4><strong>Precio:</strong> Q <%= @product.Valor_Venta  %></h4>  
+        <% else %>
+          <%= link_to 'Mostrar precio', cart_shop_login_path %>
+        <% end %>
+      </p>
+    </div>
+    <div class="col-md-9">
+      <div id="carousel-example-generic" class="carousel slide" data-ride="carousel">
+        <!-- Indicators -->
+        <ol class="carousel-indicators">
+          <% @product.product_image.each_with_index do |image,index| %>
+            <li data-target="#carousel-example-generic" data-slide-to="<%= index %>" class="<%= 'active' if index ==0%>"></li>
+          <% end %>
+        </ol>
+
+        <!-- Wrapper for slides -->
+        <div class="carousel-inner">
+          <% @product.product_image.each_with_index do |image,index| %>
+            <div class="item <%= 'active' if index ==0%>">
+              <img src="<%= asset_url('uploads/'+image.descripcion) %>" class="img-fluid" alt="Product Image"/>
+            </div>
+          <% end %>
+        </div>
+
+        <!-- Controls -->
+        <a class="left carousel-control" href="#carousel-example-generic" data-slide="prev">
+          <span class="glyphicon glyphicon-chevron-left"></span>
+        </a>
+        <a class="right carousel-control" href="#carousel-example-generic" data-slide="next">
+          <span class="glyphicon glyphicon-chevron-right"></span>
+        </a>
+      </div>
+    </div>
+  </div>
+</div>

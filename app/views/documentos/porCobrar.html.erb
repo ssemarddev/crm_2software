@@ -1,0 +1,33 @@
+<p id="notice"><%= notice %></p>
+
+<h1>Documentos por Cobrar</h1>
+
+<table>
+  <thead>
+    <tr>
+      <th>Documento</th>
+      <th>Cliente</th>
+      <th>Fecha Vencimiento</th>
+      <th>Abonos</th>
+      <th>Deuda</th>
+      <th>Total</th>
+      <th>Pagos</th>
+    </tr>
+  </thead>
+  <tbody>
+    <% @documentos.each do |documento| %>
+      <tr>
+        <td><%= documento.Documento %></td>
+        <td><%= documento.ClienteProveedor.Nombre %></td>
+        <td><%= documento.fechaLimite %></td>
+        <td><%= documento.abonos %></td>
+        <td><%= documento.deuda %></td>
+        <td><%= documento.total %></td>
+        <td><%= documento.Pagos %></td>
+        <td><%= link_to 'Ver', documento %></td>
+        <td><%= link_to 'Pagar', edit_documento_path(documento) %></td>
+        <td><%= link_to 'Eliminar', documento, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>

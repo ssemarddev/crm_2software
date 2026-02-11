@@ -1,0 +1,11 @@
+<p id="notice"><%= notice %></p>
+
+<table>
+  <tr>
+    <td>Nombre:</td>
+    <td><%= @banco.nombre %></td>
+  </tr>
+</table>
+
+<%= link_to 'Editar', edit_banco_path(@banco) , class: 'btn btn-warning' %> |
+<%= link_to 'Regresar', bancos_path, class: 'btn btn-default' %>

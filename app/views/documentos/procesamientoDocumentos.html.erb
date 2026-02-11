@@ -1,0 +1,104 @@
+<p id="notice"><%= notice %></p>
+
+<h1>Despacho <%= params[:showOnlyPostDefinedRoutes] ? 'Rutas Dinamicas':'Rutas Fijas'%></h1>
+<!--<div class="row">
+  <div class="col-xs-12 col-sm-12 col-md-6 col-lg-6">
+    label for="ruta">Rutas</label>
+    <select class="form-control" name="" id="ruta">
+      <option value="">Seleccione ruta</option>
+      < @rutas.each do |r| %>
+        <option value="<= r.id %>"><= r.nombre %></option>
+      < end %>
+    </select
+  </div>
+  <div class="col-xs-12 col-sm-12 col-md-2 col-lg-2">
+    <br>
+    <button type="button" name="button" class="btn btn-primary ">Buscar</button>
+  </div>
+</div>
+<br/>-->
+<div class="table-responsive">
+  <table class="table dataTable">
+    <thead>
+      <tr>
+        <th>#</th>
+        <% if !params[:showOnlyPostDefinedRoutes]%>
+        <th>Codigo</th>
+        <th>Ruta</th>
+        <th>Cliente / Proveedor</th>
+        <th>Direccion</th>
+        <th>Telefono</th>
+        <th>Equipos</th>
+        <% elsif %>
+        <th>Piloto</th>
+        <th>Ruta</th>
+        <th>Nit</th>
+        <th>Direccion Entrega</th>
+        <th>Nombre Cliente</th>
+        <th>Numero Cliente</th>
+        <% end %>
+        <th>Productos</th>
+        <th></th>
+        <th></th>
+        <th></th>
+      </tr>
+    </thead>
+
+    <tbody>
+      <% @documentos.each do |documento| %>
+        <tr>
+          <td><%= documento.Documento %></td>
+          <% if documento.ClienteProveedor &&  !params[:showOnlyPostDefinedRoutes]%>
+          <td><%= documento.ClienteProveedor.nit %></td>
+          <td><%= documento.ClienteProveedor.municipio %></td>
+          <td style="font-size:10px;"><%= documento.ClienteProveedor.direccion %></td>
+          <td><%= documento.ClienteProveedor.Nombre %></td>
+          <td><%= documento.ClienteProveedor.Fax %></td>
+          <% if documento.ClienteProveedor
+            @aparatos = Aparato.where(cliente: documento.ClienteProveedor.id)
+            aparatos = ""
+            @aparatos.each do |ap|
+            aparatos += "[<b>Serie:</b> "+ap.serie+" <b>Cov:</b>"+ap.cov+" <b>Estado:</b>"+ap.estado.Nombre+" ]" %>
+          <% end
+          end %>
+          <td style="font-size:8px;"><%=  aparatos.html_safe %></td>
+          <% elsif %>
+          <td><%= documento.piloto %></td>
+          <td><%= Rutum.find(documento.ruta_id).nombre %></td>
+          <td><%= documento.nitEntrega %></td>
+          <td style="font-size:10px;"><%= documento.direccionEntrega %></td>
+          <td><%= documento.nombreEntrega %></td>
+          <td><%= documento.numeroEntrega %></td>
+          <% else %>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+          <% end %>
+          <!-- if documento.TipoDocumento %>
+            <td><= documento.TipoDocumento.Nombre %></td>
+          <else %>
+            <td></td>
+          < end %-->
+          <%
+            @productos = DetalleDocumento.where(Documento_id: documento.id)
+            detalle = ""
+            @productos.each do |dp|
+              detalle += "[<b>Producto: </b> "+dp.Producto.Nombre+" </br><b>Cantidad: </b>"+dp.cantidad.to_s+" <br/><b>Medida: </b>"+(dp.DetalleMedida == nil ?  dp.Medida.Nombre : dp.DetalleMedida.Nombre)+" ]" %>
+          <% end %>
+          <td style="font-size:8px;"><%= detalle.html_safe %></td>
+          <!-- if documento.TipoPago
+            <td> documento.TipoPago.Nombre ></td>
+          < else >
+            <td></td>
+          < end -->
+          <td><%= documento.creado_por != nil ? Usuario.find(documento.creado_por).Nombres : '' %></td>
+          <td><%= documento.created_at.strftime("%d-%m-%Y").to_s %></td>
+          <td><%= link_to 'Ver', "/print/"+documento.Documento.to_s, class: 'btn btn-default' %>
+          <% if !documento.Estado %><%= link_to 'Debitar de Bodega', despachar_path(documentoId: documento.Documento), class: 'btn btn-info' %><% else %>Debitado de bodega<% end %>
+          <%= link_to 'Eliminar', documento, method: :delete, data: { confirm: 'Are you sure?' }, class: 'btn btn-danger'%></td>
+        </tr>
+      <% end %>
+    </tbody>
+  </table>
+</div>
