@@ -1,0 +1,37 @@
+es
+
+
+default: &default
+  adapter: postgresql
+  encoding: unicode
+  #MARCOCEL
+  host: 72.167.33.88
+  port: 5432
+  database: crmdb
+  #INVERSIONES LATINA
+  #database: crm_inversioneslatina_development
+  #EL SOL
+  #database: crm_minisuper_elsol
+  #IMART
+  #database: crm_imart
+  #host: 160.153.251.117
+  #port: 5433
+  #pool: 10
+  username: crm
+  password: 1233212Software@@
+  pool: 5
+  timeout: 5000
+
+development:
+  <<: *default
+  #database: db/development.sqlite3
+
+# Warning: The database defined as "test" will be erased and
+# re-generated from your development database when you run "rake".
+# Do not set this db to the same as development or production.
+test:
+  <<: *default
+  database: db/test.sqlite3
+
+production:
+  <<: *default
