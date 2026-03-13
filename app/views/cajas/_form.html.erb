@@ -52,12 +52,12 @@
       <% if !@open %>
         <tr>
           <td><%= form.label :Efectivo_Final %></td>
-          <td><%= form.text_field :FinalEfectivo, id: :caja_FinalEfectivo, class: 'form-control', value:0 %></td>
+          <td><%= form.text_field :FinalEfectivo, id: :caja_FinalEfectivo, class: 'form-control', readonly: true %></td>
         </tr>
         <% if @caja.tipo != 2 %>
           <tr>
             <td><%= form.label :Monto_Final_POS %></td>
-            <td><%= form.text_field :FinalPos, id: :caja_FinalPos, class: 'form-control', value:0 %></td>
+            <td><%= form.text_field :FinalPos, id: :caja_FinalPos, class: 'form-control', readonly: true %></td>
           </tr>
         <% end %>
       <% end %>
@@ -159,10 +159,16 @@
               deposito += result[i].pago_deposito
               console.log(result[i])
             }
-            totalEfectivo = efectivo-cambio;
-            total  = tarjeta+efectivo-cambio;
-            html   = "<tr><td>"+efectivo+"</td><td>"+tarjeta+"</td><td>"+deposito+"</td><td>"+cambio+"</td><td>"+totalEfectivo+"</td><td>"+total+"</td></tr>";
+            totalEfectivo = efectivo - cambio;
+            totalPos = tarjeta + deposito;
+            total = totalEfectivo + totalPos;
+
+            html = "<tr><td>" + efectivo + "</td><td>" + tarjeta + "</td><td>" + deposito + "</td><td>" + cambio + "</td><td>" + totalEfectivo + "</td><td>" + total + "</td></tr>";
             $("#cobros").html(html);
+
+            // Llenar inputs reales del formulario
+            $("#caja_FinalEfectivo").val(totalEfectivo.toFixed(2));
+            $("#caja_FinalPos").val(totalPos.toFixed(2));
           }
         });
       }

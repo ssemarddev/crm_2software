@@ -14,7 +14,6 @@
 
       <!-- Main Header -->
       <header class="main-header">
-
         <!-- Logo -->
         <a href="index2.html" class="logo"><b><%= Empresa.find(1).nombre %></b></a>
 
@@ -100,7 +99,7 @@
 
           <!-- Sidebar Menu -->
           <ul class="sidebar-menu">
-            <li class="header">HEADER</li>
+            <li class="header">MENU</li>
             <!-- Optionally, you can add icons to the links -->
             <!--li class="active"><a href="#"><span>Link</span></a></li>
             <li><a href="#"><span>Another Link</span></a></li>-->
@@ -241,25 +240,32 @@
                 </ul>
               </li>
             <% end %>
-            <% if !(session[:user_url] & [reporteExistenciasBodega_path,documentos_path,reporteVentasYCompras_path]).empty? %>
-              <li class="treeview">
-                <a href="#"><span>Reportes</span> <i class="fa fa-angle-left pull-right"></i></a>
-                <ul class="treeview-menu">
-                  <% if session[:user_url].include? cotizaciones_path %>
-                  <li><%= link_to "Cotizaciones", cotizaciones_path %></li>
-                  <% end %>
-                  <% if session[:user_url].include? reporteExistenciasBodega_path %>
-                  <li><%= link_to "Existencias por Bodega", reporteExistenciasBodega_path %></li>
-                  <% end %>
-                  <% if session[:user_url].include? documentos_path %>
-                  <li><%= link_to "Reimpresion y Anulacion de Documentos", documentos_path %></li>
-                  <% end %>
-                  <% if session[:user_url].include? documentos_path %>
-                  <li><%= link_to "Ventas/Compras", reporteVentasYCompras_path %></li>
-                  <% end %>
-                </ul>
-              </li>
-            <% end %>
+            <% if !(session[:user_url] & [reporteExistenciasBodega_path, documentos_path, reporteVentasYCompras_path, reporteVentasPorUsuario_path, cotizaciones_path]).empty? %>
+                <li class="treeview">
+                  <a href="#"><span>Reportes</span> <i class="fa fa-angle-left pull-right"></i></a>
+                  <ul class="treeview-menu">
+                    <% if session[:user_url].include? cotizaciones_path %>
+                      <li><%= link_to "Cotizaciones", cotizaciones_path %></li>
+                    <% end %>
+
+                    <% if session[:user_url].include? reporteExistenciasBodega_path %>
+                      <li><%= link_to "Existencias por Bodega", reporteExistenciasBodega_path %></li>
+                    <% end %>
+
+                    <% if session[:user_url].include? documentos_path %>
+                      <li><%= link_to "Reimpresion y Anulacion de Documentos", documentos_path %></li>
+                    <% end %>
+
+                    <% if session[:user_url].include? reporteVentasYCompras_path %>
+                      <li><%= link_to "Ventas/Compras", reporteVentasYCompras_path %></li>
+                    <% end %>
+
+                    
+                      <li><%= link_to "Ventas por Vendedor", reporteVentasPorUsuario_path %></li>
+                    
+                  </ul>
+                </li>
+              <% end %>
             <!--
               <li class="treeview">
                 <a href="#"><span>Admin. Proyectos</span> <i class="fa fa-angle-left pull-right"></i></a>

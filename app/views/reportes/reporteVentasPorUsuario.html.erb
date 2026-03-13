@@ -1,0 +1,248 @@
+<h1>Reporte Extenso de Ventas por Vendedor</h1>
+
+<%= form_tag(reporteVentasPorUsuario_path, method: :get) do %>
+  <table class="table">
+    <tr>
+      <td><label>Fecha inicio</label></td>
+      <td><%= date_field_tag :fechaInicio, params[:fechaInicio], class: 'form-control' %></td>
+
+      <td><label>Fecha fin</label></td>
+      <td><%= date_field_tag :fechaFin, params[:fechaFin], class: 'form-control' %></td>
+
+      <td><label>Vendedor</label></td>
+      <td>
+        <select name="usuario_id" class="form-control">
+          <option value="">Todos...</option>
+          <% @usuarios.each do |u| %>
+            <option value="<%= u.id %>" <%= 'selected' if params[:usuario_id].to_s == u.id.to_s %>><%= u.Nombres %></option>
+          <% end %>
+        </select>
+      </td>
+    </tr>
+
+    <tr>
+      <td><label>Cliente</label></td>
+      <td>
+        <select name="cliente_id" class="form-control">
+          <option value="">Todos...</option>
+          <% @clientes.each do |c| %>
+            <option value="<%= c.id %>" <%= 'selected' if params[:cliente_id].to_s == c.id.to_s %>><%= c.Nombre %></option>
+          <% end %>
+        </select>
+      </td>
+
+      <td><label>Producto</label></td>
+      <td>
+        <select name="producto_id" class="form-control">
+          <option value="">Todos...</option>
+          <% @productos_list.each do |p| %>
+            <option value="<%= p.id %>" <%= 'selected' if params[:producto_id].to_s == p.id.to_s %>><%= p.Nombre %></option>
+          <% end %>
+        </select>
+      </td>
+
+      <td><label>Marca</label></td>
+      <td>
+        <select name="marca_id" class="form-control">
+          <option value="">Todas...</option>
+          <% @marcas.each do |m| %>
+            <option value="<%= m.id %>" <%= 'selected' if params[:marca_id].to_s == m.id.to_s %>><%= m.Nombre %></option>
+          <% end %>
+        </select>
+      </td>
+    </tr>
+
+    <tr>
+      <td><label>Bodega</label></td>
+      <td>
+        <select name="bodega_id" class="form-control">
+          <option value="">Todas...</option>
+          <% @bodegas.each do |b| %>
+            <option value="<%= b.id %>" <%= 'selected' if params[:bodega_id].to_s == b.id.to_s %>><%= b.Nombre %></option>
+          <% end %>
+        </select>
+      </td>
+
+      <td><label>Tipo de pago</label></td>
+      <td>
+        <select name="tipo_pago_id" class="form-control">
+          <option value="">Todos...</option>
+          <% @tipo_pagos.each do |tp| %>
+            <option value="<%= tp.id %>" <%= 'selected' if params[:tipo_pago_id].to_s == tp.id.to_s %>><%= tp.Nombre %></option>
+          <% end %>
+        </select>
+      </td>
+
+      <td><label>Tipo de documento</label></td>
+      <td>
+        <select name="tipo_documento_id" class="form-control">
+          <option value="">Solo ventas por defecto</option>
+          <% @tipo_documentos.each do |td| %>
+            <option value="<%= td.id %>" <%= 'selected' if params[:tipo_documento_id].to_s == td.id.to_s %>><%= td.Nombre %></option>
+          <% end %>
+        </select>
+      </td>
+    </tr>
+
+    <tr>
+      <td><label>Ruta</label></td>
+      <td>
+        <select name="ruta_id" class="form-control">
+          <option value="">Todas...</option>
+          <% @rutas.each do |r| %>
+            <option value="<%= r.id %>" <%= 'selected' if params[:ruta_id].to_s == r.id.to_s %>><%= r.nombre %></option>
+          <% end %>
+        </select>
+      </td>
+
+      <td><label>No. documento</label></td>
+      <td><%= text_field_tag :documento, params[:documento], class: 'form-control', placeholder: 'Ej. 10254' %></td>
+
+      <td><label>Búsqueda general</label></td>
+      <td><%= text_field_tag :texto, params[:texto], class: 'form-control', placeholder: 'Producto, código, cliente o vendedor' %></td>
+    </tr>
+
+    <tr>
+      <td colspan="6">
+        <button type="submit" class="btn btn-primary">Buscar</button>
+        <a href="<%= reporteVentasPorUsuario_path %>" class="btn btn-default">Limpiar filtros</a>
+      </td>
+    </tr>
+  </table>
+<% end %>
+
+<hr>
+
+<h3>Resumen General</h3>
+<table class="table table-bordered">
+  <tr>
+    <th>Documentos</th>
+    <th>Líneas</th>
+    <th>Unidades</th>
+    <th>Subtotal</th>
+    <th>Descuento</th>
+    <th>Total Venta</th>
+    <th>Costo</th>
+    <th>Utilidad</th>
+    <th>Efectivo</th>
+    <th>Tarjeta</th>
+    <th>Depósito</th>
+    <th>Cambio</th>
+    <th>Cobrado Neto</th>
+  </tr>
+  <tr>
+    <td><%= @totales_generales[:documentos] %></td>
+    <td><%= @totales_generales[:lineas] %></td>
+    <td><%= @totales_generales[:unidades] %></td>
+    <td><%= number_to_currency(@totales_generales[:subtotal], unit: 'Q ') %></td>
+    <td><%= number_to_currency(@totales_generales[:descuento], unit: 'Q ') %></td>
+    <td><%= number_to_currency(@totales_generales[:total_venta], unit: 'Q ') %></td>
+    <td><%= number_to_currency(@totales_generales[:costo], unit: 'Q ') %></td>
+    <td><%= number_to_currency(@totales_generales[:utilidad], unit: 'Q ') %></td>
+    <td><%= number_to_currency(@totales_generales[:pago_efectivo], unit: 'Q ') %></td>
+    <td><%= number_to_currency(@totales_generales[:pago_tarjeta], unit: 'Q ') %></td>
+    <td><%= number_to_currency(@totales_generales[:pago_deposito], unit: 'Q ') %></td>
+    <td><%= number_to_currency(@totales_generales[:cambio], unit: 'Q ') %></td>
+    <td><%= number_to_currency(@totales_generales[:cobrado_neto], unit: 'Q ') %></td>
+  </tr>
+</table>
+
+<hr>
+
+<h3>Resumen por Vendedor</h3>
+<table class="table table-bordered dataTable">
+  <thead>
+    <tr>
+      <th>Vendedor</th>
+      <th>Documentos</th>
+      <th>Clientes</th>
+      <th>Productos</th>
+      <th>Unidades</th>
+      <th>Subtotal</th>
+      <th>Descuento</th>
+      <th>Total Venta</th>
+      <th>Costo</th>
+      <th>Utilidad</th>
+      <th>Efectivo</th>
+      <th>Tarjeta</th>
+      <th>Depósito</th>
+      <th>Cobrado Neto</th>
+    </tr>
+  </thead>
+  <tbody>
+    <% @resumen_vendedores.each do |r| %>
+      <tr>
+        <td><%= r[:vendedor] %></td>
+        <td><%= r[:documentos] %></td>
+        <td><%= r[:clientes] %></td>
+        <td><%= r[:productos] %></td>
+        <td><%= r[:unidades] %></td>
+        <td><%= number_to_currency(r[:subtotal], unit: 'Q ') %></td>
+        <td><%= number_to_currency(r[:descuento], unit: 'Q ') %></td>
+        <td><%= number_to_currency(r[:total_venta], unit: 'Q ') %></td>
+        <td><%= number_to_currency(r[:costo], unit: 'Q ') %></td>
+        <td><%= number_to_currency(r[:utilidad], unit: 'Q ') %></td>
+        <td><%= number_to_currency(r[:pago_efectivo], unit: 'Q ') %></td>
+        <td><%= number_to_currency(r[:pago_tarjeta], unit: 'Q ') %></td>
+        <td><%= number_to_currency(r[:pago_deposito], unit: 'Q ') %></td>
+        <td><%= number_to_currency(r[:cobrado_neto], unit: 'Q ') %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+
+<hr>
+
+<h3>Detalle Completo</h3>
+<table class="table table-bordered dataTable">
+  <thead>
+    <tr>
+      <th>Fecha</th>
+      <th>Documento</th>
+      <th>Vendedor</th>
+      <th>Cliente</th>
+      <th>Tipo Documento</th>
+      <th>Tipo Pago</th>
+      <th>Ruta</th>
+      <th>Bodega</th>
+      <th>Código</th>
+      <th>Producto</th>
+      <th>Marca</th>
+      <th>Medida</th>
+      <th>Cantidad</th>
+      <th>Precio Compra</th>
+      <th>Precio Venta</th>
+      <th>Subtotal</th>
+      <th>Descuento</th>
+      <th>Total</th>
+      <th>Costo</th>
+      <th>Utilidad</th>
+    </tr>
+  </thead>
+  <tbody>
+    <% @ventas_detalle.each do |v| %>
+      <tr>
+        <td><%= v.fecha_documento %></td>
+        <td><%= v.numero_documento %></td>
+        <td><%= v.vendedor %></td>
+        <td><%= v.cliente %></td>
+        <td><%= v.tipo_documento %></td>
+        <td><%= v.tipo_pago %></td>
+        <td><%= v.ruta %></td>
+        <td><%= v.bodega %></td>
+        <td><%= v.codigo_producto %></td>
+        <td><%= v.producto %></td>
+        <td><%= v.marca %></td>
+        <td><%= v.medida %></td>
+        <td><%= v.cantidad %></td>
+        <td><%= number_to_currency(v.valor_compra, unit: 'Q ') %></td>
+        <td><%= number_to_currency(v.valor_venta, unit: 'Q ') %></td>
+        <td><%= number_to_currency(v.subtotal_linea, unit: 'Q ') %></td>
+        <td><%= number_to_currency(v.descuento_linea, unit: 'Q ') %></td>
+        <td><%= number_to_currency(v.total_linea, unit: 'Q ') %></td>
+        <td><%= number_to_currency(v.costo_linea, unit: 'Q ') %></td>
+        <td><%= number_to_currency(v.utilidad_linea, unit: 'Q ') %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>

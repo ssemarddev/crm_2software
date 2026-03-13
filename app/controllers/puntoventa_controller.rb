@@ -626,4 +626,169 @@ class PuntoventaController < ApplicationController
     end
     render 'reportes/reporteVentasYCompras'
   end
+
+  def reporteVentasPorUsuario
+    @usuarios        = Usuario.where(Estado: true).order(:Nombres)
+    @clientes        = ClienteProveedor.where(Estado: true, Tipo: 1).order(:Nombre)
+    @productos_list  = Producto.where(estado: true).order(:Nombre)
+    @marcas          = Marca.where(Estado: true).order(:Nombre)
+    @bodegas         = Bodega.where(Estado: true).order(:Nombre)
+    @tipo_pagos      = TipoPago.where(Estado: true).order(:Nombre)
+    @tipo_documentos = TipoDocumento.where(Estado: true).order(:Nombre)
+    @rutas           = Rutum.where(status: true).order(:nombre)
+
+    params[:fechaInicio] = Date.today.beginning_of_month.to_s if params[:fechaInicio].blank?
+    params[:fechaFin]    = Date.today.to_s if params[:fechaFin].blank?
+
+    @ventas_detalle = DetalleDocumento
+      .select('
+        "detalle_documentos"."id",
+        "detalle_documentos"."Documento_id",
+        "detalle_documentos"."Producto_id",
+        "detalle_documentos"."cantidad",
+        "detalle_documentos"."valor_compra",
+        "detalle_documentos"."valor_venta",
+        COALESCE("detalle_documentos"."descuento", 0) as descuento_linea,
+        COALESCE("detalle_documentos"."descuento_porcentaje", 0) as descuento_porcentaje_linea,
+        "detalle_documentos"."total" as total_linea,
+
+        ("detalle_documentos"."cantidad" * "detalle_documentos"."valor_venta") as subtotal_linea,
+        ("detalle_documentos"."cantidad" * "detalle_documentos"."valor_compra") as costo_linea,
+        ("detalle_documentos"."total" - ("detalle_documentos"."cantidad" * "detalle_documentos"."valor_compra")) as utilidad_linea,
+
+        "doc"."Documento" as numero_documento,
+        "doc"."Fecha_Entrega" as fecha_documento,
+        "doc"."TipoDocumento_id" as tipo_documento_id,
+        "doc"."TipoPago_id" as tipo_pago_id,
+        "doc"."ClienteProveedor_id" as cliente_id,
+        "doc"."Usuario_enviado_id" as usuario_enviado_id,
+        "doc"."ruta_id" as ruta_id,
+
+        "u"."Nombres" as vendedor,
+        "cli"."Nombre" as cliente,
+        "prod"."Codigo" as codigo_producto,
+        "prod"."Nombre" as producto,
+        "prod"."Marca_id" as marca_id,
+        "mar"."Nombre" as marca,
+        "med"."Nombre" as medida,
+        "bod"."id" as bodega_id,
+        "bod"."Nombre" as bodega,
+        "tp"."Nombre" as tipo_pago,
+        "tdoc"."Nombre" as tipo_documento,
+        "rut"."nombre" as ruta,
+
+        COALESCE("dp"."Pago_Efectivo", 0) as pago_efectivo_documento,
+        COALESCE("dp"."Pago_Tarjeta", 0) as pago_tarjeta_documento,
+        COALESCE("dp"."pago_deposito", 0) as pago_deposito_documento,
+        COALESCE("dp"."cambio", 0) as cambio_documento,
+        COALESCE("dp"."Total_Pagado", 0) as total_pagado_documento
+      ')
+      .joins('INNER JOIN "documentos" "doc" ON "doc"."id" = "detalle_documentos"."Documento_id"')
+      .joins('INNER JOIN "productos" "prod" ON "prod"."id" = "detalle_documentos"."Producto_id"')
+      .joins('INNER JOIN "marcas" "mar" ON "mar"."id" = "prod"."Marca_id"')
+      .joins('INNER JOIN "medidas" "med" ON "med"."id" = "prod"."Medida_id"')
+      .joins('LEFT JOIN "cliente_proveedors" "cli" ON "cli"."id" = "doc"."ClienteProveedor_id"')
+      .joins('LEFT JOIN "usuarios" "u" ON "u"."id" = "doc"."Usuario_enviado_id"')
+      .joins('LEFT JOIN "tipo_pagos" "tp" ON "tp"."id" = "doc"."TipoPago_id"')
+      .joins('LEFT JOIN "tipo_documentos" "tdoc" ON "tdoc"."id" = "doc"."TipoDocumento_id"')
+      .joins('LEFT JOIN "ruta" "rut" ON "rut"."id" = "doc"."ruta_id"')
+      .joins('LEFT JOIN "documento_pagos" "dp" ON "dp"."Documento_id" = "doc"."id" AND "dp"."Estado" = true')
+      .joins('LEFT JOIN "movimiento_productos" "mprod" ON "mprod"."detalle_documento_id" = "detalle_documentos"."id"')
+      .joins('LEFT JOIN "bodegas" "bod" ON "bod"."id" = "mprod"."Saliente_Bodega_id"')
+      .where('"detalle_documentos"."estado" = true')
+      .where('"detalle_documentos"."status" = 1')
+      .where('"doc"."Estado" = true')
+      .where('"doc"."Fecha_Entrega" between ? and ?', params[:fechaInicio], params[:fechaFin])
+      .order('"doc"."Fecha_Entrega" DESC, "doc"."Documento" DESC')
+
+    # Por defecto solo ventas
+    if params[:tipo_documento_id].present?
+      @ventas_detalle = @ventas_detalle.where('"doc"."TipoDocumento_id" = ?', params[:tipo_documento_id].to_i)
+    else
+      @ventas_detalle = @ventas_detalle.where('"doc"."TipoDocumento_id" = 2')
+    end
+
+    if params[:usuario_id].present?
+      @ventas_detalle = @ventas_detalle.where('"doc"."Usuario_enviado_id" = ?', params[:usuario_id].to_i)
+    end
+
+    if params[:cliente_id].present?
+      @ventas_detalle = @ventas_detalle.where('"doc"."ClienteProveedor_id" = ?', params[:cliente_id].to_i)
+    end
+
+    if params[:producto_id].present?
+      @ventas_detalle = @ventas_detalle.where('"detalle_documentos"."Producto_id" = ?', params[:producto_id].to_i)
+    end
+
+    if params[:marca_id].present?
+      @ventas_detalle = @ventas_detalle.where('"prod"."Marca_id" = ?', params[:marca_id].to_i)
+    end
+
+    if params[:bodega_id].present?
+      @ventas_detalle = @ventas_detalle.where('"mprod"."Saliente_Bodega_id" = ?', params[:bodega_id].to_i)
+    end
+
+    if params[:tipo_pago_id].present?
+      @ventas_detalle = @ventas_detalle.where('"doc"."TipoPago_id" = ?', params[:tipo_pago_id].to_i)
+    end
+
+    if params[:ruta_id].present?
+      @ventas_detalle = @ventas_detalle.where('"doc"."ruta_id" = ?', params[:ruta_id].to_i)
+    end
+
+    if params[:documento].present?
+      @ventas_detalle = @ventas_detalle.where('CAST("doc"."Documento" AS TEXT) LIKE ?', "%#{params[:documento]}%")
+    end
+
+    if params[:texto].present?
+      texto = "%#{params[:texto].to_s.downcase}%"
+      @ventas_detalle = @ventas_detalle.where('
+        LOWER("prod"."Nombre") LIKE :texto OR
+        LOWER("prod"."Codigo") LIKE :texto OR
+        LOWER(COALESCE("cli"."Nombre", \'\')) LIKE :texto OR
+        LOWER(COALESCE("u"."Nombres", \'\')) LIKE :texto
+      ', texto: texto)
+    end
+
+    docs_unicos = @ventas_detalle.group_by(&:Documento_id).map { |_k, rows| rows.first }
+
+    @totales_generales = {
+      documentos: docs_unicos.count,
+      lineas: @ventas_detalle.to_a.size,
+      unidades: @ventas_detalle.sum { |r| r.cantidad.to_f },
+      subtotal: @ventas_detalle.sum { |r| r.subtotal_linea.to_f },
+      descuento: @ventas_detalle.sum { |r| r.descuento_linea.to_f },
+      total_venta: @ventas_detalle.sum { |r| r.total_linea.to_f },
+      costo: @ventas_detalle.sum { |r| r.costo_linea.to_f },
+      utilidad: @ventas_detalle.sum { |r| r.utilidad_linea.to_f },
+      pago_efectivo: docs_unicos.sum { |r| r.pago_efectivo_documento.to_f },
+      pago_tarjeta: docs_unicos.sum { |r| r.pago_tarjeta_documento.to_f },
+      pago_deposito: docs_unicos.sum { |r| r.pago_deposito_documento.to_f },
+      cambio: docs_unicos.sum { |r| r.cambio_documento.to_f },
+      cobrado_neto: docs_unicos.sum { |r| r.total_pagado_documento.to_f - r.cambio_documento.to_f }
+    }
+
+    @resumen_vendedores = @ventas_detalle.group_by(&:usuario_enviado_id).map do |_usuario_id, rows|
+      docs_vendedor = rows.group_by(&:Documento_id).map { |_k, rs| rs.first }
+
+      {
+        vendedor: rows.first.vendedor.present? ? rows.first.vendedor : 'Sin vendedor',
+        documentos: docs_vendedor.count,
+        clientes: rows.map(&:cliente_id).uniq.compact.count,
+        productos: rows.map(&:Producto_id).uniq.compact.count,
+        unidades: rows.sum { |r| r.cantidad.to_f },
+        subtotal: rows.sum { |r| r.subtotal_linea.to_f },
+        descuento: rows.sum { |r| r.descuento_linea.to_f },
+        total_venta: rows.sum { |r| r.total_linea.to_f },
+        costo: rows.sum { |r| r.costo_linea.to_f },
+        utilidad: rows.sum { |r| r.utilidad_linea.to_f },
+        pago_efectivo: docs_vendedor.sum { |r| r.pago_efectivo_documento.to_f },
+        pago_tarjeta: docs_vendedor.sum { |r| r.pago_tarjeta_documento.to_f },
+        pago_deposito: docs_vendedor.sum { |r| r.pago_deposito_documento.to_f },
+        cobrado_neto: docs_vendedor.sum { |r| r.total_pagado_documento.to_f - r.cambio_documento.to_f }
+      }
+    end.sort_by { |item| -item[:total_venta].to_f }
+
+    render 'reportes/reporteVentasPorUsuario'
+  end
 end

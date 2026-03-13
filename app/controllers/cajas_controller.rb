@@ -49,8 +49,30 @@ class CajasController < ApplicationController
   # PATCH/PUT /cajas/1.json
   def update
     respond_to do |format|
-      params[:caja][:Estado]      = true
+      params[:caja][:Estado] = true
       params[:caja][:actualizado_por] = session[:user_id]
+
+      # Si es caja normal (no caja chica), calcular automáticamente los totales reales
+      if @caja.tipo != 2
+        pagos = DocumentoPago.where(
+          creado_por: @caja.usuario_id,
+          creado: @caja.creado,
+          Tipo_Documento: 2,
+          Estado: true
+        )
+
+        efectivo = pagos.sum(:Pago_Efectivo).to_f
+        tarjeta  = pagos.sum(:Pago_Tarjeta).to_f
+        cambio   = pagos.sum(:cambio).to_f
+        deposito = pagos.sum(:pago_deposito).to_f
+
+        total_efectivo = efectivo - cambio
+        total_pos = tarjeta + deposito
+
+        params[:caja][:FinalEfectivo] = total_efectivo
+        params[:caja][:FinalPos] = total_pos
+      end
+
       if @caja.update(caja_params)
         format.html { redirect_to cajas_url, notice: 'Caja was successfully updated.' }
         format.json { render :show, status: :ok, location: @caja }

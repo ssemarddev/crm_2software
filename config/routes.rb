@@ -118,6 +118,7 @@ Rails.application.routes.draw do
     get  'print/:id'                => :printDocumento, as: :print
     get  'reporteExistenciasBodega' => :reporteExistenciasBodega
     get  'reporteVentasYCompras'    => :reporteVentasYCompras
+    get  'reporteVentasPorUsuario'  => :reporteVentasPorUsuario
     get  'productoStock'            => :getStockProduct
     get  'cotizacion/:id'           => :cotizacion, as: :cotizacion
   end
