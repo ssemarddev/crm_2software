@@ -1,43 +1,55 @@
-<div class="navigation-bar-container">
-  <form class="" action="/online_catalog" method="GET">
-    <div class="row">
-      <nav class="navbar navbar-light  navigation-bar">
-        <div class="col-md-4 col-lg-4 col-sm-4 col-xs-12">
-          <%= link_to chooseBodega_url do %>
-            <%= image_tag "logo.png", alt: "Logo MarcoCel", class: "logo" %>
-          <% end %>
-        </div>
-        <div class="col-md-8 col-lg-8 col-sm-8 col-xs-12">
-          <div class="title">
-            <input type="text" name="producto" value="<%= params[:producto]%>" class="search" placeholder="Producto...">
-            <select class="categories-select" name="categoria" id="search">
-              <option value="">Categorias...</option>
-              <%  @categoriasCatalogo.each do |item| %>
-                <option value="<%= item.id %>" <%= 'selected' if item.id == params[:categoria].to_i %>><%= item.Nombre %></option>
-              <% end %>
-            </select>
-            <select class="marcas-select" name="marca" id="search">
-              <option value="">Marcas...</option>
-              <%  @marcas.each do |item| %>
-                <option value="<%= item.id %>" <%= 'selected' if item.id == params[:marca].to_i %>><%= item.Nombre %></option>
-              <% end %>
-            </select>
-          </div>
-          <div class="centered-button">
-            <% if !params[:phone] || params[:phone] ==""  %>
-              <%= link_to 'Catalogo con Precios', cart_shop_login_path, class: 'btn btn-primary login-button'%>
-            <% end %>
-          </div>
+<div class="catalog-navbar">
+  <div class="catalog-navbar__inner">
 
-          <div class="title">
-              <input type="text" name="phone" value="<%=params[:phone]%>" class="nit search" placeholder="Nit de mayorista">
-          </div>
-          <div class="title">
-            <button type="submit" name="button" class="btn btn-primary searchBtn">Buscar</button>
-          </div>
-        </div>
-
-      </nav>
+    <div class="catalog-navbar__brand">
+      <%= link_to chooseBodega_url, class: "catalog-navbar__logo-link" do %>
+        <%= image_tag "logo.png", alt: "Logo MarcoCel", class: "catalog-navbar__logo" %>
+      <% end %>
     </div>
-  </form>
+
+    <div class="catalog-navbar__search-area">
+      <form id="catalog-search-form" action="/online_catalog" method="GET" class="catalog-search-form">
+        <div class="catalog-search-form__row">
+          <input
+            id="catalog-search-input"
+            type="text"
+            name="producto"
+            value="<%= params[:producto] %>"
+            class="catalog-search-form__input"
+            placeholder="Buscar producto...">
+
+          <button type="submit" class="catalog-search-form__button">
+            Buscar
+          </button>
+        </div>
+
+        <div class="catalog-search-form__filters">
+          <select class="catalog-search-form__select" name="categoria" id="catalog-category">
+            <option value="">Categorias...</option>
+            <% @categoriasCatalogo.each do |categoria| %>
+              <option value="<%= categoria.id %>" <%= 'selected' if params[:categoria].to_s == categoria.id.to_s %>>
+                <%= categoria.Nombre %>
+              </option>
+            <% end %>
+          </select>
+
+          <select class="catalog-search-form__select" name="marca" id="catalog-brand">
+            <option value="">Marcas...</option>
+            <% @marcas.each do |marca| %>
+              <option value="<%= marca.id %>" <%= 'selected' if params[:marca].to_s == marca.id.to_s %>>
+                <%= marca.Nombre %>
+              </option>
+            <% end %>
+          </select>
+        </div>
+      </form>
+    </div>
+
+    <div class="catalog-navbar__actions">
+      <%= link_to "/online_catalog?phone=#{params[:phone]}", class: "catalog-navbar__action-btn" do %>
+        Catálogo con Precios
+      <% end %>
+    </div>
+
+  </div>
 </div>

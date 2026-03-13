@@ -265,3 +265,55 @@ fieldset {
   .login-topbar__nav { gap: 8px; }
   .login-topbar__link { padding: 10px 10px; }
 }
+
+/* Reusa el ancho y forma de tus botones actuales */
+#login .btn{
+  display: block;
+  width: 280px;
+  height: 50px;
+  line-height: 50px;
+  text-align: center;
+  color: #fff;
+  border-radius: 6px;
+  text-decoration: none;
+  font-weight: 600;
+  letter-spacing: .5px;
+  margin: 6px auto 0 auto; /* centrado */
+}
+
+/* Naranja como ya lo traes */
+#login .btn-warning{
+  background-color: #F0AD4E;
+}
+
+/* Separaciones rápidas */
+#login .mt-5{ margin-top: 5px; }
+#login .mt-8{ margin-top: 8px; }
+
+/* Link externo “elegante” (ghost) */
+#login .btn-ghost{
+  background: transparent;
+  color: #666;
+  border: 1px solid #e6e6e6;
+}
+
+#login .btn-ghost:hover{
+  border-color: #d0d0d0;
+  color: #333;
+}
+
+#login .external-link{
+  text-align: center;
+  margin-top: 12px;
+  font-size: 12px;
+}
+
+#login .external-link a{
+  color: #888;
+  text-decoration: none;
+}
+
+#login .external-link a:hover{
+  color: #444;
+  text-decoration: underline;
+}

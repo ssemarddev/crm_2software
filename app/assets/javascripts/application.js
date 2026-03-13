@@ -30,3 +30,4 @@
 //= require app.min
 //= require helpers.js
 // require_tree .
+//= require catalog_live_search

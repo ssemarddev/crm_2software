@@ -47,6 +47,10 @@ $$= stylesheet_link_tag    'scaffolds', media: 'all', 'data-turbolinks-track': '
 						<button href="/productosView" onclick="javascript:window.location = '/online_catalog'" type="button" name="button" style="width:280px;height:50px;color: #fff;background-color: #F0AD4E;">PRODUCTOS</button>
 						<button href="/trackingView" onclick="javascript:window.location = '/trackingView'" type="button" name="button" style="margin-top:5px;width:280px;height:50px;color: #fff;background-color: #F0AD4E;">SEGUIMIENTO DE ORDEN</button>
 					</p>
+					<div class="external-link">
+					<%= link_to "Liberación de equipos", "https://marcoscelunlock.com/",
+						target: "_blank", rel: "noopener noreferrer" %>
+					</div>
 	      </fieldset>
 	    <% end %>
 	  	</div>

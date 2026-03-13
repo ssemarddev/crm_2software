@@ -72,7 +72,11 @@
 
 
 <div class="flickr_pagination mb-4">
-  <%= will_paginate @productos, container: false %>
+  <%= will_paginate @productos,
+      inner_window: 2,
+      outer_window: 0,
+      previous_label: "&lt;".html_safe,
+      next_label: "&gt;".html_safe %>
 </div>
 
 <script>

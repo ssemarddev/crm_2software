@@ -23,48 +23,61 @@ class CartShopsController < ApplicationController
   end
 
   def products_view
-    producto = nil
-    if params[:producto]!=nil && params[:producto] != ""
-      producto = params[:producto]
-    end
+    @categorias = TipoProducto.all
+    @marcas = Marca.all
 
-    categoria = nil
-    if params[:categoria]!=nil && params[:categoria] != ""
-      categoria = params[:categoria]
-    end
-
-    marca = nil
-    if params[:marca]!=nil && params[:marca] != ""
-      marca = params[:marca]
-    end
-
-    nit = nil
-    if params[:nit]!=nil && params[:nit] != ""
-      nit = params[:nit]
-    end
     @productos ||= Producto
-    .joins('LEFT JOIN Marcas "marcas" ON "marcas"."id" = "productos"."Marca_id"')
-    .joins('LEFT JOIN Tipo_Productos "tp" ON "tp"."id" = "productos"."TipoProducto_id"')
-    .joins('LEFT JOIN Medidas "medidas" ON "medidas"."id" = "productos"."Medida_id"')
-    .select('"productos"."id","productos"."Codigo","productos"."Nombre","marcas"."Nombre" as "MarcaNombre","medidas"."Nombre" as "MedidaNombre","Valor_Venta"')
-    .where(estado:true)
-    if producto != nil && producto !=""
-      @productos = @productos.where('UPPER("productos"."Nombre") like UPPER('+"'%"+producto+"%'"+')')
-    end
-    if categoria != nil && categoria !=""
-      @productos = @productos.where('"tp"."id" = '+"'"+categoria+"'")
+      .joins('LEFT JOIN Marcas "marcas" ON "marcas"."id" = "productos"."Marca_id"')
+      .joins('LEFT JOIN Tipo_Productos "tp" ON "tp"."id" = "productos"."TipoProducto_id"')
+      .joins('LEFT JOIN Medidas "medidas" ON "medidas"."id" = "productos"."Medida_id"')
+      .joins('LEFT JOIN movimiento_productos "mp" ON "mp"."Producto_id" = "productos"."id"')
+      .select(%Q(
+        "productos"."id",
+        "productos"."Codigo",
+        "productos"."Nombre",
+        "marcas"."Nombre" as "MarcaNombre",
+        "medidas"."Nombre" as "MedidaNombre",
+        "productos"."Valor_Venta",
+        COALESCE(
+          SUM(
+            CASE
+              WHEN "mp"."signo" = '+' THEN "mp"."cantidad"
+              WHEN "mp"."signo" = '-' THEN -"mp"."cantidad"
+              ELSE 0
+            END
+          ), 0
+        ) as "StockTotal"
+      ))
+      .where(estado: true)
+
+    if params[:producto].present?
+      @productos = @productos.where('"productos"."Nombre" ILIKE ?', "%#{params[:producto]}%")
     end
 
-    if marca != nil && marca !=""
-      @productos = @productos.where('"marcas"."id" = '+"'"+marca+"'")
+    if params[:categoria].present?
+      @productos = @productos.where('"productos"."TipoProducto_id" = ?', params[:categoria])
     end
 
-    @productos = @productos.paginate(page: params[:page], per_page: 12)
-    if nit != nil && nit !=""
-      nit =  nit.gsub("-", "")
+    if params[:marca].present?
+      @productos = @productos.where('"productos"."Marca_id" = ?', params[:marca])
     end
 
-    render 'cart_shops/list', layout: 'layouts/cart_shop_index'
+    @productos = @productos
+      .group(%Q(
+        "productos"."id",
+        "productos"."Codigo",
+        "productos"."Nombre",
+        "marcas"."Nombre",
+        "medidas"."Nombre",
+        "productos"."Valor_Venta"
+      ))
+      .paginate(page: params[:page], per_page: 20)
+
+    if request.xhr?
+      render partial: 'cart_shops/catalog_results', locals: { productos: @productos }
+    else
+      render 'cart_shops/list', layout: 'layouts/cart_shop_index'
+    end
   end
 
   def productosView2
