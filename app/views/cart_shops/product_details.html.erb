@@ -6,7 +6,14 @@
       <p><strong>Marca:</strong> <%= @product.Marca.Nombre %></p>
       <p><strong>Medida:</strong> <%= @product.Medida.Nombre %></p>
       <p><strong>Tipo de Producto:</strong> <%= @product.TipoProducto.Nombre %></p>
-      <p><strong>Existencias:</strong> <%= ProductosController.get_product_stock @product.id, nil %></p>
+      <p><strong>Existencias:</strong> <%= @stock %></p>
+      <% if @stock.to_f <= 0 && session[:user_id].present? %>
+        <p>
+          <button type="button" class="btn btn-warning" data-toggle="modal" data-target="#restockProductModal">
+            Resurtir producto
+          </button>
+        </p>
+      <% end %>
       <p><strong>Pedir</strong> <%= link_to 'Whatsapp', "https://wa.me/502#{@empresa.wtpNumber}?text=Vi este producto en linea y me interesa #{request.base_url + request.original_fullpath}",target: '_blank', class: 'btn btn-success'  %></p>
       <p><strong>Copiar Link</strong>
         <%= link_to @product.Nombre.capitalize, "javascript:copy_to_clipboard('#{request.base_url + request.original_fullpath}')", :type => "button", :id => "clipboard-btn", class: 'btn btn-info' %> 
@@ -49,3 +56,60 @@
     </div>
   </div>
 </div>
+
+<% if session[:user_id].present? %>
+  <div class="modal fade" id="restockProductModal" tabindex="-1" role="dialog" aria-labelledby="restockProductModalLabel">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <%= form_tag('/save_catalog_restock', method: :post) do %>
+          <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-label="Cerrar">
+              <span aria-hidden="true">&times;</span>
+            </button>
+            <h4 class="modal-title" id="restockProductModalLabel">Resurtir producto</h4>
+          </div>
+
+          <div class="modal-body">
+            <%= hidden_field_tag :product_id, @product.id %>
+            <%= hidden_field_tag :phone, params[:phone] %>
+
+            <div class="form-group">
+              <label>Producto</label>
+              <input type="text" class="form-control" value="<%= @product.Nombre %>" readonly>
+            </div>
+
+            <div class="form-group">
+              <label>Bodega de entrada</label>
+              <select name="bodega_entrante_id" class="form-control" required>
+                <option value="">Selecciona una bodega...</option>
+                <% @bodegas.each do |bodega| %>
+                  <option value="<%= bodega.id %>"><%= bodega.Nombre %></option>
+                <% end %>
+              </select>
+            </div>
+
+            <div class="form-group">
+              <label>Cantidad</label>
+              <input type="number" name="cantidad" class="form-control" min="1" step="1" required>
+            </div>
+
+            <div class="form-group">
+              <label>Porcentaje de proporción</label>
+              <input type="number" name="porcentaje_proporcion" class="form-control" value="100" min="1" step="0.01" required>
+            </div>
+
+            <div class="form-group">
+              <label>Descripción / observación</label>
+              <textarea name="descripcion" class="form-control" rows="3" placeholder="Ej. Resurtido manual por ajuste de inventario"></textarea>
+            </div>
+          </div>
+
+          <div class="modal-footer">
+            <button type="button" class="btn btn-default" data-dismiss="modal">Cancelar</button>
+            <button type="submit" class="btn btn-success">Guardar resurtido</button>
+          </div>
+        <% end %>
+      </div>
+    </div>
+  </div>
+<% end %>

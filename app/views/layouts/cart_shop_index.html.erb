@@ -31,7 +31,19 @@
     </style>
   </head>
   <body>
-    
+  
+    <% if notice.present? %>
+      <div class="container" style="margin-top: 15px;">
+        <div class="alert alert-success"><%= notice %></div>
+      </div>
+    <% end %>
+
+    <% if alert.present? %>
+      <div class="container" style="margin-top: 15px;">
+        <div class="alert alert-danger"><%= alert %></div>
+      </div>
+    <% end %>
+
     <%= render 'nav' %>
     <%= yield %>
     

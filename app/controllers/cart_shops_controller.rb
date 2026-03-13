@@ -1,6 +1,7 @@
 class CartShopsController < ApplicationController
   skip_before_action :authorize
   before_action :set_categories, only: %i[product_details products_view cart_shop_login]
+  before_action :authorize, only: %i[save_catalog_restock]
 
   def set_categories
     @categoriasCatalogo = TipoProducto.where(Estado: true)
@@ -17,9 +18,11 @@ class CartShopsController < ApplicationController
   end
 
   def product_details
-    @client = ClienteProveedor.find_by(Fax: params[:phone], Estado: true) if params[:phone] != nil
-    @product ||= Producto.includes(:Marca).includes(:Medida).includes(:TipoProducto).includes(:product_image).find(params[:id])
-    render 'product_details', layout: 'cart_shop_index'
+  @client = ClienteProveedor.find_by(Fax: params[:phone], Estado: true) if params[:phone] != nil
+  @product ||= Producto.includes(:Marca).includes(:Medida).includes(:TipoProducto).includes(:product_image).find(params[:id])
+  @stock = ProductosController.get_product_stock(@product.id, nil)
+  @bodegas = Bodega.where(Estado: true).order(:Nombre)
+  render 'product_details', layout: 'cart_shop_index'
   end
 
   def products_view
@@ -209,5 +212,102 @@ class CartShopsController < ApplicationController
     @estados = Estadortacking.where(:tracking => @tracking.id)
     #render json[@detalle_documento,@documento,@cliente ]
     render 'tracking', layout:false
+  end
+  def save_catalog_restock
+    @product = Producto.find(params[:product_id])
+    @phone = params[:phone]
+
+    cantidad = params[:cantidad].to_f
+    porcentaje_proporcion = params[:porcentaje_proporcion].present? ? params[:porcentaje_proporcion].to_f : 100
+    bodega_entrante = Bodega.find_by(id: params[:bodega_entrante_id])
+
+    if bodega_entrante.nil?
+      redirect_to "/product_details/#{@product.id}?phone=#{@phone}", alert: 'Debes seleccionar una bodega.'
+      return
+    end
+
+    if cantidad <= 0
+      redirect_to "/product_details/#{@product.id}?phone=#{@phone}", alert: 'La cantidad debe ser mayor a 0.'
+      return
+    end
+
+    tipo_documento = TipoDocumento.find_by(id: 1)
+    tipo_pago = TipoPago.find_by(id: 1)
+
+    if tipo_documento.nil?
+      redirect_to "/product_details/#{@product.id}?phone=#{@phone}", alert: 'No existe el TipoDocumento con id 1.'
+      return
+    end
+
+    numero_documento = if Documento.maximum("Documento").nil?
+                        1
+                      else
+                        Documento.all.order('CAST("Documento" AS integer) DESC').first.Documento.to_i + 1
+                      end
+
+    documento = Documento.new
+    documento.Fecha_Entrega    = Time.now.strftime('%Y-%m-%d')
+    documento.Fecha_Recibido   = Time.now.strftime('%Y-%m-%d')
+    documento.Documento        = numero_documento
+    documento.Serie            = 0
+    documento.Factura          = 0
+    documento.ClienteProveedor = nil
+    documento.TipoDocumento    = tipo_documento
+    documento.TipoPago         = tipo_pago
+    documento.Usuario_enviado  = Usuario.find_by(id: session[:user_id])
+    documento.Usuario_recibido = Usuario.find_by(id: session[:user_id])
+    documento.Estado           = true
+    documento.status           = 1
+    documento.creado_por       = session[:user_id]
+    documento.actualizado_por  = session[:user_id]
+
+    unless documento.save
+      redirect_to "/product_details/#{@product.id}?phone=#{@phone}", alert: 'No fue posible crear el documento de resurtido.'
+      return
+    end
+
+    detalle_documento = DetalleDocumento.new
+    detalle_documento.Documento              = documento
+    detalle_documento.Producto               = @product
+    detalle_documento.Medida                 = @product.Medida
+    detalle_documento.cantidad               = cantidad
+    detalle_documento.descripcion            = params[:descripcion].presence || "Resurtido manual desde catálogo"
+    detalle_documento.valor_compra           = @product.Valor_Compra
+    detalle_documento.valor_venta            = @product.Valor_Venta
+    detalle_documento.descuento              = 0
+    detalle_documento.descuento_porcentaje   = 0
+    detalle_documento.total                  = (@product.Valor_Compra.to_f * cantidad.to_f)
+    detalle_documento.estado                 = true
+    detalle_documento.creado_por             = session[:user_id]
+    detalle_documento.actualizado_por        = session[:user_id]
+    detalle_documento.status                 = 1
+
+    unless detalle_documento.save
+      redirect_to "/product_details/#{@product.id}?phone=#{@phone}", alert: 'No fue posible crear el detalle del resurtido.'
+      return
+    end
+
+    movimiento = MovimientoProducto.new
+    movimiento.Producto              = @product
+    movimiento.Saliente_Bodega       = nil
+    movimiento.Entrante_Bodega       = bodega_entrante
+    movimiento.Documento             = documento
+    movimiento.detalle_documento_id  = detalle_documento.id
+    movimiento.cantidad              = cantidad
+    movimiento.porcentaje_proporcion = porcentaje_proporcion
+    movimiento.movimiento_tipo       = 1
+    movimiento.signo                 = '+'
+    movimiento.creado_por            = session[:user_id]
+    movimiento.actualizado_por       = session[:user_id]
+    movimiento.Estado                = true
+    movimiento.porcentaje_ganancia   = 0
+    movimiento.status                = 1
+
+    unless movimiento.save
+      redirect_to "/product_details/#{@product.id}?phone=#{@phone}", alert: 'No fue posible guardar el movimiento de inventario.'
+      return
+    end
+
+    redirect_to "/product_details/#{@product.id}?phone=#{@phone}", notice: 'Producto resurtido correctamente.'
   end
 end

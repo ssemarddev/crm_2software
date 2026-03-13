@@ -97,6 +97,7 @@ Rails.application.routes.draw do
     post   'saveCartOrder'        => :saveCartOrder
     get    'cart_shop_login'      => :cart_shop_login
     get    'login_as_client'      => :login_as_client
+    post 'save_catalog_restock' => :save_catalog_restock
   end
 
   #get 'saveMovProduct' => 'MovimientoProductos#new'
