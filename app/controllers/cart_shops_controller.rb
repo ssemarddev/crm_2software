@@ -1,7 +1,7 @@
 class CartShopsController < ApplicationController
   skip_before_action :authorize
   before_action :set_categories, only: %i[product_details products_view cart_shop_login]
-  before_action :authorize, only: %i[save_catalog_restock]
+
 
   def set_categories
     @categoriasCatalogo = TipoProducto.where(Estado: true)

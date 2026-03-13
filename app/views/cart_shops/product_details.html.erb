@@ -7,13 +7,13 @@
       <p><strong>Medida:</strong> <%= @product.Medida.Nombre %></p>
       <p><strong>Tipo de Producto:</strong> <%= @product.TipoProducto.Nombre %></p>
       <p><strong>Existencias:</strong> <%= @stock %></p>
-      <% if @stock.to_f <= 0 && session[:user_id].present? %>
+      
         <p>
           <button type="button" class="btn btn-warning" data-toggle="modal" data-target="#restockProductModal">
             Resurtir producto
           </button>
         </p>
-      <% end %>
+      
       <p><strong>Pedir</strong> <%= link_to 'Whatsapp', "https://wa.me/502#{@empresa.wtpNumber}?text=Vi este producto en linea y me interesa #{request.base_url + request.original_fullpath}",target: '_blank', class: 'btn btn-success'  %></p>
       <p><strong>Copiar Link</strong>
         <%= link_to @product.Nombre.capitalize, "javascript:copy_to_clipboard('#{request.base_url + request.original_fullpath}')", :type => "button", :id => "clipboard-btn", class: 'btn btn-info' %> 
@@ -57,7 +57,7 @@
   </div>
 </div>
 
-<% if session[:user_id].present? %>
+
   <div class="modal fade" id="restockProductModal" tabindex="-1" role="dialog" aria-labelledby="restockProductModalLabel">
     <div class="modal-dialog" role="document">
       <div class="modal-content">
@@ -112,4 +112,3 @@
       </div>
     </div>
   </div>
-<% end %>
