@@ -13,7 +13,7 @@ class ApplicationController < ActionController::Base
     scaffold0 = request.path.split('/')
     scaffold = '/' + scaffold0[1].to_s
 
-    allowedURL = ['/admin', '/chooseBodega', '/saveChoose', '/findCliente']
+    allowedURL = ['/admin', '/chooseBodega', '/saveChoose', '/findCliente', '/dashboard']
     allowedURL += ['/findTipoPago', '/findFactura', '/findProductosByProvider', '/newCliente.1', '/findProduct',
                    '/findMedida', '/findDetalleMedida']
     allowedURL += ['/findBodegas', '/findProveedor', '/saveMovProduct', '/saveOrder', '/unloadOrder', '/unloadMovProd',

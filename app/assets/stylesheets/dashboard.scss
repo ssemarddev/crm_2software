@@ -1,0 +1,31 @@
+.dashboard-scope .dashboard-header {
+  margin-bottom: 20px;
+}
+
+.dashboard-scope .dashboard-subtitle {
+  margin-top: 8px;
+  color: #666;
+  font-size: 14px;
+}
+
+.dashboard-scope .dashboard-filter-actions {
+  margin-top: 25px;
+}
+
+.dashboard-scope .small-box h3 {
+  font-size: 24px;
+  line-height: 1.2;
+}
+
+.dashboard-scope .info-box-number {
+  font-size: 22px;
+}
+
+.dashboard-scope .box-body canvas {
+  min-height: 280px;
+}
+
+.dashboard-scope .table > tbody > tr > td,
+.dashboard-scope .table > thead > tr > th {
+  vertical-align: middle;
+}

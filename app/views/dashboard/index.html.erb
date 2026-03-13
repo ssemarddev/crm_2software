@@ -1,0 +1,450 @@
+<div class="dashboard-scope">
+  <section class="content-header dashboard-header">
+    <h1>Dashboard Ejecutivo</h1>
+    <p class="dashboard-subtitle">Métricas comerciales, operativas y de inventario para la toma de decisiones.</p>
+  </section>
+
+  <section class="content">
+    <div class="box box-primary">
+      <div class="box-header with-border">
+        <h3 class="box-title">Filtros</h3>
+      </div>
+      <div class="box-body">
+        <%= form_tag dashboard_path, method: :get, class: "row" do %>
+          <div class="col-md-3">
+            <label>Fecha inicio</label>
+            <%= date_field_tag :fecha_inicio, @fecha_inicio, class: "form-control" %>
+          </div>
+
+          <div class="col-md-3">
+            <label>Fecha fin</label>
+            <%= date_field_tag :fecha_fin, @fecha_fin, class: "form-control" %>
+          </div>
+
+          <div class="col-md-3">
+            <label>Bodega</label>
+            <%= select_tag :bodega_id,
+                  options_from_collection_for_select(@bodegas, :id, :Nombre, @bodega_id),
+                  include_blank: "Todas las bodegas",
+                  class: "form-control" %>
+          </div>
+
+          <div class="col-md-3">
+            <label>Vendedor</label>
+            <%= select_tag :usuario_id,
+                  options_from_collection_for_select(@usuarios, :id, :Nombres, @usuario_id),
+                  include_blank: "Todos los vendedores",
+                  class: "form-control" %>
+          </div>
+
+          <div class="col-md-12 dashboard-filter-actions">
+            <%= submit_tag "Aplicar filtros", class: "btn btn-primary" %>
+            <%= link_to "Limpiar", dashboard_path, class: "btn btn-default" %>
+          </div>
+        <% end %>
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="col-md-3">
+        <div class="small-box bg-aqua">
+          <div class="inner">
+            <h3><%= number_to_currency(@kpis[:ventas_total], precision: 2) %></h3>
+            <p>Ventas del periodo</p>
+          </div>
+          <div class="icon"><i class="fa fa-line-chart"></i></div>
+        </div>
+      </div>
+
+      <div class="col-md-3">
+        <div class="small-box bg-green">
+          <div class="inner">
+            <h3><%= number_to_currency(@kpis[:utilidad_total], precision: 2) %></h3>
+            <p>Utilidad bruta</p>
+          </div>
+          <div class="icon"><i class="fa fa-money"></i></div>
+        </div>
+      </div>
+
+      <div class="col-md-3">
+        <div class="small-box bg-yellow">
+          <div class="inner">
+            <h3><%= @kpis[:documentos_total] %></h3>
+            <p>Documentos de venta</p>
+          </div>
+          <div class="icon"><i class="fa fa-file-text-o"></i></div>
+        </div>
+      </div>
+
+      <div class="col-md-3">
+        <div class="small-box bg-red">
+          <div class="inner">
+            <h3><%= number_to_currency(@kpis[:ticket_promedio], precision: 2) %></h3>
+            <p>Ticket promedio</p>
+          </div>
+          <div class="icon"><i class="fa fa-shopping-cart"></i></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="col-md-3">
+        <div class="info-box">
+          <span class="info-box-icon bg-aqua"><i class="fa fa-users"></i></span>
+          <div class="info-box-content">
+            <span class="info-box-text">Clientes únicos</span>
+            <span class="info-box-number"><%= @kpis[:clientes_total] %></span>
+          </div>
+        </div>
+      </div>
+
+      <div class="col-md-3">
+        <div class="info-box">
+          <span class="info-box-icon bg-green"><i class="fa fa-user"></i></span>
+          <div class="info-box-content">
+            <span class="info-box-text">Vendedores activos</span>
+            <span class="info-box-number"><%= @kpis[:vendedores_total] %></span>
+          </div>
+        </div>
+      </div>
+
+      <div class="col-md-3">
+        <div class="info-box">
+          <span class="info-box-icon bg-yellow"><i class="fa fa-cubes"></i></span>
+          <div class="info-box-content">
+            <span class="info-box-text">Unidades vendidas</span>
+            <span class="info-box-number"><%= number_with_precision(@kpis[:unidades_total], precision: 2) %></span>
+          </div>
+        </div>
+      </div>
+
+      <div class="col-md-3">
+        <div class="info-box">
+          <span class="info-box-icon bg-red"><i class="fa fa-percent"></i></span>
+          <div class="info-box-content">
+            <span class="info-box-text">Descuento aplicado</span>
+            <span class="info-box-number"><%= number_to_currency(@kpis[:descuento_total], precision: 2) %></span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="col-md-4">
+        <div class="info-box">
+          <span class="info-box-icon bg-blue"><i class="fa fa-credit-card"></i></span>
+          <div class="info-box-content">
+            <span class="info-box-text">Total cobrado</span>
+            <span class="info-box-number"><%= number_to_currency(@kpis[:cobrado_total], precision: 2) %></span>
+          </div>
+        </div>
+      </div>
+
+      <div class="col-md-4">
+        <div class="info-box">
+          <span class="info-box-icon bg-maroon"><i class="fa fa-warning"></i></span>
+          <div class="info-box-content">
+            <span class="info-box-text">Pendiente por cobrar</span>
+            <span class="info-box-number"><%= number_to_currency(@kpis[:por_cobrar_total], precision: 2) %></span>
+          </div>
+        </div>
+      </div>
+
+      <div class="col-md-4">
+        <div class="info-box">
+          <span class="info-box-icon bg-purple"><i class="fa fa-archive"></i></span>
+          <div class="info-box-content">
+            <span class="info-box-text">Inventario valorizado</span>
+            <span class="info-box-number"><%= number_to_currency(@kpis[:inventario_valorizado], precision: 2) %></span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="col-md-8">
+        <div class="box box-primary">
+          <div class="box-header with-border">
+            <h3 class="box-title">Ventas por día</h3>
+          </div>
+          <div class="box-body">
+            <canvas id="chartVentasPorDia" height="110"></canvas>
+          </div>
+        </div>
+      </div>
+
+      <div class="col-md-4">
+        <div class="box box-success">
+          <div class="box-header with-border">
+            <h3 class="box-title">Ventas por tipo de pago</h3>
+          </div>
+          <div class="box-body">
+            <canvas id="chartTipoPago" height="220"></canvas>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="col-md-6">
+        <div class="box box-warning">
+          <div class="box-header with-border">
+            <h3 class="box-title">Utilidad por día</h3>
+          </div>
+          <div class="box-body">
+            <canvas id="chartUtilidadPorDia" height="120"></canvas>
+          </div>
+        </div>
+      </div>
+
+      <div class="col-md-6">
+        <div class="box box-info">
+          <div class="box-header with-border">
+            <h3 class="box-title">Ventas por vendedor</h3>
+          </div>
+          <div class="box-body">
+            <canvas id="chartVentasPorVendedor" height="120"></canvas>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="col-md-6">
+        <div class="box box-danger">
+          <div class="box-header with-border">
+            <h3 class="box-title">Top productos por unidades</h3>
+          </div>
+          <div class="box-body">
+            <canvas id="chartTopProductos" height="140"></canvas>
+          </div>
+        </div>
+      </div>
+
+      <div class="col-md-6">
+        <div class="box box-primary">
+          <div class="box-header with-border">
+            <h3 class="box-title">Ventas por bodega</h3>
+          </div>
+          <div class="box-body">
+            <canvas id="chartVentasPorBodega" height="140"></canvas>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="col-md-6">
+        <div class="box box-danger">
+          <div class="box-header with-border">
+            <h3 class="box-title">Productos con stock crítico</h3>
+          </div>
+          <div class="box-body table-responsive">
+            <table class="table table-bordered table-hover">
+              <thead>
+                <tr>
+                  <th>Código</th>
+                  <th>Producto</th>
+                  <th>Mínimos</th>
+                  <th>Existencias</th>
+                </tr>
+              </thead>
+              <tbody>
+                <% if @stock_critico.any? %>
+                  <% @stock_critico.each do |item| %>
+                    <tr>
+                      <td><%= item[:codigo] %></td>
+                      <td><%= item[:nombre] %></td>
+                      <td><%= number_with_precision(item[:minimos], precision: 2) %></td>
+                      <td><%= number_with_precision(item[:existencias], precision: 2) %></td>
+                    </tr>
+                  <% end %>
+                <% else %>
+                  <tr>
+                    <td colspan="4" class="text-center">No hay productos en estado crítico con el filtro actual.</td>
+                  </tr>
+                <% end %>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+
+      <div class="col-md-6">
+        <div class="box box-success">
+          <div class="box-header with-border">
+            <h3 class="box-title">Top clientes por monto</h3>
+          </div>
+          <div class="box-body table-responsive">
+            <table class="table table-bordered table-hover">
+              <thead>
+                <tr>
+                  <th>Cliente</th>
+                  <th>Total</th>
+                </tr>
+              </thead>
+              <tbody>
+                <% if @top_clientes.any? %>
+                  <% @top_clientes.each do |cliente| %>
+                    <tr>
+                      <td><%= cliente[:nombre] %></td>
+                      <td><%= number_to_currency(cliente[:total], precision: 2) %></td>
+                    </tr>
+                  <% end %>
+                <% else %>
+                  <tr>
+                    <td colspan="2" class="text-center">No hay datos en el periodo seleccionado.</td>
+                  </tr>
+                <% end %>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+<script>
+  (function() {
+    function destroyIfExists(key) {
+      if (window[key]) {
+        window[key].destroy();
+      }
+    }
+
+    function buildDashboardCharts() {
+      if (!document.getElementById('chartVentasPorDia')) return;
+
+      destroyIfExists('chartVentasPorDiaRef');
+      destroyIfExists('chartTipoPagoRef');
+      destroyIfExists('chartUtilidadPorDiaRef');
+      destroyIfExists('chartVentasPorVendedorRef');
+      destroyIfExists('chartTopProductosRef');
+      destroyIfExists('chartVentasPorBodegaRef');
+
+      const ventasPorDiaLabels = <%= raw @ventas_por_dia_labels.to_json %>;
+      const ventasPorDiaValues = <%= raw @ventas_por_dia_values.to_json %>;
+
+      const utilidadPorDiaLabels = <%= raw @utilidad_por_dia_labels.to_json %>;
+      const utilidadPorDiaValues = <%= raw @utilidad_por_dia_values.to_json %>;
+
+      const ventasPorVendedorLabels = <%= raw @ventas_por_vendedor_labels.to_json %>;
+      const ventasPorVendedorValues = <%= raw @ventas_por_vendedor_values.to_json %>;
+
+      const topProductosLabels = <%= raw @top_productos_labels.to_json %>;
+      const topProductosValues = <%= raw @top_productos_values.to_json %>;
+
+      const tipoPagoLabels = <%= raw @ventas_por_tipo_pago_labels.to_json %>;
+      const tipoPagoValues = <%= raw @ventas_por_tipo_pago_values.to_json %>;
+
+      const ventasPorBodegaLabels = <%= raw @ventas_por_bodega_labels.to_json %>;
+      const ventasPorBodegaValues = <%= raw @ventas_por_bodega_values.to_json %>;
+
+      window.chartVentasPorDiaRef = new Chart(document.getElementById('chartVentasPorDia'), {
+        type: 'line',
+        data: {
+          labels: ventasPorDiaLabels,
+          datasets: [{
+            label: 'Ventas',
+            data: ventasPorDiaValues,
+            borderWidth: 2,
+            fill: false,
+            tension: 0.25
+          }]
+        },
+        options: {
+          responsive: true,
+          maintainAspectRatio: false
+        }
+      });
+
+      window.chartTipoPagoRef = new Chart(document.getElementById('chartTipoPago'), {
+        type: 'doughnut',
+        data: {
+          labels: tipoPagoLabels,
+          datasets: [{
+            label: 'Ventas por tipo de pago',
+            data: tipoPagoValues,
+            borderWidth: 1
+          }]
+        },
+        options: {
+          responsive: true,
+          maintainAspectRatio: false
+        }
+      });
+
+      window.chartUtilidadPorDiaRef = new Chart(document.getElementById('chartUtilidadPorDia'), {
+        type: 'bar',
+        data: {
+          labels: utilidadPorDiaLabels,
+          datasets: [{
+            label: 'Utilidad',
+            data: utilidadPorDiaValues,
+            borderWidth: 1
+          }]
+        },
+        options: {
+          responsive: true,
+          maintainAspectRatio: false
+        }
+      });
+
+      window.chartVentasPorVendedorRef = new Chart(document.getElementById('chartVentasPorVendedor'), {
+        type: 'bar',
+        data: {
+          labels: ventasPorVendedorLabels,
+          datasets: [{
+            label: 'Ventas',
+            data: ventasPorVendedorValues,
+            borderWidth: 1
+          }]
+        },
+        options: {
+          responsive: true,
+          maintainAspectRatio: false
+        }
+      });
+
+      window.chartTopProductosRef = new Chart(document.getElementById('chartTopProductos'), {
+        type: 'bar',
+        data: {
+          labels: topProductosLabels,
+          datasets: [{
+            label: 'Unidades',
+            data: topProductosValues,
+            borderWidth: 1
+          }]
+        },
+        options: {
+          indexAxis: 'y',
+          responsive: true,
+          maintainAspectRatio: false
+        }
+      });
+
+      window.chartVentasPorBodegaRef = new Chart(document.getElementById('chartVentasPorBodega'), {
+        type: 'bar',
+        data: {
+          labels: ventasPorBodegaLabels,
+          datasets: [{
+            label: 'Ventas',
+            data: ventasPorBodegaValues,
+            borderWidth: 1
+          }]
+        },
+        options: {
+          indexAxis: 'y',
+          responsive: true,
+          maintainAspectRatio: false
+        }
+      });
+    }
+
+    document.addEventListener('DOMContentLoaded', buildDashboardCharts);
+    document.addEventListener('turbolinks:load', buildDashboardCharts);
+  })();
+</script>

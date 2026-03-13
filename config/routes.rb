@@ -122,7 +122,7 @@ Rails.application.routes.draw do
     get  'productoStock'            => :getStockProduct
     get  'cotizacion/:id'           => :cotizacion, as: :cotizacion
   end
-
+  get 'dashboard' => 'dashboard#index', as: :dashboard
   root 'sessions#create', as: 'index'
   match "*path" => redirect("/admin"), :via => [:get]
 
