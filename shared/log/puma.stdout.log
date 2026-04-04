@@ -1,0 +1,30 @@
+=== puma startup: 2026-04-04 21:24:30 +0000 ===
+[637713] - Worker 1 (pid: 637731) booted, phase: 0
+[637713] - Worker 0 (pid: 637729) booted, phase: 0
+[637729] ! Detected parent died, dying
+[637731] ! Detected parent died, dying
+=== puma startup: 2026-04-04 22:04:58 +0000 ===
+[647320] - Worker 0 (pid: 647336) booted, phase: 0
+[647320] - Worker 1 (pid: 647338) booted, phase: 0
+[647320] - Gracefully shutting down workers...
+=== puma startup: 2026-04-04 22:05:12 +0000 ===
+[647514] - Worker 0 (pid: 647530) booted, phase: 0
+[647514] - Worker 1 (pid: 647532) booted, phase: 0
+[647514] - Gracefully shutting down workers...
+=== puma startup: 2026-04-04 22:05:19 +0000 ===
+[647574] - Worker 1 (pid: 647592) booted, phase: 0
+[647574] - Worker 0 (pid: 647590) booted, phase: 0
+[647590] ! Detected parent died, dying
+[647592] ! Detected parent died, dying
+=== puma startup: 2026-04-04 22:05:46 +0000 ===
+[647882] - Worker 0 (pid: 647898) booted, phase: 0
+[647882] - Worker 1 (pid: 647900) booted, phase: 0
+[647882] - Gracefully shutting down workers...
+[647882] - Gracefully shutting down workers...
+=== puma startup: 2026-04-04 22:06:06 +0000 ===
+[647970] - Worker 0 (pid: 648048) booted, phase: 0
+[647970] - Worker 1 (pid: 648049) booted, phase: 0
+[647970] - Gracefully shutting down workers...
+=== puma startup: 2026-04-04 22:06:28 +0000 ===
+[648294] - Worker 1 (pid: 648312) booted, phase: 0
+[648294] - Worker 0 (pid: 648310) booted, phase: 0

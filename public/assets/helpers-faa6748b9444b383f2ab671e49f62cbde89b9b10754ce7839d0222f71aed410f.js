@@ -1,0 +1,1 @@
+function copy_to_clipboard(t){var a=t;document.addEventListener("copy",function(t){t.clipboardData.setData("text/plain",a),t.preventDefault()},!0),document.execCommand("copy"),alert("Link copiado ")}

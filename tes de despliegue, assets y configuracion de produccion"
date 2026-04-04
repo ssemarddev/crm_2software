@@ -1,0 +1,131 @@
+[1mdiff --git a/Gemfile.lock b/Gemfile.lock[m
+[1mindex 46d6a90..076ca35 100644[m
+[1m--- a/Gemfile.lock[m
+[1m+++ b/Gemfile.lock[m
+[36m@@ -123,6 +123,8 @@[m [mGEM[m
+     nkf (0.2.0)[m
+     nokogiri (1.15.7-x86_64-darwin)[m
+       racc (~> 1.4)[m
+[32m+[m[32m    nokogiri (1.15.7-x86_64-linux)[m
+[32m+[m[32m      racc (~> 1.4)[m
+     pg (1.2.3)[m
+     public_suffix (5.1.1)[m
+     puma (3.12.6)[m
+[36m@@ -229,6 +231,7 @@[m [mGEM[m
+ [m
+ PLATFORMS[m
+   x86_64-darwin-25[m
+[32m+[m[32m  x86_64-linux[m
+ [m
+ DEPENDENCIES[m
+   active_record_union[m
+[36m@@ -265,4 +268,4 @@[m [mRUBY VERSION[m
+    ruby 2.7.5p203[m
+ [m
+ BUNDLED WITH[m
+[31m-   2.2.15[m
+[32m+[m[32m   2.4.22[m
+[1mdiff --git a/config/.database.yml.swp b/config/.database.yml.swp[m
+[1mdeleted file mode 100644[m
+[1mindex 060b818..0000000[m
+Binary files a/config/.database.yml.swp and /dev/null differ
+[1mdiff --git a/config/database.yml b/config/database.yml[m
+[1mindex 2fb0355..58c883e 100644[m
+[1m--- a/config/database.yml[m
+[1m+++ b/config/database.yml[m
+[36m@@ -17,7 +17,7 @@[m [mdefault: &default[m
+ [m
+   host: localhost[m
+   port: 5432[m
+[31m-  database: crmdb[m
+[32m+[m[32m  database: rails_app_production[m
+ [m
+   #INVERSIONES LATINA[m
+   #database: crm_inversioneslatina_development[m
+[36m@@ -28,8 +28,8 @@[m [mdefault: &default[m
+   #host: 160.153.251.117[m
+   #port: 5433[m
+   #pool: 10[m
+[31m-  username: crm[m
+[31m-  password: 123321Abnerjj[m
+[32m+[m[32m  username: rails_app[m
+[32m+[m[32m  password: Sysmard.anyer.93[m
+   pool: 5[m
+   timeout: 5000[m
+ [m
+[1mdiff --git a/config/environments/production.rb b/config/environments/production.rb[m
+[1mindex 9738a6a..c53e744 100644[m
+[1m--- a/config/environments/production.rb[m
+[1m+++ b/config/environments/production.rb[m
+[36m@@ -19,12 +19,13 @@[m [mRails.application.configure do[m
+   config.public_file_server.enabled = true #ENV['RAILS_SERVE_STATIC_FILES'].present?[m
+ [m
+   # Compress JavaScripts and CSS.[m
+[31m-  config.assets.js_compressor = :uglifier[m
+[32m+[m[32m  config.assets.js_compressor = Uglifier.new(harmony: true)[m
+   # config.assets.css_compressor = :sass[m
+   #config.assets.js_compressor = Uglifier.new(harmony: true)[m
+ [m
+   # Do not fallback to assets pipeline if a precompiled asset is missed.[m
+   config.assets.compile = false[m
+[32m+[m[32m  config.assets.digest = true[m
+ [m
+   # `config.assets.precompile` and `config.assets.version` have moved to config/initializers/assets.rb[m
+ [m
+[1mdiff --git a/config/puma.rb b/config/puma.rb[m
+[1mindex abea870..95a9fff 100644[m
+[1m--- a/config/puma.rb[m
+[1m+++ b/config/puma.rb[m
+[36m@@ -17,22 +17,19 @@[m
+ #bind "unix:///home/batisoftware/crm_2software/tmp/sockets/puma.sock"[m
+ [m
+ # config/puma.rb[m
+[32m+[m[32mdirectory '/var/www/crm_2software'[m
+[32m+[m[32mrackup "/var/www/crm_2software/config.ru"[m
+[32m+[m[32menvironment 'production'[m
+ [m
+[31m-workers ENV.fetch("WEB_CONCURRENCY") { 2 }[m
+[32m+[m[32mpidfile "/var/www/crm_2software/shared/tmp/pids/puma.pid"[m
+[32m+[m[32mstate_path "/var/www/crm_2software/shared/tmp/pids/puma.state"[m
+[32m+[m[32mstdout_redirect "/var/www/crm_2software/shared/log/puma.stdout.log", "/var/www/crm_2software/shared/log/puma.stderr.log", true[m
+ [m
+ threads_count = ENV.fetch("RAILS_MAX_THREADS") { 5 }[m
+ threads threads_count, threads_count[m
+ [m
+[31m-preload_app![m
+[31m-[m
+[31m-rackup DefaultRackup[m
+[31m-[m
+[31m-environment ENV.fetch("RAILS_ENV") { "development" }[m
+[31m-[m
+[31m-port ENV.fetch("PORT") { 3000 }[m
+[32m+[m[32mworkers ENV.fetch("WEB_CONCURRENCY") { 2 }[m
+ [m
+[31m-pidfile ENV.fetch("PIDFILE") { "tmp/pids/server.pid" }[m
+[32m+[m[32mbind "tcp://127.0.0.1:3001"[m
+ [m
+[31m-on_worker_boot do[m
+[31m-  ActiveRecord::Base.establish_connection if defined?(ActiveRecord)[m
+[31m-end[m
+[32m+[m[32mplugin :tmp_restart[m
+[1mdiff --git a/public/404.html b/public/404.html[m
+[1mold mode 100644[m
+[1mnew mode 100755[m
+[1mdiff --git a/public/422.html b/public/422.html[m
+[1mold mode 100644[m
+[1mnew mode 100755[m
+[1mdiff --git a/public/500.html b/public/500.html[m
+[1mold mode 100644[m
+[1mnew mode 100755[m
+[1mdiff --git a/public/apple-touch-icon-precomposed.png b/public/apple-touch-icon-precomposed.png[m
+[1mold mode 100644[m
+[1mnew mode 100755[m
+[1mdiff --git a/public/apple-touch-icon.png b/public/apple-touch-icon.png[m
+[1mold mode 100644[m
+[1mnew mode 100755[m
+[1mdiff --git a/public/favicon.ico b/public/favicon.ico[m
+[1mold mode 100644[m
+[1mnew mode 100755[m
+[1mdiff --git a/public/robots.txt b/public/robots.txt[m
+[1mold mode 100644[m
+[1mnew mode 100755[m

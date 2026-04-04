@@ -123,6 +123,8 @@ GEM
     nkf (0.2.0)
     nokogiri (1.15.7-x86_64-darwin)
       racc (~> 1.4)
+    nokogiri (1.15.7-x86_64-linux)
+      racc (~> 1.4)
     pg (1.2.3)
     public_suffix (5.1.1)
     puma (3.12.6)
@@ -229,6 +231,7 @@ GEM
 
 PLATFORMS
   x86_64-darwin-25
+  x86_64-linux
 
 DEPENDENCIES
   active_record_union
@@ -265,4 +268,4 @@ RUBY VERSION
    ruby 2.7.5p203
 
 BUNDLED WITH
-   2.2.15
+   2.4.22

@@ -17,7 +17,7 @@ default: &default
 
   host: localhost
   port: 5432
-  database: crmdb
+  database: rails_app_production
 
   #INVERSIONES LATINA
   #database: crm_inversioneslatina_development
@@ -28,8 +28,8 @@ default: &default
   #host: 160.153.251.117
   #port: 5433
   #pool: 10
-  username: crm
-  password: 123321Abnerjj
+  username: rails_app
+  password: Sysmard.anyer.93
   pool: 5
   timeout: 5000
 

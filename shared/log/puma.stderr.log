@@ -1,0 +1,35 @@
+=== puma startup: 2026-04-04 21:24:30 +0000 ===
+=== puma startup: 2026-04-04 22:04:58 +0000 ===
+=== puma startup: 2026-04-04 22:05:12 +0000 ===
+=== puma startup: 2026-04-04 22:05:19 +0000 ===
+=== puma startup: 2026-04-04 22:05:46 +0000 ===
+bundler: failed to load command: puma (/home/deploy/.rbenv/versions/2.7.5/bin/puma)
+/home/deploy/.rbenv/versions/2.7.5/lib/ruby/gems/2.7.0/gems/puma-3.12.6/lib/puma/cluster.rb:40:in `waitpid': No child processes (Errno::ECHILD)
+	from /home/deploy/.rbenv/versions/2.7.5/lib/ruby/gems/2.7.0/gems/puma-3.12.6/lib/puma/cluster.rb:40:in `block in stop_workers'
+	from /home/deploy/.rbenv/versions/2.7.5/lib/ruby/gems/2.7.0/gems/puma-3.12.6/lib/puma/cluster.rb:40:in `each'
+	from /home/deploy/.rbenv/versions/2.7.5/lib/ruby/gems/2.7.0/gems/puma-3.12.6/lib/puma/cluster.rb:40:in `stop_workers'
+	from /home/deploy/.rbenv/versions/2.7.5/lib/ruby/gems/2.7.0/gems/puma-3.12.6/lib/puma/cluster.rb:393:in `block in setup_signals'
+	from /home/deploy/.rbenv/versions/2.7.5/lib/ruby/gems/2.7.0/gems/puma-3.12.6/lib/puma/cluster.rb:490:in `select'
+	from /home/deploy/.rbenv/versions/2.7.5/lib/ruby/gems/2.7.0/gems/puma-3.12.6/lib/puma/cluster.rb:490:in `run'
+	from /home/deploy/.rbenv/versions/2.7.5/lib/ruby/gems/2.7.0/gems/puma-3.12.6/lib/puma/launcher.rb:186:in `run'
+	from /home/deploy/.rbenv/versions/2.7.5/lib/ruby/gems/2.7.0/gems/puma-3.12.6/lib/puma/cli.rb:80:in `run'
+	from /home/deploy/.rbenv/versions/2.7.5/lib/ruby/gems/2.7.0/gems/puma-3.12.6/bin/puma:10:in `<top (required)>'
+	from /home/deploy/.rbenv/versions/2.7.5/bin/puma:23:in `load'
+	from /home/deploy/.rbenv/versions/2.7.5/bin/puma:23:in `<top (required)>'
+	from /home/deploy/.rbenv/versions/2.7.5/lib/ruby/gems/2.7.0/gems/bundler-2.4.22/lib/bundler/cli/exec.rb:58:in `load'
+	from /home/deploy/.rbenv/versions/2.7.5/lib/ruby/gems/2.7.0/gems/bundler-2.4.22/lib/bundler/cli/exec.rb:58:in `kernel_load'
+	from /home/deploy/.rbenv/versions/2.7.5/lib/ruby/gems/2.7.0/gems/bundler-2.4.22/lib/bundler/cli/exec.rb:23:in `run'
+	from /home/deploy/.rbenv/versions/2.7.5/lib/ruby/gems/2.7.0/gems/bundler-2.4.22/lib/bundler/cli.rb:492:in `exec'
+	from /home/deploy/.rbenv/versions/2.7.5/lib/ruby/gems/2.7.0/gems/bundler-2.4.22/lib/bundler/vendor/thor/lib/thor/command.rb:28:in `run'
+	from /home/deploy/.rbenv/versions/2.7.5/lib/ruby/gems/2.7.0/gems/bundler-2.4.22/lib/bundler/vendor/thor/lib/thor/invocation.rb:127:in `invoke_command'
+	from /home/deploy/.rbenv/versions/2.7.5/lib/ruby/gems/2.7.0/gems/bundler-2.4.22/lib/bundler/vendor/thor/lib/thor.rb:527:in `dispatch'
+	from /home/deploy/.rbenv/versions/2.7.5/lib/ruby/gems/2.7.0/gems/bundler-2.4.22/lib/bundler/cli.rb:34:in `dispatch'
+	from /home/deploy/.rbenv/versions/2.7.5/lib/ruby/gems/2.7.0/gems/bundler-2.4.22/lib/bundler/vendor/thor/lib/thor/base.rb:584:in `start'
+	from /home/deploy/.rbenv/versions/2.7.5/lib/ruby/gems/2.7.0/gems/bundler-2.4.22/lib/bundler/cli.rb:28:in `start'
+	from /home/deploy/.rbenv/versions/2.7.5/lib/ruby/gems/2.7.0/gems/bundler-2.4.22/exe/bundle:37:in `block in <top (required)>'
+	from /home/deploy/.rbenv/versions/2.7.5/lib/ruby/gems/2.7.0/gems/bundler-2.4.22/lib/bundler/friendly_errors.rb:117:in `with_friendly_errors'
+	from /home/deploy/.rbenv/versions/2.7.5/lib/ruby/gems/2.7.0/gems/bundler-2.4.22/exe/bundle:29:in `<top (required)>'
+	from /home/deploy/.rbenv/versions/2.7.5/bin/bundle:23:in `load'
+	from /home/deploy/.rbenv/versions/2.7.5/bin/bundle:23:in `<main>'
+=== puma startup: 2026-04-04 22:06:06 +0000 ===
+=== puma startup: 2026-04-04 22:06:28 +0000 ===
