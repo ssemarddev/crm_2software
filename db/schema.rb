@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20221025203318) do
+ActiveRecord::Schema.define(version: 20260404000100) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -493,6 +493,26 @@ ActiveRecord::Schema.define(version: 20221025203318) do
     t.integer "tipo"
   end
 
+  create_table "solicitud_resurtidos", force: :cascade do |t|
+    t.integer "Producto_id", null: false
+    t.integer "cantidad_sugerida", default: 1
+    t.string "telefono_solicitante"
+    t.text "comentario"
+    t.boolean "Estado", default: true
+    t.integer "status", default: 1
+    t.integer "solicitado_por"
+    t.integer "atendido_por"
+    t.datetime "atendido_en"
+    t.integer "creado_por"
+    t.integer "actualizado_por"
+    t.date "creado"
+    t.datetime "actualizado"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["Producto_id"], name: "index_solicitud_resurtidos_on_Producto_id"
+    t.index ["status"], name: "index_solicitud_resurtidos_on_status"
+  end
+
   create_table "sqlite_sequence", id: false, force: :cascade do |t|
     t.text "name"
     t.text "seq"
@@ -642,6 +662,7 @@ ActiveRecord::Schema.define(version: 20221025203318) do
   add_foreign_key "estadortackings", "trackings"
   add_foreign_key "movimiento_productos", "detalle_documentos"
   add_foreign_key "pagos", "documento_pagos"
+  add_foreign_key "solicitud_resurtidos", "productos", column: "Producto_id"
   add_foreign_key "subproyectos", "proyectos"
   add_foreign_key "tareas", "proyectos"
   add_foreign_key "tareas", "subproyectos"

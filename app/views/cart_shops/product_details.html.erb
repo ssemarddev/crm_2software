@@ -1,5 +1,19 @@
 
+
+
 <div class="container">
+  <% if notice.present? %>
+    <div class="alert alert-success">
+      <%= notice %>
+    </div>
+  <% end %>
+
+  <% if alert.present? %>
+    <div class="alert alert-danger">
+      <%= alert %>
+    </div>
+  <% end %>
+
   <div class="row">
     <div class="col-md-3">
       <h1><%= @product.Nombre.capitalize %></h1>
@@ -7,45 +21,60 @@
       <p><strong>Medida:</strong> <%= @product.Medida.Nombre %></p>
       <p><strong>Tipo de Producto:</strong> <%= @product.TipoProducto.Nombre %></p>
       <p><strong>Existencias:</strong> <%= @stock %></p>
-      
-        <p>
-          <button type="button" class="btn btn-warning" data-toggle="modal" data-target="#restockProductModal">
-            Resurtir producto
-          </button>
-        </p>
-      
-      <p><strong>Pedir</strong> <%= link_to 'Whatsapp', "https://wa.me/502#{@empresa.wtpNumber}?text=Vi este producto en linea y me interesa #{request.base_url + request.original_fullpath}",target: '_blank', class: 'btn btn-success'  %></p>
-      <p><strong>Copiar Link</strong>
-        <%= link_to @product.Nombre.capitalize, "javascript:copy_to_clipboard('#{request.base_url + request.original_fullpath}')", :type => "button", :id => "clipboard-btn", class: 'btn btn-info' %> 
+
+      <% if @stock.to_f <= 0 %>
+        <hr>
+        <h4>Producto sin existencias</h4>
+
+        <%= form_tag(request_restock_product_path(@product.id), method: :post) do %>
+          <%= hidden_field_tag :phone, params[:phone] %>
+
+          <div class="form-group">
+            <label>Cantidad sugerida</label>
+            <%= number_field_tag :cantidad_sugerida, 1, min: 1, class: 'form-control' %>
+          </div>
+
+          <div class="form-group">
+            <label>Comentario</label>
+            <%= text_area_tag :comentario, nil, class: 'form-control', rows: 3, placeholder: 'Ej. este producto ya lo están solicitando varios clientes' %>
+          </div>
+
+          <%= submit_tag 'Solicitar resurtido', class: 'btn btn-warning btn-block' %>
+        <% end %>
+      <% end %>
+
+      <p><strong>Pedir</strong> <%= link_to 'Whatsapp', "https://wa.me/502#{@empresa.wtpNumber}?text=Vi este producto en linea y me interesa #{request.base_url + request.original_fullpath}", target: '_blank', class: 'btn btn-success' %></p>
+
+      <p>
+        <strong>Copiar Link</strong>
+        <%= link_to @product.Nombre.capitalize, "javascript:copy_to_clipboard('#{request.base_url + request.original_fullpath}')", type: "button", id: "clipboard-btn", class: 'btn btn-info' %>
       </p>
 
       <p>
         <% if @client %>
-          <h4><strong>Precio:</strong> Q <%= @product.Valor_Venta  %></h4>  
+          <h4><strong>Precio:</strong> Q <%= @product.Valor_Venta %></h4>
         <% else %>
           <%= link_to 'Mostrar precio', cart_shop_login_path %>
         <% end %>
       </p>
     </div>
+
     <div class="col-md-9">
       <div id="carousel-example-generic" class="carousel slide" data-ride="carousel">
-        <!-- Indicators -->
         <ol class="carousel-indicators">
-          <% @product.product_image.each_with_index do |image,index| %>
-            <li data-target="#carousel-example-generic" data-slide-to="<%= index %>" class="<%= 'active' if index ==0%>"></li>
+          <% @product.product_image.each_with_index do |image, index| %>
+            <li data-target="#carousel-example-generic" data-slide-to="<%= index %>" class="<%= 'active' if index == 0 %>"></li>
           <% end %>
         </ol>
 
-        <!-- Wrapper for slides -->
         <div class="carousel-inner">
-          <% @product.product_image.each_with_index do |image,index| %>
-            <div class="item <%= 'active' if index ==0%>">
-              <img src="<%= asset_url('uploads/'+image.descripcion) %>" class="img-fluid" alt="Product Image"/>
+          <% @product.product_image.each_with_index do |image, index| %>
+            <div class="item <%= 'active' if index == 0 %>">
+              <img src="<%= asset_url('uploads/' + image.descripcion) %>" class="img-fluid" alt="Product Image"/>
             </div>
           <% end %>
         </div>
 
-        <!-- Controls -->
         <a class="left carousel-control" href="#carousel-example-generic" data-slide="prev">
           <span class="glyphicon glyphicon-chevron-left"></span>
         </a>
@@ -56,59 +85,3 @@
     </div>
   </div>
 </div>
-
-
-  <div class="modal fade" id="restockProductModal" tabindex="-1" role="dialog" aria-labelledby="restockProductModalLabel">
-    <div class="modal-dialog" role="document">
-      <div class="modal-content">
-        <%= form_tag('/save_catalog_restock', method: :post) do %>
-          <div class="modal-header">
-            <button type="button" class="close" data-dismiss="modal" aria-label="Cerrar">
-              <span aria-hidden="true">&times;</span>
-            </button>
-            <h4 class="modal-title" id="restockProductModalLabel">Resurtir producto</h4>
-          </div>
-
-          <div class="modal-body">
-            <%= hidden_field_tag :product_id, @product.id %>
-            <%= hidden_field_tag :phone, params[:phone] %>
-
-            <div class="form-group">
-              <label>Producto</label>
-              <input type="text" class="form-control" value="<%= @product.Nombre %>" readonly>
-            </div>
-
-            <div class="form-group">
-              <label>Bodega de entrada</label>
-              <select name="bodega_entrante_id" class="form-control" required>
-                <option value="">Selecciona una bodega...</option>
-                <% @bodegas.each do |bodega| %>
-                  <option value="<%= bodega.id %>"><%= bodega.Nombre %></option>
-                <% end %>
-              </select>
-            </div>
-
-            <div class="form-group">
-              <label>Cantidad</label>
-              <input type="number" name="cantidad" class="form-control" min="1" step="1" required>
-            </div>
-
-            <div class="form-group">
-              <label>Porcentaje de proporción</label>
-              <input type="number" name="porcentaje_proporcion" class="form-control" value="100" min="1" step="0.01" required>
-            </div>
-
-            <div class="form-group">
-              <label>Descripción / observación</label>
-              <textarea name="descripcion" class="form-control" rows="3" placeholder="Ej. Resurtido manual por ajuste de inventario"></textarea>
-            </div>
-          </div>
-
-          <div class="modal-footer">
-            <button type="button" class="btn btn-default" data-dismiss="modal">Cancelar</button>
-            <button type="submit" class="btn btn-success">Guardar resurtido</button>
-          </div>
-        <% end %>
-      </div>
-    </div>
-  </div>

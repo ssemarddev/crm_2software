@@ -38,6 +38,16 @@ class ProductosController < ApplicationController
     unidades
   end
 
+  def online_catalog
+    @productos = Producto.where(deleted_at: nil)
+
+    if params[:search].present?
+      @productos = @productos.where("nombre ILIKE ?", "%#{params[:search]}%")
+    end
+
+    @productos = @productos.order(:id).paginate(page: params[:page], per_page: 20)
+  end
+
   # GET /productos
   # GET /productos.json
   def index

@@ -43,6 +43,7 @@ Rails.application.routes.draw do
   get 'sessions/destroy'
   get 'sessions/create'
   get 'admin'           => 'admin#index'
+  post 'admin/restock_requests/:id/process' => 'admin#process_restock', as: :admin_process_restock
   get 'puntoventa'      => 'puntoventa#new'
   get 'puntoventaMiniSuper' => 'puntoventa#puntoventaMiniSuper'
   get 'puntocompra'     => 'puntoventa#compra'
@@ -98,6 +99,7 @@ Rails.application.routes.draw do
     get    'cart_shop_login'      => :cart_shop_login
     get    'login_as_client'      => :login_as_client
     post 'save_catalog_restock' => :save_catalog_restock
+    post   'product_details/:id/request_restock' => :create_restock_request, as: :request_restock_product
   end
 
   #get 'saveMovProduct' => 'MovimientoProductos#new'

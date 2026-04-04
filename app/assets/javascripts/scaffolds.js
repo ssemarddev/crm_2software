@@ -110,3 +110,4 @@ n.setAttribute('src', 'https://debug.datatables.net/debug.js');
 document.body.appendChild(n);
 */
 });
+

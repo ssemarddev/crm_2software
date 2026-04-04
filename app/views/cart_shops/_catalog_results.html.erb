@@ -1,7 +1,7 @@
 <div id="catalog-results">
 
   <div class="flickr_pagination mb-4">
-    <%= will_paginate productos, container: false %>
+    <%= will_paginate @productos, previous_label: '<', next_label: '>', inner_window: 2, outer_window: 1 %>
   </div>
 
   <div class="yield">
@@ -19,7 +19,7 @@
   </div>
 
   <div class="flickr_pagination mb-4">
-    <%= will_paginate productos, container: false %>
+    <%= will_paginate @productos, previous_label: '<', next_label: '>', inner_window: 2, outer_window: 1 %>
   </div>
 
 </div>
