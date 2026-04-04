@@ -7,6 +7,8 @@ class ApplicationController < ActionController::Base
   protected
 
   skip_before_action :verify_authenticity_token
+
+
   def authorize
     url = request
     # request.request_method
@@ -39,6 +41,29 @@ class ApplicationController < ActionController::Base
       redirect_to login_url, alert: 'Tu no tienes permiso de estar aqui.'
     end
   end
+
+  helper_method :catalog_user_logged_in?, :current_catalog_user, :current_catalog_phone
+
+def current_catalog_phone
+  session[:catalog_phone].presence || params[:phone].presence
+end
+
+def current_catalog_user
+  return @current_catalog_user if defined?(@current_catalog_user)
+
+  phone = current_catalog_phone
+  @current_catalog_user =
+    if phone.present?
+      Usuario.find_by(Telefono: phone.to_i, Estado: true) ||
+      Usuario.find_by(Telefono1: phone.to_i, Estado: true)
+    else
+      nil
+    end
+end
+
+def catalog_user_logged_in?
+  current_catalog_user.present?
+end
 
   def user_is_admin
     roles = session[:role_name].split('-').reject { |role| role.size <= 0 }.map { |role| role.upcase }

@@ -100,6 +100,7 @@ Rails.application.routes.draw do
     get    'login_as_client'      => :login_as_client
     post 'save_catalog_restock' => :save_catalog_restock
     post   'product_details/:id/request_restock' => :create_restock_request, as: :request_restock_product
+    delete 'catalog_logout' => :catalog_logout, as: :catalog_logout
   end
 
   #get 'saveMovProduct' => 'MovimientoProductos#new'

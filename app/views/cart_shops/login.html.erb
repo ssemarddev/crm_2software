@@ -1,17 +1,26 @@
 <div class="container">
-  <form class="" action="login_as_client" method="GET">
+  <% if notice.present? %>
+    <div class="alert alert-success"><%= notice %></div>
+  <% end %>
+
+  <% if alert.present? %>
+    <div class="alert alert-danger"><%= alert %></div>
+  <% end %>
+
+  <%= form_tag login_as_client_path, method: :get do %>
     <div class="jumbotron">
       <h1>Login</h1>
-      <p>Ingresa tu numero de telefono</p>
+      <p>Ingresa tu número de teléfono</p>
+
       <div class="input-group input-group-lg">
         <span class="input-group-addon"><i class="fa fa-phone"></i></span>
-        <input type="number" name="phone" class="form-control" placeholder="55550000">
+        <%= text_field_tag :phone, nil, class: 'form-control', placeholder: '55550000' %>
       </div>
 
-      <p>
-        <button type="submit" name="action" class="btn btn-primary btn-lg" role="button">Ingresar</button>
-        <button type="submit" name="action" class="btn btn-default btn-lg" role="button">Ingresar sin Login</button>
+      <p style="margin-top: 15px;">
+        <%= submit_tag 'Ingresar', class: 'btn btn-primary btn-lg' %>
+        <%= link_to 'Ingresar sin login', online_catalog_path, class: 'btn btn-default btn-lg' %>
       </p>
     </div>
-  </form>
+  <% end %>
 </div>

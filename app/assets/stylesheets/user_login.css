@@ -317,3 +317,31 @@ fieldset {
   color: #444;
   text-decoration: underline;
 }
+.login-btn-container {
+  width: 100%;
+  margin-top: 10px;
+}
+
+.btn-login-style {
+  display: block;
+  width: 100%;
+  text-align: center;
+  padding: 14px;
+  border-radius: 12px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  text-decoration: none !important;
+  transition: all 0.2s ease;
+}
+
+/* Color estilo naranja como PRODUCTOS */
+.btn-liberacion {
+  background-color: #E6A64A;
+  color: #fff !important;
+}
+
+.btn-liberacion:hover {
+  background-color: #d89534;
+  transform: translateY(-1px);
+}

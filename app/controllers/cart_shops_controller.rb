@@ -13,17 +13,53 @@ class CartShopsController < ApplicationController
     render 'login', layout: 'cart_shop_index'
   end
   
-  def login_as_client
-    redirect_to online_catalog_path(phone: params[:phone])
+ def login_as_client
+  phone = params[:phone].to_s.gsub(/\D/, '')
+
+  if phone.present?
+    usuario = Usuario.find_by(Telefono: phone.to_i, Estado: true) ||
+              Usuario.find_by(Telefono1: phone.to_i, Estado: true)
+
+    if usuario.present?
+      session[:catalog_phone] = phone
+      session[:catalog_user_id] = usuario.id
+      redirect_to online_catalog_path, notice: "Sesión iniciada correctamente."
+    else
+      session[:catalog_phone] = nil
+      session[:catalog_user_id] = nil
+      redirect_to cart_shop_login_path, alert: "No encontramos un usuario con ese número."
+    end
+  else
+    session[:catalog_phone] = nil
+    session[:catalog_user_id] = nil
+    redirect_to online_catalog_path, notice: "Ingresaste sin login."
   end
+end
 
   def product_details
-  @client = ClienteProveedor.find_by(Fax: params[:phone], Estado: true) if params[:phone] != nil
-  @product ||= Producto.includes(:Marca).includes(:Medida).includes(:TipoProducto).includes(:product_image).find(params[:id])
+  phone = session[:catalog_phone].presence || params[:phone].presence
+
+  @catalog_user =
+    if session[:catalog_user_id].present?
+      Usuario.find_by(id: session[:catalog_user_id], Estado: true)
+    elsif phone.present?
+      Usuario.find_by(Telefono: phone.to_i, Estado: true) ||
+      Usuario.find_by(Telefono1: phone.to_i, Estado: true)
+    end
+
+  @client =
+    if phone.present?
+      ClienteProveedor.find_by(Fax: phone, Estado: true)
+    end
+
+  @product = Producto
+    .includes(:Marca, :Medida, :TipoProducto, :product_image)
+    .find(params[:id])
+
   @stock = ProductosController.get_product_stock(@product.id, nil)
-  @bodegas = Bodega.where(Estado: true).order(:Nombre)
+
   render 'product_details', layout: 'cart_shop_index'
-  end
+end
 
   def products_view
     @categorias = TipoProducto.all
@@ -80,9 +116,21 @@ class CartShopsController < ApplicationController
     if request.xhr?
       render partial: 'cart_shops/catalog_results', locals: { productos: @productos }
     else
+    @productos = @productos.paginate(page: params[:page], per_page: 12)
+
+      @catalog_user =
+        if session[:catalog_user_id].present?
+          Usuario.find_by(id: session[:catalog_user_id], Estado: true)
+        elsif session[:catalog_phone].present?
+          Usuario.find_by(Telefono: session[:catalog_phone].to_i, Estado: true) ||
+          Usuario.find_by(Telefono1: session[:catalog_phone].to_i, Estado: true)
+        end
+
       render 'cart_shops/list', layout: 'layouts/cart_shop_index'
+   
     end
   end
+
 
   def productosView2
     producto = nil
@@ -126,6 +174,12 @@ class CartShopsController < ApplicationController
     render 'productosV2', layout: true
   end
 
+  def catalog_logout
+  session.delete(:catalog_phone)
+  session.delete(:catalog_user_id)
+
+  redirect_to online_catalog_path, notice: 'Sesión cerrada correctamente.'
+  end
 
   def saveCartOrder
     details =  JSON.parse(params[:detailsProds])

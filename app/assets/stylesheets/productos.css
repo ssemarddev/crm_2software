@@ -392,3 +392,153 @@
     max-width: 78px;
   }
 }
+
+.product-detail-container {
+  margin-top: 30px;
+  margin-bottom: 40px;
+}
+
+.product-info-card,
+.product-gallery-card {
+  background: #fff;
+  border-radius: 16px;
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.08);
+  padding: 24px;
+  margin-bottom: 20px;
+}
+
+.product-title {
+  font-size: 28px;
+  font-weight: 700;
+  margin-bottom: 20px;
+  color: #222;
+}
+
+.product-meta-list {
+  list-style: none;
+  padding: 0;
+  margin: 0 0 20px 0;
+}
+
+.product-meta-list li {
+  margin-bottom: 10px;
+  font-size: 15px;
+  color: #444;
+}
+
+.stock-box {
+  border-radius: 12px;
+  padding: 14px 18px;
+  margin-bottom: 20px;
+  text-align: center;
+}
+
+.stock-available {
+  background: #eaf7ed;
+  border: 1px solid #b8e0c2;
+  color: #2e7d32;
+}
+
+.stock-empty {
+  background: #fff1f0;
+  border: 1px solid #f2b8b5;
+  color: #c62828;
+}
+
+.stock-label {
+  display: block;
+  font-size: 13px;
+  text-transform: uppercase;
+  font-weight: 600;
+  margin-bottom: 5px;
+}
+
+.stock-value {
+  font-size: 28px;
+  font-weight: 700;
+}
+
+.product-actions {
+  margin-bottom: 20px;
+}
+
+.product-btn {
+  border-radius: 10px;
+  font-weight: 600;
+  margin-bottom: 12px;
+}
+
+.price-box {
+  background: #f8f9fa;
+  border: 1px solid #e8e8e8;
+  border-radius: 12px;
+  padding: 14px 18px;
+  text-align: center;
+  margin-top: 10px;
+}
+
+.price-label {
+  display: block;
+  font-size: 13px;
+  text-transform: uppercase;
+  color: #777;
+  margin-bottom: 4px;
+}
+
+.price-value {
+  display: block;
+  font-size: 28px;
+  font-weight: 700;
+  color: #1f1f1f;
+}
+
+.restock-card {
+  margin-top: 25px;
+  padding-top: 20px;
+  border-top: 1px solid #eee;
+}
+
+.restock-card h4 {
+  font-weight: 700;
+  color: #b26a00;
+  margin-bottom: 8px;
+}
+
+.restock-text {
+  color: #666;
+  margin-bottom: 15px;
+}
+
+.gallery-image-wrap {
+  background: #f8f8f8;
+  border-radius: 14px;
+  padding: 20px;
+  min-height: 420px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.product-main-image {
+  max-height: 380px;
+  width: auto;
+}
+
+.no-image-box {
+  padding: 40px 20px;
+  background: #fafafa;
+  border-radius: 14px;
+}
+
+.carousel-control.left,
+.carousel-control.right {
+  background-image: none;
+}
+
+.carousel-indicators li {
+  border: 1px solid #00a0e3;
+}
+
+.carousel-indicators .active {
+  background-color: #00a0e3;
+}

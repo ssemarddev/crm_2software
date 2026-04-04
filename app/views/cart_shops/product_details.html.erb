@@ -1,7 +1,5 @@
+<div class="container product-detail-container">
 
-
-
-<div class="container">
   <% if notice.present? %>
     <div class="alert alert-success">
       <%= notice %>
@@ -15,73 +13,181 @@
   <% end %>
 
   <div class="row">
-    <div class="col-md-3">
-      <h1><%= @product.Nombre.capitalize %></h1>
-      <p><strong>Marca:</strong> <%= @product.Marca.Nombre %></p>
-      <p><strong>Medida:</strong> <%= @product.Medida.Nombre %></p>
-      <p><strong>Tipo de Producto:</strong> <%= @product.TipoProducto.Nombre %></p>
-      <p><strong>Existencias:</strong> <%= @stock %></p>
 
-      <% if @stock.to_f <= 0 %>
-        <hr>
-        <h4>Producto sin existencias</h4>
+    <!-- COLUMNA IZQUIERDA -->
+    <div class="col-md-4">
+      <div class="product-info-card">
 
-        <%= form_tag(request_restock_product_path(@product.id), method: :post) do %>
-          <%= hidden_field_tag :phone, params[:phone] %>
+        <h1 class="product-title"><%= @product.Nombre %></h1>
 
-          <div class="form-group">
-            <label>Cantidad sugerida</label>
-            <%= number_field_tag :cantidad_sugerida, 1, min: 1, class: 'form-control' %>
-          </div>
+        <ul class="product-meta-list">
+          <li><strong>Marca:</strong> <%= @product.Marca.Nombre %></li>
+          <li><strong>Medida:</strong> <%= @product.Medida.Nombre %></li>
+          <li><strong>Tipo:</strong> <%= @product.TipoProducto.Nombre %></li>
+        </ul>
 
-          <div class="form-group">
-            <label>Comentario</label>
-            <%= text_area_tag :comentario, nil, class: 'form-control', rows: 3, placeholder: 'Ej. este producto ya lo están solicitando varios clientes' %>
-          </div>
+        <!-- STOCK -->
+        <div class="stock-box <%= @stock.to_f > 0 ? 'stock-available' : 'stock-empty' %>">
+          <span class="stock-label">Existencias</span>
+          <span class="stock-value"><%= @stock %></span>
+        </div>
 
-          <%= submit_tag 'Solicitar resurtido', class: 'btn btn-warning btn-block' %>
-        <% end %>
-      <% end %>
+        <!-- BOTONES -->
+        <div class="product-actions">
 
-      <p><strong>Pedir</strong> <%= link_to 'Whatsapp', "https://wa.me/502#{@empresa.wtpNumber}?text=Vi este producto en linea y me interesa #{request.base_url + request.original_fullpath}", target: '_blank', class: 'btn btn-success' %></p>
+          <!-- WHATSAPP -->
+          <% whatsapp_number =
+          if @catalog_user.present?
+            @catalog_user.Telefono.presence || @catalog_user.Telefono1.presence
+          end %>
 
-      <p>
-        <strong>Copiar Link</strong>
-        <%= link_to @product.Nombre.capitalize, "javascript:copy_to_clipboard('#{request.base_url + request.original_fullpath}')", type: "button", id: "clipboard-btn", class: 'btn btn-info' %>
-      </p>
+        <% whatsapp_message = [
+            "Hola, me interesa este producto.",
+            "Producto: #{@product.Nombre}",
+            "Marca: #{@product.Marca.Nombre}",
+            "Medida: #{@product.Medida.Nombre}",
+            ("Precio: Q #{@product.Valor_Venta}" if @client.present? || @catalog_user.present?),
+            "Link: #{request.base_url + request.original_fullpath}"
+          ].compact.join("\n") %>
 
-      <p>
-        <% if @client %>
-          <h4><strong>Precio:</strong> Q <%= @product.Valor_Venta %></h4>
-        <% else %>
-          <%= link_to 'Mostrar precio', cart_shop_login_path %>
-        <% end %>
-      </p>
-    </div>
-
-    <div class="col-md-9">
-      <div id="carousel-example-generic" class="carousel slide" data-ride="carousel">
-        <ol class="carousel-indicators">
-          <% @product.product_image.each_with_index do |image, index| %>
-            <li data-target="#carousel-example-generic" data-slide-to="<%= index %>" class="<%= 'active' if index == 0 %>"></li>
+        <p>
+          <strong>Pedir</strong>
+          <% if whatsapp_number.present? %>
+            <%= link_to 'WhatsApp',
+                "https://wa.me/502#{whatsapp_number}?text=#{ERB::Util.url_encode(whatsapp_message)}",
+                target: '_blank',
+                class: 'btn btn-success' %>
+          <% else %>
+            <%= link_to 'WhatsApp',
+                "https://wa.me/502#{@empresa.wtpNumber}?text=#{ERB::Util.url_encode(whatsapp_message)}",
+                target: '_blank',
+                class: 'btn btn-success' %>
           <% end %>
-        </ol>
+        </p>
 
-        <div class="carousel-inner">
-          <% @product.product_image.each_with_index do |image, index| %>
-            <div class="item <%= 'active' if index == 0 %>">
-              <img src="<%= asset_url('uploads/' + image.descripcion) %>" class="img-fluid" alt="Product Image"/>
-            </div>
+          <!-- COPIAR LINK (CORREGIDO) -->
+          <button type="button"
+                  id="clipboard-btn"
+                  class="btn btn-info btn-block product-btn"
+                  onclick="copy_to_clipboard('<%= request.base_url + request.original_fullpath %>')">
+            Copiar enlace
+          </button>
+
+          <!-- PRECIO -->
+          <% if @catalog_user.present? || @client.present? %>
+            <h4><strong>Precio:</strong> Q <%= @product.Valor_Venta %></h4>
+          <% else %>
+            <%= link_to 'Mostrar precio', cart_shop_login_path, class: 'btn btn-primary' %>
+          <% end %>
+
+          <% if @catalog_user.present? %>
+            <%= button_to 'Cerrar sesión',
+                catalog_logout_path,
+                method: :delete,
+                class: 'btn btn-danger btn-block product-btn',
+                form: { style: 'margin-top: 10px;' } %>
           <% end %>
         </div>
 
-        <a class="left carousel-control" href="#carousel-example-generic" data-slide="prev">
-          <span class="glyphicon glyphicon-chevron-left"></span>
-        </a>
-        <a class="right carousel-control" href="#carousel-example-generic" data-slide="next">
-          <span class="glyphicon glyphicon-chevron-right"></span>
-        </a>
+        <!-- RESURTIDO -->
+        <% if @stock.to_f <= 0 %>
+          <div class="restock-card">
+            <h4>Producto sin existencias</h4>
+            <p class="restock-text">
+              Puedes solicitar resurtido para que el equipo lo revise.
+            </p>
+
+            <%= form_tag(request_restock_product_path(@product.id), method: :post) do %>
+              <%= hidden_field_tag :phone, params[:phone] %>
+
+              <div class="form-group">
+                <label>Cantidad sugerida</label>
+                <%= number_field_tag :cantidad_sugerida, 1,
+                    min: 1,
+                    class: 'form-control' %>
+              </div>
+
+              <div class="form-group">
+                <label>Comentario</label>
+                <%= text_area_tag :comentario, nil,
+                    class: 'form-control',
+                    rows: 3,
+                    placeholder: 'Ej. este producto ya lo están solicitando varios clientes' %>
+              </div>
+
+              <%= submit_tag 'Solicitar resurtido',
+                  class: 'btn btn-warning btn-block product-btn' %>
+            <% end %>
+          </div>
+        <% end %>
+
       </div>
     </div>
+
+    <!-- COLUMNA DERECHA -->
+    <div class="col-md-8">
+      <div class="product-gallery-card">
+
+        <% if @product.product_image.present? %>
+
+          <div id="carousel-example-generic"
+               class="carousel slide"
+               data-ride="carousel">
+
+            <!-- INDICADORES -->
+            <ol class="carousel-indicators">
+              <% @product.product_image.each_with_index do |image, index| %>
+                <li data-target="#carousel-example-generic"
+                    data-slide-to="<%= index %>"
+                    class="<%= 'active' if index == 0 %>">
+                </li>
+              <% end %>
+            </ol>
+
+            <!-- IMÁGENES -->
+            <div class="carousel-inner">
+              <% @product.product_image.each_with_index do |image, index| %>
+                <div class="item <%= 'active' if index == 0 %>">
+                  <div class="gallery-image-wrap">
+                    <img src="<%= asset_url('uploads/' + image.descripcion) %>"
+                         class="img-responsive center-block product-main-image"
+                         alt="<%= @product.Nombre %>">
+                  </div>
+                </div>
+              <% end %>
+            </div>
+
+            <!-- CONTROLES -->
+            <% if @product.product_image.size > 1 %>
+              <a class="left carousel-control"
+                 href="#carousel-example-generic"
+                 data-slide="prev">
+                <span class="glyphicon glyphicon-chevron-left"></span>
+              </a>
+
+              <a class="right carousel-control"
+                 href="#carousel-example-generic"
+                 data-slide="next">
+                <span class="glyphicon glyphicon-chevron-right"></span>
+              </a>
+            <% end %>
+
+          </div>
+
+        <% else %>
+
+          <!-- SIN IMAGEN -->
+          <div class="no-image-box text-center">
+            <img src="<%= image_url('logo.png') %>"
+                 class="img-responsive center-block product-main-image"
+                 alt="Sin imagen">
+            <p>Este producto no tiene imágenes disponibles.</p>
+          </div>
+
+        <% end %>
+
+      </div>
+    </div>
+
   </div>
 </div>
