@@ -19,4 +19,23 @@ class Producto < ApplicationRecord
   before_update do
     self.updated_at      = Time.now.strftime('%Y-%m-%d %H:%M:%S')
   end
+
+  def stock_total_actual
+    entradas = MovimientoProducto.where(
+      Producto_id: self.id,
+      Estado: true,
+      status: 1,
+      signo: '+'
+    ).sum(:cantidad).to_f
+
+    salidas = MovimientoProducto.where(
+      Producto_id: self.id,
+      Estado: true,
+      status: 1,
+      signo: '-'
+    ).sum(:cantidad).to_f
+
+    entradas - salidas
+  end
+
 end

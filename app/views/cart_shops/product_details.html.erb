@@ -29,7 +29,7 @@
         <!-- STOCK -->
         <div class="stock-box <%= @stock.to_f > 0 ? 'stock-available' : 'stock-empty' %>">
           <span class="stock-label">Existencias</span>
-          <span class="stock-value"><%= @stock %></span>
+          <span class="stock-number"><%= @product.stock_total_actual.to_i %></span>
         </div>
 
         <!-- BOTONES -->

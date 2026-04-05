@@ -28,3 +28,13 @@
 === puma startup: 2026-04-04 22:06:28 +0000 ===
 [648294] - Worker 1 (pid: 648312) booted, phase: 0
 [648294] - Worker 0 (pid: 648310) booted, phase: 0
+[648294] - Gracefully shutting down workers...
+[648294] - Gracefully shutting down workers...
+=== puma startup: 2026-04-04 23:43:45 +0000 ===
+[667661] - Worker 1 (pid: 667693) booted, phase: 0
+[667661] - Worker 0 (pid: 667692) booted, phase: 0
+[667661] - Gracefully shutting down workers...
+[667661] - Gracefully shutting down workers...
+=== puma startup: 2026-04-05 00:09:43 +0000 ===
+[672979] - Worker 1 (pid: 672997) booted, phase: 0
+[672979] - Worker 0 (pid: 672995) booted, phase: 0
