@@ -1,4 +1,7 @@
 /log/*
-/tmp/
-!config/**
+/tmp/*
 /public/uploads/
+/config/database.yml
+/config/master.key
+/config/credentials.yml.enc
+/.env
