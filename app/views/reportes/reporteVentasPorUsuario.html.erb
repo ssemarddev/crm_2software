@@ -114,53 +114,11 @@
 <hr>
 
 <h3>Resumen General</h3>
-<table class="table table-bordered">
-  <tr>
-    <th>Documentos</th>
-    <th>Líneas</th>
-    <th>Unidades</th>
-    <th>Subtotal</th>
-    <th>Descuento</th>
-    <th>Total Venta</th>
-    <th>Costo</th>
-    <th>Utilidad</th>
-    <th>Efectivo</th>
-    <th>Tarjeta</th>
-    <th>Depósito</th>
-    <th>Banco</th>
-    <th>No. Boleta</th>
-    <th>Cambio</th>
-    <th>Cobrado Neto</th>
-  </tr>
-  <tr>
-    <td><%= @totales_generales[:documentos] %></td>
-    <td><%= @totales_generales[:lineas] %></td>
-    <td><%= @totales_generales[:unidades] %></td>
-    <td><%= number_to_currency(@totales_generales[:subtotal], unit: 'Q ') %></td>
-    <td><%= number_to_currency(@totales_generales[:descuento], unit: 'Q ') %></td>
-    <td><%= number_to_currency(@totales_generales[:total_venta], unit: 'Q ') %></td>
-    <td><%= number_to_currency(@totales_generales[:costo], unit: 'Q ') %></td>
-    <td><%= number_to_currency(@totales_generales[:utilidad], unit: 'Q ') %></td>
-    <td><%= number_to_currency(@totales_generales[:pago_efectivo], unit: 'Q ') %></td>
-    <td><%= number_to_currency(@totales_generales[:pago_tarjeta], unit: 'Q ') %></td>
-    <td><%= number_to_currency(@totales_generales[:pago_deposito], unit: 'Q ') %></td>
-    <td>N/A</td>
-    <td>N/A</td>
-    <td><%= number_to_currency(@totales_generales[:cambio], unit: 'Q ') %></td>
-    <td><%= number_to_currency(@totales_generales[:cobrado_neto], unit: 'Q ') %></td>
-  </tr>
-</table>
-
-<hr>
-
-<h3>Resumen por Vendedor</h3>
-<table class="table table-bordered dataTable">
-  <thead>
+<div class="table-responsive reporte-scroll">
+  <table class="table table-bordered table-nowrap">
     <tr>
-      <th>Vendedor</th>
       <th>Documentos</th>
-      <th>Clientes</th>
-      <th>Productos</th>
+      <th>Líneas</th>
       <th>Unidades</th>
       <th>Subtotal</th>
       <th>Descuento</th>
@@ -170,96 +128,164 @@
       <th>Efectivo</th>
       <th>Tarjeta</th>
       <th>Depósito</th>
+      <th>Banco</th>
+      <th>No. Boleta</th>
       <th>Cambio</th>
       <th>Cobrado Neto</th>
     </tr>
-  </thead>
-  <tbody>
-    <% @resumen_vendedores.each do |r| %>
+    <tr>
+      <td><%= @totales_generales[:documentos] %></td>
+      <td><%= @totales_generales[:lineas] %></td>
+      <td><%= @totales_generales[:unidades] %></td>
+      <td><%= number_to_currency(@totales_generales[:subtotal], unit: 'Q ') %></td>
+      <td><%= number_to_currency(@totales_generales[:descuento], unit: 'Q ') %></td>
+      <td><%= number_to_currency(@totales_generales[:total_venta], unit: 'Q ') %></td>
+      <td><%= number_to_currency(@totales_generales[:costo], unit: 'Q ') %></td>
+      <td><%= number_to_currency(@totales_generales[:utilidad], unit: 'Q ') %></td>
+      <td><%= number_to_currency(@totales_generales[:pago_efectivo], unit: 'Q ') %></td>
+      <td><%= number_to_currency(@totales_generales[:pago_tarjeta], unit: 'Q ') %></td>
+      <td><%= number_to_currency(@totales_generales[:pago_deposito], unit: 'Q ') %></td>
+      <td>N/A</td>
+      <td>N/A</td>
+      <td><%= number_to_currency(@totales_generales[:cambio], unit: 'Q ') %></td>
+      <td><%= number_to_currency(@totales_generales[:cobrado_neto], unit: 'Q ') %></td>
+    </tr>
+  </table>
+</div>
+
+<hr>
+
+<h3>Resumen por Vendedor</h3>
+<div class="table-responsive reporte-scroll">
+  <table class="table table-bordered dataTable reporte-datatable table-nowrap">
+    <thead>
       <tr>
-        <td><%= r[:vendedor] %></td>
-        <td><%= r[:documentos] %></td>
-        <td><%= r[:clientes] %></td>
-        <td><%= r[:productos] %></td>
-        <td><%= r[:unidades] %></td>
-        <td><%= number_to_currency(r[:subtotal], unit: 'Q ') %></td>
-        <td><%= number_to_currency(r[:descuento], unit: 'Q ') %></td>
-        <td><%= number_to_currency(r[:total_venta], unit: 'Q ') %></td>
-        <td><%= number_to_currency(r[:costo], unit: 'Q ') %></td>
-        <td><%= number_to_currency(r[:utilidad], unit: 'Q ') %></td>
-        <td><%= number_to_currency(r[:pago_efectivo], unit: 'Q ') %></td>
-        <td><%= number_to_currency(r[:pago_tarjeta], unit: 'Q ') %></td>
-        <td><%= number_to_currency(r[:pago_deposito], unit: 'Q ') %></td>
-        <td><%= number_to_currency(r[:cambio], unit: 'Q ') %></td>
-        <td><%= number_to_currency(r[:cobrado_neto], unit: 'Q ') %></td>
+        <th>Vendedor</th>
+        <th>Documentos</th>
+        <th>Clientes</th>
+        <th>Productos</th>
+        <th>Unidades</th>
+        <th>Subtotal</th>
+        <th>Descuento</th>
+        <th>Total Venta</th>
+        <th>Costo</th>
+        <th>Utilidad</th>
+        <th>Efectivo</th>
+        <th>Tarjeta</th>
+        <th>Depósito</th>
+        <th>Cambio</th>
+        <th>Cobrado Neto</th>
       </tr>
-    <% end %>
-  </tbody>
-</table>
+    </thead>
+    <tbody>
+      <% @resumen_vendedores.each do |r| %>
+        <tr>
+          <td><%= r[:vendedor] %></td>
+          <td><%= r[:documentos] %></td>
+          <td><%= r[:clientes] %></td>
+          <td><%= r[:productos] %></td>
+          <td><%= r[:unidades] %></td>
+          <td><%= number_to_currency(r[:subtotal], unit: 'Q ') %></td>
+          <td><%= number_to_currency(r[:descuento], unit: 'Q ') %></td>
+          <td><%= number_to_currency(r[:total_venta], unit: 'Q ') %></td>
+          <td><%= number_to_currency(r[:costo], unit: 'Q ') %></td>
+          <td><%= number_to_currency(r[:utilidad], unit: 'Q ') %></td>
+          <td><%= number_to_currency(r[:pago_efectivo], unit: 'Q ') %></td>
+          <td><%= number_to_currency(r[:pago_tarjeta], unit: 'Q ') %></td>
+          <td><%= number_to_currency(r[:pago_deposito], unit: 'Q ') %></td>
+          <td><%= number_to_currency(r[:cambio], unit: 'Q ') %></td>
+          <td><%= number_to_currency(r[:cobrado_neto], unit: 'Q ') %></td>
+        </tr>
+      <% end %>
+    </tbody>
+  </table>
+</div>
 
 <hr>
 
 <h3>Detalle Completo</h3>
-<table class="table table-bordered dataTable">
-  <thead>
-    <tr>
-      <th>Fecha</th>
-      <th>Documento</th>
-      <th>Vendedor</th>
-      <th>Cliente</th>
-      <th>Tipo Documento</th>
-      <th>Tipo Pago</th>
-      <th>Banco</th>
-      <th>No. Boleta</th>
-      <th>Ruta</th>
-      <th>Bodega</th>
-      <th>Código</th>
-      <th>Producto</th>
-      <th>Marca</th>
-      <th>Medida</th>
-      <th>Cantidad</th>
-      <th>Precio Compra</th>
-      <th>Precio Venta</th>
-      <th>Subtotal</th>
-      <th>Descuento</th>
-      <th>Total</th>
-      <th>Costo</th>
-      <th>Utilidad</th>
-    </tr>
-  </thead>
-  <tbody>
-    <% @ventas_detalle.each do |v| %>
+<div class="table-responsive reporte-scroll">
+  <table class="table table-bordered dataTable reporte-datatable table-nowrap" id="detalleVentasTable">
+    <thead>
       <tr>
-        <td><%= v.fecha_documento %></td>
-        <td><%= v.numero_documento %></td>
-        <td><%= v.vendedor %></td>
-        <td><%= v.cliente %></td>
-        <td><%= v.tipo_documento %></td>
-        <td><%= v.tipo_pago %></td>
-
-        <% if v.pago_deposito_documento.to_f > 0 %>
-          <td><%= v.banco_deposito.present? ? v.banco_deposito : 'N/A' %></td>
-          <td><%= v.boleta_deposito.present? ? v.boleta_deposito : 'N/A' %></td>
-        <% else %>
-          <td></td>
-          <td></td>
-        <% end %>
-
-        <td><%= v.ruta %></td>
-        <td><%= v.bodega %></td>
-        <td><%= v.codigo_producto %></td>
-        <td><%= v.producto %></td>
-        <td><%= v.marca %></td>
-        <td><%= v.medida %></td>
-        <td><%= v.cantidad %></td>
-        <td><%= number_to_currency(v.valor_compra, unit: 'Q ') %></td>
-        <td><%= number_to_currency(v.valor_venta, unit: 'Q ') %></td>
-        <td><%= number_to_currency(v.subtotal_linea, unit: 'Q ') %></td>
-        <td><%= number_to_currency(v.descuento_linea, unit: 'Q ') %></td>
-        <td><%= number_to_currency(v.total_linea, unit: 'Q ') %></td>
-        <td><%= number_to_currency(v.costo_linea, unit: 'Q ') %></td>
-        <td><%= number_to_currency(v.utilidad_linea, unit: 'Q ') %></td>
+        <th>Fecha</th>
+        <th>Documento</th>
+        <th>Vendedor</th>
+        <th>Cliente</th>
+        <th>Tipo Documento</th>
+        <th>Tipo Pago</th>
+        <th>Banco</th>
+        <th>No. Boleta</th>
+        <th>Ruta</th>
+        <th>Bodega</th>
+        <th>Código</th>
+        <th>Producto</th>
+        <th>Marca</th>
+        <th>Medida</th>
+        <th>Cantidad</th>
+        <th>Precio Compra</th>
+        <th>Precio Venta</th>
+        <th>Subtotal</th>
+        <th>Descuento</th>
+        <th>Total</th>
+        <th>Costo</th>
+        <th>Utilidad</th>
       </tr>
-    <% end %>
-  </tbody>
-</table>
+    </thead>
+    <tbody>
+      <% @ventas_detalle.each do |v| %>
+        <tr>
+          <td><%= v.fecha_documento %></td>
+          <td><%= v.numero_documento %></td>
+          <td><%= v.vendedor %></td>
+          <td><%= v.cliente %></td>
+          <td><%= v.tipo_documento %></td>
+          <td><%= v.tipo_pago %></td>
+
+          <% if v.pago_deposito_documento.to_f > 0 %>
+            <td><%= v.banco_deposito.present? ? v.banco_deposito : 'N/A' %></td>
+            <td><%= v.boleta_deposito.present? ? v.boleta_deposito : 'N/A' %></td>
+          <% else %>
+            <td></td>
+            <td></td>
+          <% end %>
+
+          <td><%= v.ruta %></td>
+          <td><%= v.bodega %></td>
+          <td><%= v.codigo_producto %></td>
+          <td><%= v.producto %></td>
+          <td><%= v.marca %></td>
+          <td><%= v.medida %></td>
+          <td><%= v.cantidad %></td>
+          <td><%= number_to_currency(v.valor_compra, unit: 'Q ') %></td>
+          <td><%= number_to_currency(v.valor_venta, unit: 'Q ') %></td>
+          <td><%= number_to_currency(v.subtotal_linea, unit: 'Q ') %></td>
+          <td><%= number_to_currency(v.descuento_linea, unit: 'Q ') %></td>
+          <td><%= number_to_currency(v.total_linea, unit: 'Q ') %></td>
+          <td><%= number_to_currency(v.costo_linea, unit: 'Q ') %></td>
+          <td><%= number_to_currency(v.utilidad_linea, unit: 'Q ') %></td>
+        </tr>
+      <% end %>
+    </tbody>
+  </table>
+</div>
+
+<style>
+  .reporte-scroll {
+    width: 100%;
+    overflow-x: auto;
+    overflow-y: hidden;
+    margin-bottom: 20px;
+  }
+
+  .table-nowrap th,
+  .table-nowrap td {
+    white-space: nowrap;
+    vertical-align: middle !important;
+  }
+
+  .reporte-scroll .table {
+    min-width: 1400px;
+    margin-bottom: 0;
+  }
+</style>
