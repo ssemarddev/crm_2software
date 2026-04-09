@@ -368,7 +368,14 @@ class PuntoventaController < ApplicationController
           docPago.tipo_pago_id     = tipoPago
           docPago.ClienteProveedor = @documento.ClienteProveedor
           docPago.Pagado           = pagado
-          docPago.Deuda            = (total.to_f - (params[:pago_inicial].to_f + params[:pago_inicial_tarjeta].to_f)).to_f
+          docPago.Deuda            = (
+            total.to_f -
+            (
+              params[:pago_inicial].to_f +
+              params[:pago_inicial_tarjeta].to_f +
+              params[:pago_deposito].to_f
+            )
+          ).to_f
           docPago.Total_Pagado     = totalPagado
           docPago.Pago_Efectivo    = params[:pago_inicial]
           docPago.Tarjeta_id       = @tarjetum
@@ -379,17 +386,35 @@ class PuntoventaController < ApplicationController
           docPago.Mora             = 0
           docPago.Tipo_Documento   = @documento.TipoDocumento.id
           docPago.cambio           = params[:cambio]
-          docPago.pago_deposito    = params[:pago_deposito].to_f
           docPago.Estado           = true
           docPago.creado_por       = session[:user_id]
           docPago.actualizado_por  = session[:user_id]
-          docPago.banco            = Banco.find(params[:banco].to_i) if params[:banco].to_i != 0
-          docPago.boleta           = session[:boleta]
-          if @documento.TipoDocumento.id != 4
-            docPago.save
+
+          if params[:pago_deposito].to_f > 0
+            docPago.pago_deposito = params[:pago_deposito].to_f
+            docPago.boleta        = params[:boleta].to_s.strip
+            docPago.banco_id      = params[:banco].to_i if params[:banco].to_i != 0
+          else
+            docPago.pago_deposito = 0
+            docPago.boleta        = nil
+            docPago.banco_id      = nil
           end
+
+          if @documento.TipoDocumento.id != 4
+            Rails.logger.info "==== PAGO DEPOSITO: #{params[:pago_deposito].inspect}"
+            Rails.logger.info "==== BANCO: #{params[:banco].inspect}"
+            Rails.logger.info "==== BOLETA: #{params[:boleta].inspect}"
+
+            unless docPago.save
+              Rails.logger.error "==== ERROR AL GUARDAR DOCUMENTO_PAGO ===="
+              Rails.logger.error docPago.errors.full_messages.join(' | ')
+              render json: [false, "No se pudo guardar el pago: #{docPago.errors.full_messages.join(', ')}"]
+              return
+            end
+          end
+
           estaPagado = true
-        else
+                  else
           estaPagado = false
         end
       end
@@ -694,7 +719,9 @@ class PuntoventaController < ApplicationController
         COALESCE("dp"."Pago_Tarjeta", 0) as pago_tarjeta_documento,
         COALESCE("dp"."pago_deposito", 0) as pago_deposito_documento,
         COALESCE("dp"."cambio", 0) as cambio_documento,
-        COALESCE("dp"."Total_Pagado", 0) as total_pagado_documento
+        COALESCE("dp"."Total_Pagado", 0) as total_pagado_documento,
+        COALESCE("dp"."boleta", \'\') as boleta_deposito,
+        COALESCE("ban"."nombre", \'\') as banco_deposito
       ')
       .joins('INNER JOIN "documentos" "doc" ON "doc"."id" = "detalle_documentos"."Documento_id"')
       .joins('INNER JOIN "productos" "prod" ON "prod"."id" = "detalle_documentos"."Producto_id"')
@@ -706,6 +733,7 @@ class PuntoventaController < ApplicationController
       .joins('LEFT JOIN "tipo_documentos" "tdoc" ON "tdoc"."id" = "doc"."TipoDocumento_id"')
       .joins('LEFT JOIN "ruta" "rut" ON "rut"."id" = "doc"."ruta_id"')
       .joins('LEFT JOIN "documento_pagos" "dp" ON "dp"."Documento_id" = "doc"."id" AND "dp"."Estado" = true')
+      .joins('LEFT JOIN "bancos" "ban" ON "ban"."id" = "dp"."banco_id"')
       .joins('LEFT JOIN "movimiento_productos" "mprod" ON "mprod"."detalle_documento_id" = "detalle_documentos"."id"')
       .joins('LEFT JOIN "bodegas" "bod" ON "bod"."id" = "mprod"."Saliente_Bodega_id"')
       .where('"detalle_documentos"."estado" = true')
