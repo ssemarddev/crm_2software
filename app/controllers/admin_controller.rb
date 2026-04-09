@@ -25,6 +25,8 @@ class AdminController < ApplicationController
   def process_restock
     cantidad = params[:cantidad].to_i
     bodega_id = params[:bodega_id].to_i
+    precio_venta = params[:precio_venta].to_f
+    precio_compra = params[:precio_compra].present? ? params[:precio_compra].to_f : nil
 
     if cantidad <= 0
       redirect_to admin_path, alert: 'Debes ingresar una cantidad válida.'
@@ -33,6 +35,11 @@ class AdminController < ApplicationController
 
     if bodega_id <= 0
       redirect_to admin_path, alert: 'Debes seleccionar una bodega.'
+      return
+    end
+
+    if precio_venta < 0
+      redirect_to admin_path, alert: 'Debes ingresar un precio de venta válido.'
       return
     end
 
@@ -49,7 +56,11 @@ class AdminController < ApplicationController
       tipo_pago = TipoPago.first
       usuario = Usuario.find_by(id: session[:user_id])
 
-      numero_documento = Documento.maximum("Documento").nil? ? 1 : Documento.order('CAST("Documento" AS integer) DESC').first.Documento.to_i + 1
+      numero_documento = if Documento.maximum("Documento").nil?
+                           1
+                         else
+                           Documento.order('CAST("Documento" AS integer) DESC').first.Documento.to_i + 1
+                         end
 
       documento = Documento.new
       documento.Fecha_Entrega = Date.today
@@ -84,6 +95,10 @@ class AdminController < ApplicationController
       movimiento.porcentaje_ganancia = 0
       movimiento.save!
 
+      producto.Valor_Venta = precio_venta
+      producto.Valor_Compra = precio_compra if precio_compra.present? && producto.respond_to?(:Valor_Compra=)
+      producto.save!
+
       @restock_request.status = 2
       @restock_request.atendido_por = session[:user_id]
       @restock_request.atendido_en = Time.now
@@ -91,7 +106,7 @@ class AdminController < ApplicationController
       @restock_request.save!
     end
 
-    redirect_to admin_path, notice: 'El inventario fue alimentado y la solicitud quedó atendida.'
+    redirect_to admin_path, notice: 'El inventario fue alimentado, el precio fue actualizado y la solicitud quedó atendida.'
   rescue => e
     redirect_to admin_path, alert: "Ocurrió un error al procesar el resurtido: #{e.message}"
   end
