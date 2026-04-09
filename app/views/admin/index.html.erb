@@ -1,7 +1,16 @@
 <div class="container-fluid">
   <div class="row">
     <div class="col-md-12">
-      <h2>Solicitudes pendientes por resurtir</h2>
+      <div class="clearfix">
+        <h2 class="pull-left">Solicitudes pendientes por resurtir</h2>
+
+        <div class="pull-right" style="margin-top: 20px;">
+          <%= link_to 'Exportar CSV', admin_path(format: :csv), class: 'btn btn-default' %>
+          <%= link_to 'Exportar Excel', admin_path(format: :xlsx), class: 'btn btn-success' %>
+          <%= link_to 'Exportar PDF', admin_path(format: :pdf), class: 'btn btn-danger', target: '_blank' %>
+        </div>
+      </div>
+
       <hr>
 
       <% if notice.present? %>

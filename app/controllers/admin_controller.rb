@@ -4,6 +4,22 @@ class AdminController < ApplicationController
   def index
     @pending_restock_requests = SolicitudResurtido.includes(:Producto).pendientes
     @bodegas = Bodega.where(Estado: true).order(:Nombre)
+
+    respond_to do |format|
+      format.html
+      format.csv do
+        send_data generate_restock_csv(@pending_restock_requests),
+                  filename: "solicitudes_pendientes_resurtir_#{Date.today}.csv",
+                  type: 'text/csv'
+      end
+      format.xlsx
+      format.pdf do
+        render pdf: "solicitudes_pendientes_resurtir_#{Date.today}",
+               template: "admin/index.pdf.erb",
+               layout: "pdf.html",
+               encoding: "UTF-8"
+      end
+    end
   end
 
   def process_restock
@@ -84,5 +100,35 @@ class AdminController < ApplicationController
 
   def set_restock_request
     @restock_request = SolicitudResurtido.find(params[:id])
+  end
+
+  def generate_restock_csv(solicitudes)
+    require 'csv'
+
+    CSV.generate(headers: true) do |csv|
+      csv << [
+        'ID Solicitud',
+        'Producto',
+        'Código',
+        'Existencias actuales',
+        'Cantidad sugerida',
+        'Teléfono solicitante',
+        'Comentario',
+        'Fecha'
+      ]
+
+      solicitudes.each do |solicitud|
+        csv << [
+          solicitud.id,
+          solicitud.Producto&.Nombre,
+          solicitud.Producto&.Codigo,
+          ProductosController.get_product_stock(solicitud.Producto_id, nil),
+          solicitud.cantidad_sugerida,
+          solicitud.telefono_solicitante.present? ? solicitud.telefono_solicitante : 'N/A',
+          solicitud.comentario.present? ? solicitud.comentario : 'Sin comentario',
+          solicitud.created_at.strftime("%d/%m/%Y %H:%M")
+        ]
+      end
+    end
   end
 end

@@ -1,0 +1,36 @@
+<h2 style="text-align: center; margin-bottom: 20px;">
+  Solicitudes pendientes por resurtir
+</h2>
+
+<p style="margin-bottom: 15px;">
+  Fecha de generación: <%= Time.now.strftime("%d/%m/%Y %H:%M") %>
+</p>
+
+<table style="width: 100%; border-collapse: collapse; font-size: 11px;" border="1" cellpadding="5">
+  <thead>
+    <tr>
+      <th>ID Solicitud</th>
+      <th>Producto</th>
+      <th>Código</th>
+      <th>Existencias actuales</th>
+      <th>Cantidad sugerida</th>
+      <th>Teléfono solicitante</th>
+      <th>Comentario</th>
+      <th>Fecha</th>
+    </tr>
+  </thead>
+  <tbody>
+    <% @pending_restock_requests.each do |solicitud| %>
+      <tr>
+        <td><%= solicitud.id %></td>
+        <td><%= solicitud.Producto&.Nombre %></td>
+        <td><%= solicitud.Producto&.Codigo %></td>
+        <td><%= ProductosController.get_product_stock(solicitud.Producto_id, nil) %></td>
+        <td><%= solicitud.cantidad_sugerida %></td>
+        <td><%= solicitud.telefono_solicitante.present? ? solicitud.telefono_solicitante : 'N/A' %></td>
+        <td><%= solicitud.comentario.present? ? solicitud.comentario : 'Sin comentario' %></td>
+        <td><%= solicitud.created_at.strftime("%d/%m/%Y %H:%M") %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
