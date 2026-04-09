@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20260404000100) do
+ActiveRecord::Schema.define(version: 20260409040333) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -224,10 +224,12 @@ ActiveRecord::Schema.define(version: 20260404000100) do
     t.bigint "banco_id"
     t.string "boleta"
     t.float "pago_deposito"
+    t.bigint "caja_id"
     t.index ["ClienteProveedor_id"], name: "index_documento_pagos_on_ClienteProveedor_id"
     t.index ["Documento_id"], name: "index_documento_pagos_on_Documento_id"
     t.index ["Tarjeta_id"], name: "index_documento_pagos_on_Tarjeta_id"
     t.index ["banco_id"], name: "index_documento_pagos_on_banco_id"
+    t.index ["caja_id"], name: "index_documento_pagos_on_caja_id"
     t.index ["tipo_pago_id"], name: "index_documento_pagos_on_tipo_pago_id"
   end
 
@@ -635,8 +637,8 @@ ActiveRecord::Schema.define(version: 20260404000100) do
     t.text "Apellidos"
     t.text "Correo"
     t.date "Fecha_Nacimiento"
-    t.integer "Telefono"
-    t.integer "Telefono1"
+    t.string "Telefono"
+    t.string "Telefono1"
     t.float "Porcentaje_Descuento"
     t.boolean "Estado"
     t.integer "creado_por"
@@ -656,6 +658,7 @@ ActiveRecord::Schema.define(version: 20260404000100) do
   add_foreign_key "cliente_proveedors", "ruta", column: "ruta_id"
   add_foreign_key "detallecajas", "cajas"
   add_foreign_key "documento_pagos", "bancos"
+  add_foreign_key "documento_pagos", "cajas"
   add_foreign_key "documento_pagos", "tipo_pagos"
   add_foreign_key "documentos", "ruta", column: "ruta_id"
   add_foreign_key "estadortackings", "estados"

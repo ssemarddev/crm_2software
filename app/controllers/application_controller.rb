@@ -48,6 +48,14 @@ def current_catalog_phone
   session[:catalog_phone].presence || params[:phone].presence
 end
 
+  helper_method :current_open_cashbox
+
+def current_open_cashbox
+  return @current_open_cashbox if defined?(@current_open_cashbox)
+
+  @current_open_cashbox = Caja.where(usuario_id: session[:user_id], Estado: [false, nil]).last
+end
+
 def current_catalog_user
   return @current_catalog_user if defined?(@current_catalog_user)
 

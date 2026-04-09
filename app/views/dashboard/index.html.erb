@@ -49,7 +49,7 @@
       <div class="col-md-3">
         <div class="small-box bg-aqua">
           <div class="inner">
-            <h3><%= number_to_currency(@kpis[:ventas_total], precision: 2) %></h3>
+            <h3><%= number_to_currency(@kpis[:ventas_total], unit: "Q", precision: 2) %></h3>
             <p>Ventas del periodo</p>
           </div>
           <div class="icon"><i class="fa fa-line-chart"></i></div>
@@ -59,7 +59,7 @@
       <div class="col-md-3">
         <div class="small-box bg-green">
           <div class="inner">
-            <h3><%= number_to_currency(@kpis[:utilidad_total], precision: 2) %></h3>
+            <h3><%= number_to_currency(@kpis[:utilidad_total], unit: "Q", precision: 2) %></h3>
             <p>Utilidad bruta</p>
           </div>
           <div class="icon"><i class="fa fa-money"></i></div>
@@ -79,7 +79,7 @@
       <div class="col-md-3">
         <div class="small-box bg-red">
           <div class="inner">
-            <h3><%= number_to_currency(@kpis[:ticket_promedio], precision: 2) %></h3>
+            <h3><%= number_to_currency(@kpis[:ticket_promedio], unit: "Q", precision: 2) %></h3>
             <p>Ticket promedio</p>
           </div>
           <div class="icon"><i class="fa fa-shopping-cart"></i></div>
@@ -123,7 +123,7 @@
           <span class="info-box-icon bg-red"><i class="fa fa-percent"></i></span>
           <div class="info-box-content">
             <span class="info-box-text">Descuento aplicado</span>
-            <span class="info-box-number"><%= number_to_currency(@kpis[:descuento_total], precision: 2) %></span>
+            <span class="info-box-number"><%= number_to_currency(@kpis[:descuento_total], unit: "Q", precision: 2) %></span>
           </div>
         </div>
       </div>
@@ -135,7 +135,7 @@
           <span class="info-box-icon bg-blue"><i class="fa fa-credit-card"></i></span>
           <div class="info-box-content">
             <span class="info-box-text">Total cobrado</span>
-            <span class="info-box-number"><%= number_to_currency(@kpis[:cobrado_total], precision: 2) %></span>
+            <span class="info-box-number"><%= number_to_currency(@kpis[:cobrado_total], unit: "Q", precision: 2) %></span>
           </div>
         </div>
       </div>
@@ -145,7 +145,7 @@
           <span class="info-box-icon bg-maroon"><i class="fa fa-warning"></i></span>
           <div class="info-box-content">
             <span class="info-box-text">Pendiente por cobrar</span>
-            <span class="info-box-number"><%= number_to_currency(@kpis[:por_cobrar_total], precision: 2) %></span>
+            <span class="info-box-number"><%= number_to_currency(@kpis[:por_cobrar_total], unit: "Q", precision: 2) %></span>
           </div>
         </div>
       </div>
@@ -155,7 +155,7 @@
           <span class="info-box-icon bg-purple"><i class="fa fa-archive"></i></span>
           <div class="info-box-content">
             <span class="info-box-text">Inventario valorizado</span>
-            <span class="info-box-number"><%= number_to_currency(@kpis[:inventario_valorizado], precision: 2) %></span>
+            <span class="info-box-number"><%= number_to_currency(@kpis[:inventario_valorizado], unit: "Q", precision: 2) %></span>
           </div>
         </div>
       </div>
@@ -288,7 +288,7 @@
                   <% @top_clientes.each do |cliente| %>
                     <tr>
                       <td><%= cliente[:nombre] %></td>
-                      <td><%= number_to_currency(cliente[:total], precision: 2) %></td>
+                      <td><%= number_to_currency(cliente[:total], unit: "Q", precision: 2) %></td>
                     </tr>
                   <% end %>
                 <% else %>

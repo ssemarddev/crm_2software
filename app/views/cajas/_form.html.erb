@@ -13,59 +13,60 @@
 <div class="row">
   <div class="col-md-12 col-lg-4 col-sm-12 col-xs-12">
     <table class="table">
-      <% if !@open %>
-        <tr>
-          <td><%= form.label :Usuario_Encargado %></td>
-          <td><%= @caja.usuario.Nombres %></td>
-        </tr>
-        <tr>
-          <td><%= form.label :Nombre %></td>
-          <td><%= @caja.Nombre %></td>
-        </tr>
-        <tr>
-          <td><%= form.label :Efectivo_Inicial %></td>
-          <td><%= @caja.InicialEfectivo %></td>
-        </tr>
-      <% else %>
-        <div class="field">
-          <%= form.label :Usuario_Encargado %>
-          <%= collection_select(:caja, :usuario_id, Usuario.where(:Estado => true), :id, :User_Name, {:prompt => true} , class: 'form-control') %>
-        </div>
-        <tr>
-          <td><%= form.label :Nombre %></td>
-          <td><%= form.text_field :Nombre, id: :caja_Nombre, class: 'form-control', value: I18n.l(Time.now, format: :dayNameDate), readonly: 'true' %></td>
-        </tr>
-        <tr>
-          <td><%= form.label :Efectivo_Inicial %></td>
-          <td><%= form.text_field :InicialEfectivo, id: :caja_InicialEfectivo, class: 'form-control', value:0 %></td>
-        </tr>
-        <% if session[:version].include? "2.0" %>
-          <tr>
-            <td><%= form.label :Tipo %></td>
-            <td><select class="form-control" name="caja[tipo]">
-              <option value="1">Caja Registradora</option>
-              <option value="2">Caja chica</option>
-            </select></td>
-          </tr>
+  <% if !@open %>
+    <tr>
+      <td><%= form.label :Usuario_Encargado %></td>
+      <td><%= @caja.usuario&.Nombres %></td>
+    </tr>
+    <tr>
+      <td><%= form.label :Nombre %></td>
+      <td><%= @caja.Nombre %></td>
+    </tr>
+    <tr>
+      <td><%= form.label :Efectivo_Inicial %></td>
+      <td><%= @caja.InicialEfectivo %></td>
+    </tr>
+  <% else %>
+    <tr>
+      <td><%= form.label :Usuario_Encargado %></td>
+      <td>
+        <% if user_is_admin %>
+          <%= collection_select(:caja, :usuario_id, Usuario.where(Estado: true), :id, :User_Name, { prompt: true }, class: 'form-control') %>
+        <% else %>
+          <%= form.hidden_field :usuario_id, value: session[:user_id] %>
+          <input type="text" class="form-control" value="<%= session[:name] || session[:username] || @caja.usuario&.User_Name || @caja.usuario&.Nombres %>" readonly>
         <% end %>
-      <% end %>
-      <% if !@open %>
-        <tr>
-          <td><%= form.label :Efectivo_Final %></td>
-          <td><%= form.text_field :FinalEfectivo, id: :caja_FinalEfectivo, class: 'form-control', readonly: true %></td>
-        </tr>
-        <% if @caja.tipo != 2 %>
-          <tr>
-            <td><%= form.label :Monto_Final_POS %></td>
-            <td><%= form.text_field :FinalPos, id: :caja_FinalPos, class: 'form-control', readonly: true %></td>
-          </tr>
-        <% end %>
-      <% end %>
+      </td>
+    </tr>
+
+    <tr>
+      <td><%= form.label :Nombre %></td>
+      <td><%= form.text_field :Nombre, id: :caja_Nombre, class: 'form-control', value: I18n.l(Time.now, format: :dayNameDate), readonly: true %></td>
+    </tr>
+
+    <tr>
+      <td><%= form.label :Efectivo_Inicial %></td>
+      <td><%= form.text_field :InicialEfectivo, id: :caja_InicialEfectivo, class: 'form-control', value: 0 %></td>
+    </tr>
+
+    <% if session[:version].include? "2.0" %>
       <tr>
-        <td></td>
-        <td></td>
+        <td><%= form.label :Tipo %></td>
+        <td>
+          <select class="form-control" name="caja[tipo]">
+            <option value="1">Caja Registradora</option>
+            <option value="2">Caja chica</option>
+          </select>
+        </td>
       </tr>
-    </table>
+    <% end %>
+  <% end %>
+
+  <tr>
+    <td></td>
+    <td></td>
+  </tr>
+</table>
   </div>
   <% if !@open %>
     <div class="col-md-12 col-lg-6 col-sm-12 col-xs-12">

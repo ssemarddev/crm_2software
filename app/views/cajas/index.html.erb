@@ -1,8 +1,20 @@
 <p id="notice"><%= notice %></p>
 
-<h1>Cajas
+<h1>
 <%= (link_to 'Abrir Caja <i class="fa fa-plus"></i>'.html_safe , new_caja_path, class: 'btn btn-primary') if user_is_admin%>
 </h1>
+
+  <h1>
+    Cajas
+
+    <% caja_abierta = Caja.where(usuario_id: session[:user_id], Estado: [false, nil]).order(created_at: :desc).first %>
+
+    <% if caja_abierta.present? %>
+      <%= link_to 'Ver caja abierta', edit_caja_path(caja_abierta), class: 'btn btn-warning' %>
+    <% else %>
+      <%= link_to 'Aperturar caja', new_caja_path, class: 'btn btn-success' %>
+    <% end %>
+  </h1>
 
 <table id="productos" class="table table-condensed dataTable">
   <thead>
@@ -24,8 +36,8 @@
   </thead>
 
   <tbody>
-    <% @cajas.each do |caja|
-    %>
+    <% @cajas.compact.each do |caja| %>
+
       <tr>
         <td><%= caja.id %></td>
         <td><%= caja.Nombre %></td>

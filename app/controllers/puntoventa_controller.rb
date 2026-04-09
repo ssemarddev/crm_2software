@@ -350,6 +350,19 @@ class PuntoventaController < ApplicationController
         tipoPago = @documento.TipoPago.id
         totalPagado = params[:pago_inicial].to_f + params[:pago_inicial_tarjeta].to_f + params[:pago_deposito].to_f
         if (pagado && totalPagado.to_f >= total.to_f) || (!pagado || totalPagado.to_f <= total.to_f)
+          caja_abierta = Caja.where(usuario_id: session[:user_id], Estado: [false, nil]).last
+
+          if caja_abierta.blank?
+            render json: [false, 'Debes abrir una caja antes de registrar ventas.']
+            return
+          end
+
+          caja_abierta = Caja.where(usuario_id: session[:user_id], Estado: [false, nil]).last
+
+          if caja_abierta.blank?
+            render json: [false, 'Debes abrir una caja antes de registrar ventas.']
+            return
+          end
           docPago = DocumentoPago.new
           docPago.Documento        = @documento
           docPago.tipo_pago_id     = tipoPago

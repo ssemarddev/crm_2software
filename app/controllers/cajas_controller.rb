@@ -7,7 +7,7 @@ class CajasController < ApplicationController
     if user_is_admin
       @cajas = Caja.all.order(created_at: :desc)
     else
-      @cajas = [Caja.where(usuario: session[:user_id]).last]
+      @cajas = Caja.where(usuario_id: session[:user_id]).order(created_at: :desc)
     end
   end
 
@@ -17,10 +17,18 @@ class CajasController < ApplicationController
   end
 
   # GET /cajas/new
-  def new
-    @caja = Caja.new
-    @open = true
+def new
+  caja_abierta = Caja.where(usuario_id: session[:user_id], Estado: [false, nil]).order(created_at: :desc).first
+
+  if caja_abierta.present? && !user_is_admin
+    redirect_to edit_caja_path(caja_abierta), alert: 'Ya tienes una caja abierta.'
+    return
   end
+
+  @caja = Caja.new
+  @caja.usuario_id = session[:user_id] unless user_is_admin
+  @open = true
+end
 
   # GET /cajas/1/edit
   def edit
@@ -29,16 +37,22 @@ class CajasController < ApplicationController
   end
 
   # POST /cajas
-  # POST /cajas.json
-  def create
-    params[:caja][:creado_por]      = session[:user_id]
+def create
+    params[:caja][:creado_por] = session[:user_id]
+    params[:caja][:Estado] = false
+
+    unless user_is_admin
+      params[:caja][:usuario_id] = session[:user_id]
+    end
+
     @caja = Caja.new(caja_params)
 
     respond_to do |format|
       if @caja.save
-        format.html { redirect_to cajas_url, notice: 'Caja was successfully created.' }
+        format.html { redirect_to edit_caja_path(@caja), notice: 'Caja aperturada correctamente.' }
         format.json { render :show, status: :created, location: @caja }
       else
+        @open = true
         format.html { render :new }
         format.json { render json: @caja.errors, status: :unprocessable_entity }
       end
@@ -55,8 +69,7 @@ class CajasController < ApplicationController
       # Si es caja normal (no caja chica), calcular automáticamente los totales reales
       if @caja.tipo != 2
         pagos = DocumentoPago.where(
-          creado_por: @caja.usuario_id,
-          creado: @caja.creado,
+          caja_id: @caja.id,
           Tipo_Documento: 2,
           Estado: true
         )
@@ -67,10 +80,10 @@ class CajasController < ApplicationController
         deposito = pagos.sum(:pago_deposito).to_f
 
         total_efectivo = efectivo - cambio
-        total_pos = tarjeta + deposito
+        total_pos      = tarjeta + deposito
 
         params[:caja][:FinalEfectivo] = total_efectivo
-        params[:caja][:FinalPos] = total_pos
+        params[:caja][:FinalPos]      = total_pos
       end
 
       if @caja.update(caja_params)
