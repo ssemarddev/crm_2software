@@ -143,6 +143,12 @@
                   <% if session[:user_url].include? calidads_path %>
                   <li><%= link_to "Calidad", calidads_path %></li>
                   <% end %>
+                  <li>
+                  <%= link_to admin_path do %>
+                    <i class="fa fa-list"></i>
+                    <span>Solicitudes pendientes</span>
+                  <% end %>
+                </li>
                 </ul>
               </li>
             <% end %>

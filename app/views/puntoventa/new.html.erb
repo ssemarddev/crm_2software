@@ -138,85 +138,91 @@
         </div>
       </div>
   </div>
-  <div class="panel panel-success ">
-    <div class="panel-heading">Productos: <span id="unidades"></span></div>
-      <div class="panel-body">
-        <div class="row">
-          <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 info">
-            <div class="col-xs-12 col-sm-12 col-md-1 col-lg-1">
-              <label for="unidad">Unidad</label>
-              <input name="unidadRequerida" class="form-control no-padding" type="hidden" id="unidadRequerida" value=""/>
-              <input name="unidad" class="form-control no-padding" type="number" id="unidad" value="1"/>
-            </div>
-            <div class="col-xs-12 col-sm-12 col-md-2 col-lg-6">
-              <label for="codigoproducto">Producto</label>
-              <input name="idproducto" class="form-control" type="hidden" id="idproducto"/>
-              <% if session[:desplegableProducto] %>
-                <select id="codigoproducto" name="codigoproducto" class="form-control">
-                </select>
-              <% else %>
-                <input name="codigoproducto" class="form-control" type="text" id="codigoproducto"/>
-              <% end %>
-            </div>
-            <div class="col-xs-12 col-sm-12 col-md-3 col-lg-3">
-              <label for="unidadmedida">Medida</label>
-              <select name="unidadmedida :selected option" class="form-control" id="unidadmedida"></select>
-            </div>
-            <div class="col-xs-12 col-sm-12 col-md-2 col-lg-2">
-              <label for="precio">Precio Q </label>
-              <input class="form-control no-padding" type="number" id="precio" disabled="true"/>
-            </div>
-  
-            <div class="col-xs-12 col-sm-12 col-md-2 col-lg-2">
-              <label for="precios">Precios </label>
-              <select class="form-control" id="precios" name="precios" >
-                <option id="valorid" >Valor Venta</option>
-                <option id="opcion1">Mayorista </option>
-                <option id="opcion2">Mayorista Instalado</option>
-                <option id="opcion3">Cliente Final Descuento</option>
-                <option id="opcion4">Cliente Final</option>  
-              </select>
-            </div>
-            <div class="col-xs-12 col-sm-12 col-md-2 col-lg-2">
-              <label for="precios">Precios </label>
-              <button type="button" id="btn_valorid" val="" class="precios_btn btn btn-default">Valor Venta</button>
-              <button type="button" id="btn_opcion1" val="" class="precios_btn btn btn-default">Mayorista </button>
-              <button type="button" id="btn_opcion2" val="" class="precios_btn btn btn-default">Mayorista Instalado</button>
-              <button type="button" id="btn_opcion3" val="" class="precios_btn btn btn-default">Cliente Final Descuento</button>
-              <button type="button" id="btn_opcion4" val="" class="precios_btn btn btn-default">Cliente Final</button>  
-            </div>
-            
-            
+<div class="panel panel-success">
+  <div class="panel-heading">Productos: <span id="unidades"></span></div>
+  <div class="panel-body">
+    
+    <div class="row">
+      <div class="col-xs-12 col-sm-4 col-md-2 col-lg-1">
+        <label for="unidad">Unidad</label>
+        <input name="unidadRequerida" class="form-control no-padding" type="hidden" id="unidadRequerida" value=""/>
+        <input name="unidad" class="form-control no-padding" type="number" id="unidad" value="1"/>
+      </div>
 
-            <div class="col-xs-12 col-sm-12 col-md-2 col-lg-2">
-              <label for="descuento">Descuento</label>
-              <input name="descuento" class="form-control no-padding" type="number" id="descuento"  placeholder="Max. %<%= session[:descuento]%>"/>
-            </div>
-          </div>
-        </div>
-        <div class="row">
-          <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 info">
-            <div class="col-xs-12 col-sm-12 col-md-3 col-lg-5">
-              <label for="descripcion">Descripcion</label>
-              <input name="descripcion" class="form-control no-padding" type="text" id="descripcion" disabled="true"/>
-            </div>
-            <div class="col-xs-12 col-sm-12 col-md-3 col-lg-3">
-              <label for="">Fila</label>
-              <input name="" class="form-control no-padding" type="text" id="fila" disabled="true"/>
-            </div>
-            <div class="col-xs-12 col-sm-12 col-md-3 col-lg-3">
-              <label for="">Columna</label>
-              <input name="" class="form-control no-padding" type="text" id="columna" disabled="true"/>
-            </div>
-            <div class="col-xs-12 col-sm-12 col-md-6 col-lg-6">
-            </div>
-            <div class="col-xs-12 col-sm-12 col-md-3 col-lg-3 alert alert-primary">
-              <button type="button" name="button" id="agregar" class="btn btn-success">Agregar</button>
-            </div>
-          </div>
-        </div>
+      <div class="col-xs-12 col-sm-8 col-md-5 col-lg-6">
+        <label for="codigoproducto">Producto</label>
+        <input name="idproducto" class="form-control" type="hidden" id="idproducto"/>
+        <% if session[:desplegableProducto] %>
+          <select id="codigoproducto" name="codigoproducto" class="form-control">
+          </select>
+        <% else %>
+          <input name="codigoproducto" class="form-control" type="text" id="codigoproducto"/>
+        <% end %>
+      </div>
+
+      <div class="col-xs-12 col-sm-6 col-md-3 col-lg-3">
+        <label for="unidadmedida">Medida</label>
+        <select name="unidadmedida :selected option" class="form-control" id="unidadmedida"></select>
+      </div>
+
+      <div class="col-xs-12 col-sm-6 col-md-2 col-lg-2">
+        <label for="precio">Precio Q</label>
+        <input class="form-control no-padding" type="number" id="precio" disabled="true"/>
       </div>
     </div>
+
+    <div class="row" style="margin-top: 15px;">
+      <div class="col-xs-12 col-sm-6 col-md-3 col-lg-2">
+        <label for="precios">Precios</label>
+        <select class="form-control" id="precios" name="precios">
+          <option id="valorid">Valor Venta</option>
+          <option id="opcion1">Mayorista</option>
+          <option id="opcion2">Mayorista Instalado</option>
+          <option id="opcion3">Cliente Final Descuento</option>
+          <option id="opcion4">Cliente Final</option>
+        </select>
+      </div>
+
+      <div class="col-xs-12 col-sm-12 col-md-6 col-lg-7">
+        <label>Precios</label>
+        <div>
+          <button type="button" id="btn_valorid" val="" class="precios_btn btn btn-default" style="margin-bottom:5px;">Valor Venta</button>
+          <button type="button" id="btn_opcion1" val="" class="precios_btn btn btn-default" style="margin-bottom:5px;">Mayorista</button>
+          <button type="button" id="btn_opcion2" val="" class="precios_btn btn btn-default" style="margin-bottom:5px;">Mayorista Instalado</button>
+          <button type="button" id="btn_opcion3" val="" class="precios_btn btn btn-default" style="margin-bottom:5px;">Cliente Final Descuento</button>
+          <button type="button" id="btn_opcion4" val="" class="precios_btn btn btn-default" style="margin-bottom:5px;">Cliente Final</button>
+        </div>
+      </div>
+
+      <div class="col-xs-12 col-sm-6 col-md-3 col-lg-3">
+        <label for="descuento">Descuento</label>
+        <input name="descuento" class="form-control no-padding" type="number" id="descuento" placeholder="Max. %<%= session[:descuento] %>"/>
+      </div>
+    </div>
+
+    <div class="row" style="margin-top: 15px;">
+      <div class="col-xs-12 col-sm-12 col-md-5 col-lg-5">
+        <label for="descripcion">Descripción</label>
+        <input name="descripcion" class="form-control no-padding" type="text" id="descripcion" disabled="true"/>
+      </div>
+
+      <div class="col-xs-12 col-sm-6 col-md-3 col-lg-3">
+        <label for="fila">Fila</label>
+        <input class="form-control no-padding" type="text" id="fila" disabled="true"/>
+      </div>
+
+      <div class="col-xs-12 col-sm-6 col-md-2 col-lg-2">
+        <label for="columna">Columna</label>
+        <input class="form-control no-padding" type="text" id="columna" disabled="true"/>
+      </div>
+
+      <div class="col-xs-12 col-sm-12 col-md-2 col-lg-2" style="padding-top: 25px;">
+        <button type="button" name="button" id="agregar" class="btn btn-success btn-block">Agregar</button>
+      </div>
+    </div>
+
+  </div>
+</div>
 <fieldset id="form" >
   <div class="panel panel-primary">
     <div class="panel-heading">Productos Adquiridos:</div>

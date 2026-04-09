@@ -1,7 +1,16 @@
 <div class="container-fluid">
   <div class="row">
     <div class="col-md-12">
-      <h2>Solicitudes pendientes por resurtir</h2>
+      <div class="clearfix">
+        <h2 class="pull-left">Solicitudes pendientes por resurtir</h2>
+
+        <div class="pull-right" style="margin-top: 20px;">
+          <%= link_to 'Exportar CSV', admin_path(format: :csv), class: 'btn btn-default' %>
+          <%= link_to 'Exportar Excel', admin_path(format: :xlsx), class: 'btn btn-success' %>
+          <%= link_to 'Exportar PDF', admin_path(format: :pdf), class: 'btn btn-danger', target: '_blank' %>
+        </div>
+      </div>
+
       <hr>
 
       <% if notice.present? %>
@@ -48,42 +57,69 @@
                       Resurtir producto
                     </button>
 
-                    <div class="modal fade" id="restockModal_<%= solicitud.id %>" tabindex="-1" role="dialog" aria-labelledby="restockModalLabel_<%= solicitud.id %>">
-                      <div class="modal-dialog" role="document">
-                        <div class="modal-content">
-                          <%= form_tag(admin_process_restock_path(solicitud.id), method: :post) do %>
-                            <div class="modal-header">
-                              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                <span aria-hidden="true">&times;</span>
-                              </button>
-                              <h4 class="modal-title" id="restockModalLabel_<%= solicitud.id %>">
-                                Resurtir producto
-                              </h4>
-                            </div>
+                   <div class="modal fade" id="restockModal_<%= solicitud.id %>" tabindex="-1" role="dialog" aria-labelledby="restockModalLabel_<%= solicitud.id %>">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <%= form_tag(admin_process_restock_path(solicitud.id), method: :post) do %>
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+          <h4 class="modal-title" id="restockModalLabel_<%= solicitud.id %>">
+            Resurtir producto
+          </h4>
+        </div>
 
-                            <div class="modal-body">
-                              <p><strong>Producto:</strong> <%= solicitud.Producto.Nombre %></p>
-                              <p><strong>Stock actual:</strong> <%= ProductosController.get_product_stock(solicitud.Producto_id, nil) %></p>
+              <div class="modal-body">
+                <p><strong>Producto:</strong> <%= solicitud.Producto.Nombre %></p>
+                <p><strong>Stock actual:</strong> <%= ProductosController.get_product_stock(solicitud.Producto_id, nil) %></p>
 
-                              <div class="form-group">
-                                <label>Bodega de entrada</label>
-                                <%= select_tag :bodega_id, options_from_collection_for_select(@bodegas, :id, :Nombre), prompt: 'Selecciona una bodega', class: 'form-control', required: true %>
-                              </div>
-
-                              <div class="form-group">
-                                <label>Cantidad a ingresar</label>
-                                <%= number_field_tag :cantidad, solicitud.cantidad_sugerida || 1, min: 1, class: 'form-control', required: true %>
-                              </div>
-                            </div>
-
-                            <div class="modal-footer">
-                              <button type="button" class="btn btn-default" data-dismiss="modal">Cancelar</button>
-                              <%= submit_tag 'Guardar resurtido', class: 'btn btn-success' %>
-                            </div>
-                          <% end %>
+                        <div class="form-group">
+                          <label>Bodega de entrada</label>
+                          <%= select_tag :bodega_id,
+                                options_from_collection_for_select(@bodegas, :id, :Nombre),
+                                prompt: 'Selecciona una bodega',
+                                class: 'form-control',
+                                required: true %>
                         </div>
+
+                        <div class="form-group">
+                          <label>Cantidad a ingresar</label>
+                          <%= number_field_tag :cantidad,
+                                solicitud.cantidad_sugerida || 1,
+                                min: 1,
+                                class: 'form-control',
+                                required: true %>
+                        </div>
+
+                        <div class="form-group">
+                          <label>Nuevo precio de venta</label>
+                          <%= number_field_tag :precio_venta,
+                            solicitud.Producto.Valor_Venta || 0,
+                            min: 0,
+                            step: :any,
+                            class: 'form-control',
+                            required: true %>
+                        </div>
+
+                        <div class="form-group">
+                          <label>Nuevo costo / precio de compra (opcional)</label>
+                          <%= number_field_tag :precio_compra,
+                                (solicitud.Producto.try(:PrecioCompra) || solicitud.Producto.try(:Costo) || 0),
+                                min: 0,
+                                step: :any,
+                                class: 'form-control' %>
+                        </div>
+        </div>
+
+                          <div class="modal-footer">
+                            <button type="button" class="btn btn-default" data-dismiss="modal">Cancelar</button>
+                            <%= submit_tag 'Guardar resurtido', class: 'btn btn-success' %>
+                          </div>
+                        <% end %>
                       </div>
                     </div>
+                  </div>
                   </td>
                 </tr>
               <% end %>

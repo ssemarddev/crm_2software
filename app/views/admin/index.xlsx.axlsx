@@ -1,0 +1,27 @@
+wb = xlsx_package.workbook
+
+wb.add_worksheet(name: "Solicitudes Pendientes") do |sheet|
+  sheet.add_row [
+    "ID Solicitud",
+    "Producto",
+    "Código",
+    "Existencias actuales",
+    "Cantidad sugerida",
+    "Teléfono solicitante",
+    "Comentario",
+    "Fecha"
+  ]
+
+  @pending_restock_requests.each do |solicitud|
+    sheet.add_row [
+      solicitud.id,
+      solicitud.Producto&.Nombre,
+      solicitud.Producto&.Codigo,
+      ProductosController.get_product_stock(solicitud.Producto_id, nil),
+      solicitud.cantidad_sugerida,
+      solicitud.telefono_solicitante.present? ? solicitud.telefono_solicitante : 'N/A',
+      solicitud.comentario.present? ? solicitud.comentario : 'Sin comentario',
+      solicitud.created_at.strftime("%d/%m/%Y %H:%M")
+    ]
+  end
+end
